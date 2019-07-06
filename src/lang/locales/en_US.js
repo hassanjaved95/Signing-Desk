@@ -1,5 +1,6 @@
 module.exports = {
   "sidebar.documents": "Documents",
+  "sidebar.contacts": "Contacts",
   "sidebar.app": "App",
   "sidebar.news": "News",
   "sidebar.horizontal": "Horizontal",

@@ -127,6 +127,8 @@ class MainApp extends Component {
    render() {
       const { navCollapsed, rtlLayout, miniSidebar } = this.props.settings;
       const { windowWidth } = this.state;
+
+      console.log('RctCRMLayout');
       return (
          <div className="app">
             <div className="app-main-container crm-layout">

@@ -12,7 +12,7 @@ import IntlMessages from 'Util/IntlMessages';
 import AppConfig from 'Constants/AppConfig';
 
 const Footer = () => (
-   <div className="rct-footer d-flex justify-content-between align-items-center">
+   <div className="rct-footer d-flex justify-content-between align-items-center" style={{display: 'none'}}>
       <ul className="list-inline footer-menus mb-0">
          <li className="list-inline-item">
             <Button component={Link} to="/app/dashboard"><IntlMessages id="sidebar.gettingStarted" /></Button>

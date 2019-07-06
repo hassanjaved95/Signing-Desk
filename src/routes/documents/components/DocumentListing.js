@@ -73,8 +73,6 @@ class DocumentListing extends Component {
               document={document}
               handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
               key={key}
-              onSelectEmail={e => this.onSelectEmail(e, document)}
-              onReadEmail={() => this.readEmail(document)}
               getTaskLabelNames={() =>
                 this.getTaskLabelNames(document.email_labels)
               }

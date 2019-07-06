@@ -217,6 +217,13 @@ export default {
       child_routes: null
     },
     {
+      menu_title: "sidebar.contacts",
+      menu_icon: "zmdi zmdi-accounts-list",
+      path: "/app/contacts",
+      new_item: false,
+      child_routes: null
+    },
+    {
       menu_title: "sidebar.inbox",
       menu_icon: "zmdi zmdi-email",
       path: "/app/mail",

@@ -12,12 +12,14 @@ import feedbacksReducer from "./FeedbacksReducer";
 import ecommerceReducer from "./EcommerceReducer";
 import CrmReducer from "./CrmReducer";
 import DocumentsReducer from "./DocumentsReducer";
+import ContactsReducer from "./ContactsReducer";
 
 const reducers = combineReducers({
   settings,
   chatAppReducer,
   emailApp: emailAppReducer,
   documents: DocumentsReducer,
+  contacts: ContactsReducer,
   sidebar: sidebarReducer,
   todoApp: todoAppReducer,
   authUser: authUserReducer,

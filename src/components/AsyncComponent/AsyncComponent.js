@@ -82,6 +82,12 @@ const AsyncDocumentsComponent = Loadable({
   loading: () => <RctPageLoader />
 });
 
+// contacts
+const AsyncContactsComponent = Loadable({
+  loader: () => import("Routes/contacts"),
+  loading: () => <RctPageLoader />
+});
+
 // gallery
 const AsyncGalleryComponent = Loadable({
   loader: () => import("Routes/pages/gallery"),
@@ -549,6 +555,7 @@ export {
   AsyncChatComponent,
   AsyncMailComponent,
   AsyncDocumentsComponent,
+  AsyncContactsComponent,
   AsyncTodoComponent,
   AsyncGalleryComponent,
   AsyncFeedbackComponent,

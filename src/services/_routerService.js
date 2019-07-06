@@ -25,7 +25,8 @@ import {
   AsyncChatComponent,
   AsyncMailComponent,
   AsyncTodoComponent,
-  AsyncDocumentsComponent
+  AsyncDocumentsComponent,
+  AsyncContactsComponent
 } from "Components/AsyncComponent/AsyncComponent";
 
 export default [
@@ -124,5 +125,9 @@ export default [
   {
     path: "documents",
     component: AsyncDocumentsComponent
+  },
+  {
+    path: "contacts",
+    component: AsyncContactsComponent
   }
 ];
