@@ -76,7 +76,7 @@ export function getNameInitials(name = "") {
     return initials.join('');
 }
 
-export function getRandomColor(str, s = 40, l = 50) {
+export function getRandomColor(str, s = 50, l = 50) {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
