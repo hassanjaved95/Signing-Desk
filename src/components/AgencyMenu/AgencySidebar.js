@@ -22,6 +22,7 @@ class AgencySidebar extends Component {
          stateCategory
       }
       this.props.onToggleAgencyMenu(data);
+      
    }
 
    render() {

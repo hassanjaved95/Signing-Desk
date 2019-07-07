@@ -123,3 +123,29 @@ mark,
     content: "\2014 \00A0"; // em dash, nbsp
   }
 }
+.dashBoardMainFilters{
+  cursor: pointer !important;
+    min-width: 85px;
+    padding: 0 5px;
+    font-weight: 400;
+    color: #8d8d8d;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    text-align: center;
+    z-index: 2;
+    transition: color .2s,background .2s;
+}
+.dashBoardMainFilters:hover {
+  background-color: #dddbdb;
+}
+
+.dashBoardMainFiltersActive {
+  color: #47b972;
+  border-bottom: 2px solid #47b972 ;
+  background-color: none;
+  font-weight: 600;
+}
+
+.dashBoardMainFiltersActive:hover{
+  background-color: #fff;
+}
