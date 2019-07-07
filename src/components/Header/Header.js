@@ -30,20 +30,28 @@ import SearchForm from './SearchForm';
 import QuickLinks from './QuickLinks';
 import MobileSearchForm from './MobileSearchForm';
 import Cart from './Cart';
+import Avatar from "@material-ui/core/Avatar";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
+import Users from '../DashboardOverlay/Users';
+import { Dropdown, DropdownToggle, DropdownMenu, Badge } from "reactstrap";
+import { logoutUserFromFirebase } from "Actions";
+import SupportPage from "../Support/Support";
+import { blue } from '@material-ui/core/colors';
+import { Transform } from 'stream';
 
 class Header extends Component {
 
    state = {
       customizer: false,
-      isMobileSearchFormVisible: false
+      isMobileSearchFormVisible: false,
+      userDropdownMenu: false,
    }
 
    // function to change the state of collapsed sidebar
    onToggleNavCollapsed = (event) => {
-      const val = !this.props.navCollapsed;
+      const val = !this.props.settings.navCollapsed;
       this.props.collapsedSidebarAction(val);
    }
 
@@ -75,6 +83,39 @@ class Header extends Component {
       this.setState({ isMobileSearchFormVisible: true });
    }
 
+   /**
+   * Toggle User Dropdown Menu
+   */
+   toggleUserDropdownMenu() {
+      this.setState({ userDropdownMenu: !this.state.userDropdownMenu });
+   }
+
+   /**
+   * Logout User
+   */
+   logoutUser() {
+      this.props.logoutUserFromFirebase(this.props.user, this.props.history);
+   }
+
+   /*
+   *DashBoard Main Filter Reset Filters
+   */
+    resetDashBoardMainFilters(){
+       $(".DBFM0").removeClass("dashBoardMainFiltersActive");
+       $(".DBFM1").removeClass("dashBoardMainFiltersActive");
+       $(".DBFM2").removeClass("dashBoardMainFiltersActive");
+       $(".DBFM3").removeClass("dashBoardMainFiltersActive");
+    }
+   /*
+   *DashBoard Main Filter Click Logic
+   */
+    getDocumentStatsByMainFilter(num){
+       this.resetDashBoardMainFilters();
+      $(".DBFM"+num).addClass("dashBoardMainFiltersActive");
+    }
+
+    
+
    render() {
       const { isMobileSearchFormVisible } = this.state;
       $('body').click(function () {
@@ -82,7 +123,12 @@ class Header extends Component {
          $('.dashboard-overlay').addClass('d-none');
          $('body').css('overflow', '');
       });
-      const { horizontalMenu, agencyMenu, location } = this.props;
+
+      
+      const { horizontalMenu, agencyMenu, location, Users } = this.props;
+      var currentPathName = this.props.location.pathname.split("/")[this.props.location.pathname.split("/").length - 1];
+      var isDashboard = true;
+      isDashboard = currentPathName == "dashboard" ? true : false;
       return (
          <AppBar position="static" className="rct-header">
             <Toolbar className="d-flex justify-content-between w-100 pl-0">
@@ -106,7 +152,10 @@ class Header extends Component {
                                     <MenuIcon />
                                  </IconButton>
                               </Tooltip>
+
+
                            </li> :
+
                            <li className="list-inline-item">
                               <Tooltip title="Sidebar Toggle" placement="bottom">
                                  <IconButton color="inherit" aria-label="Menu" className="humburger p-0" component={Link} to="/">
@@ -114,9 +163,19 @@ class Header extends Component {
                                  </IconButton>
                               </Tooltip>
                            </li>
+
+
                         }
-                        {!horizontalMenu && <QuickLinks />}
-                        <li className="list-inline-item search-icon d-inline-block">
+
+                        <li className="list-inline-item" style={{ color: 'black' }}>
+                           <span style={{ textTransform: 'capitalize' }}>{currentPathName}</span>
+
+                        </li>
+
+
+                        
+
+                        {/* {!horizontalMenu && <QuickLinks />} <li className="list-inline-item search-icon d-inline-block">
                            <SearchForm />
                            <IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
                               <i className="zmdi zmdi-search"></i>
@@ -125,19 +184,27 @@ class Header extends Component {
                               isOpen={isMobileSearchFormVisible}
                               onClose={() => this.setState({ isMobileSearchFormVisible: false })}
                            />
-                        </li>
+                        </li> */}
                      </ul>
                   }
                </div>
                <ul className="navbar-right list-inline mb-0">
-                  <li className="list-inline-item summary-icon">
-                     <Tooltip title="Summary" placement="bottom">
-                        <a href="javascript:void(0)" className="header-icon tour-step-3" onClick={() => this.openDashboardOverlay()}>
-                           <i className="zmdi zmdi-info-outline"></i>
-                        </a>
-                     </Tooltip>
-                  </li>
-                  {!horizontalMenu &&
+               {currentPathName == "dashboard" ?
+                           <li className="list-inline-item" style={{ color: 'black' }}>
+                              <span className="DBFM0 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(0)}> 1 Week </span>
+                              <span className="DBFM1 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(1)}>1 Month </span>
+                              <span className="DBFM2 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(2)}>3 Months </span>
+                              <span className="DBFM3 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(3)}>1 Year </span>
+
+                           </li> :
+
+                           <li className="list-inline-item" style={{ color: 'black' }}>
+                              <span>Test2</span>
+                           </li>
+                        }
+
+
+                  {/* {!horizontalMenu &&
                      <li className="list-inline-item">
                         <Tooltip title="Upgrade" placement="bottom">
                            <Button component={Link} to={`/${getAppLayout(location)}/pages/pricing`} variant="contained" className="upgrade-btn tour-step-4 text-white" color="primary">
@@ -145,11 +212,88 @@ class Header extends Component {
                            </Button>
                         </Tooltip>
                      </li>
-                  }
-                  <LanguageProvider />
-                  <Notifications />
-                  <Cart />
+                  } */}
                   <li className="list-inline-item setting-icon">
+                     <div className="top-sidebar">
+                        <div className="sidebar-user-block">
+                           <Dropdown
+                              isOpen={this.state.userDropdownMenu}
+                              toggle={() => this.toggleUserDropdownMenu()}
+                              className="rct-dropdown"
+                           >
+                              <DropdownToggle tag="div" className="d-flex align-items-center">
+                                 <div className="user-profile">
+                                    <Avatar
+                                       alt={`${this.props.user.profile.info.firstName} ${
+                                          this.props.user.profile.info.lastName
+                                          }`}
+                                       src={this.props.user.profile.info.avatar}
+                                       className="rounded-circle"
+                                    />
+                                 </div>
+
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                 <ul className="list-unstyled mb-0">
+                                    <li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
+                                       <p className="text-white mb-0 fs-14">
+                                          {this.props.user.profile.info.firstName + " " + this.props.user.profile.info.lastName}
+                                       </p>
+                                       <span className="text-white fs-14">
+                                          {this.props.user.email}
+                                       </span>
+                                    </li>
+                                    <li>
+                                       <Link style={{ padding: 7, width: '100%' }}
+                                          to={{
+                                             pathname: "/app/users/user-profile",
+                                             state: { activeTab: 0 }
+                                          }}
+                                       >
+                                          <i className="zmdi zmdi-account text-primary mr-3" />
+                                          <IntlMessages id="widgets.profile" />
+                                       </Link>
+                                    </li>
+                                    {/* <li>
+                  <Link
+                    to={{
+                      pathname: "/app/users/user-profile-1",
+                      state: { activeTab: 2 }
+                    }}
+                  >
+                    <i className="zmdi zmdi-comment-text-alt text-success mr-3" />
+                    <IntlMessages id="widgets.messages" />
+                    <Badge color="danger" className="pull-right">
+                      3
+                    </Badge>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/app/pages/feedback">
+                    <i className="zmdi zmdi-edit text-warning mr-3" />
+                    <IntlMessages id="sidebar.feedback" />
+                    <Badge color="info" className="pull-right">
+                      1
+                    </Badge>
+                  </Link>
+                </li> */}
+                                    <li className="border-top">
+                                       <a style={{ padding: 7, width: '100%' }}
+                                          href="javascript:void(0)"
+                                          onClick={() => this.logoutUser()}
+                                       >
+                                          <i className="zmdi zmdi-power text-danger mr-3" />
+                                          <IntlMessages id="widgets.logOut" />
+                                       </a>
+                                    </li>
+                                 </ul>
+                              </DropdownMenu>
+                           </Dropdown>
+                        </div>
+                     </div>
+                  </li>
+
+                  {/* <li className="list-inline-item setting-icon">
                      <Tooltip title="Chat" placement="bottom">
                         <IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>
                            <i className="zmdi zmdi-comment"></i>
@@ -161,6 +305,13 @@ class Header extends Component {
                         <IconButton aria-label="settings" onClick={() => this.toggleScreenFull()}>
                            <i className="zmdi zmdi-crop-free"></i>
                         </IconButton>
+                     </Tooltip>
+                  </li> */}
+                  <li className="list-inline-item summary-icon">
+                     <Tooltip title="Summary" placement="bottom">
+                        <a style={{ margin: '-34px 0 0 10px' }} href="javascript:void(0)" className="header-icon tour-step-3" onClick={() => this.openDashboardOverlay()}>
+                           <i className="zmdi zmdi-info-outline"></i>
+                        </a>
                      </Tooltip>
                   </li>
                </ul>
@@ -181,10 +332,12 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ settings }) => {
-   return settings;
+const mapStateToProps = ({ authUser, settings, sidebar }) => {
+   const { user } = authUser;
+   return { user, settings, sidebar };
 };
 
 export default withRouter(connect(mapStateToProps, {
-   collapsedSidebarAction
+   collapsedSidebarAction,
+   logoutUserFromFirebase
 })(Header));

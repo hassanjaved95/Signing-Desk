@@ -15,6 +15,7 @@ import NavMenuItem from "./NavMenuItem";
 import { onToggleMenu } from "Actions";
 
 class SidebarContent extends Component {
+  
   toggleMenu(menu, stateCategory) {
     let data = {
       menu,

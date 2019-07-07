@@ -10,7 +10,7 @@ import agencyNavLinks from 'Components/AgencyMenu/NavLinks';
 
 const INIT_STATE = {
 	sidebarMenus: navLinks,
-	agencySidebarMenu: agencyNavLinks,
+	agencySidebarMenu: agencyNavLinks
 };
 
 export default (state = INIT_STATE, action) => {
