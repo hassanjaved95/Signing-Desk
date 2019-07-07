@@ -146,7 +146,9 @@ class MainApp extends Component {
             <div className="app-container">
               <div className="rct-app-content">
                 <div className="app-header">{this.renderHeader()}</div>
-                <div className="rct-page">{this.renderPage()}</div>
+                <div className="rct-page" style={{ backgroundColor: "white" }}>
+                  {this.renderPage()}
+                </div>
               </div>
             </div>
           </Sidebar>

@@ -1265,3 +1265,125 @@ figure.img-wrapper {
       }
    }
 }
+
+/*=========== List View ======== */
+
+.row-container {
+   width: 100%;
+   color: #8d8d8d;
+   text-align: left;
+   border-collapse: separate;
+   border-spacing: 0;
+   table-layout: fixed;
+   font-size: 14px;
+   height: 61px;
+
+   td {
+      border-bottom: 1px solid #e5e5e5;
+      vertical-align: middle;
+   }
+
+   td.selectable {
+      width: 56px;
+      text-align: center!important;
+      vertical-align: middle;
+      color: #d1d1d1;
+   }
+
+   .name-company {
+      display: flex;
+      flex-direction: column;
+      -webkit-box-pack: center;
+      justify-content: center;
+   }
+   
+   .bg-initials {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      color: rgb(255, 255, 255);
+      background-color: rgb(179, 180, 185);
+      letter-spacing: 1px;
+      border-radius: 50%;
+   }
+   
+   .bg-initials-2 {
+      display: flex;
+      flex-direction: row;
+      min-width: 0px;
+      grid-column-end: span 1;
+      grid-row-end: span 1;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+   }
+
+   .initials-margin {
+      margin-right: 16px;
+   }
+   
+   .td-container {
+      display: flex;
+      flex-direction: row;
+   }
+
+   .content-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+   }
+
+   .actions-sec {
+      position: relative;
+      height: 52px;
+      display: flex;
+      flex-direction: column;
+   }
+
+   .content-sec {
+      height: calc(100% - 52px);
+      display: flex;
+      flex-direction: column;
+   }
+
+   .content-header-fixed {
+      height: 39px;
+   }
+
+   .header-shadow {
+      box-shadow: 0 2px 3px rgba(0,0,0,.15);
+   }
+
+   .head-container {
+      position: relative;
+      flex: 0 0 auto;
+      z-index: 1000;
+  }
+
+   .content-scroller {
+      height: calc(100% - 39px);
+      overflow: auto;      
+   }
+
+   .show-inline {
+      display: flex;
+      flex-direction: 'row';
+   }
+
+   .split-td {
+      flex-grow: 1;
+   }
+
+   .split-content-left {
+      text-align: left;
+   }
+
+   .split-content-right {
+      text-align: right;
+   }
+
+   .sort-icon {
+      font-size: 24px;
+   }
+}
