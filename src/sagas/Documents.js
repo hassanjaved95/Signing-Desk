@@ -246,7 +246,7 @@ function* getDocumentsFromServer() {
   }
 }
 
-// wat
+// watcher
 export function* getDocuments() {
   yield takeEvery(GET_DOCUMENTS, getDocumentsFromServer);
 }

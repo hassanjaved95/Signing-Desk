@@ -121,9 +121,8 @@ class App extends Component {
 }
 
 // map state to props
-const mapStateToProps = (obj) => {
-   console.log('mapStateToProps obj:', obj);
-   const { user } = obj.authUser;
+const mapStateToProps = ({ authUser }) => {
+   const { user } = authUser;
    return { user };
 };
 

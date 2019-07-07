@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 import { GET_CONTACTS } from "Actions/types";
 
-import { getContactsSuccess, getContactsFailure } from "Actions";
+import { getContactsSuccess, getContactsFailure } from "Actions/ContactsActions";
 
 const response = {
     data: [
@@ -212,7 +212,7 @@ const response = {
             user_name: "Rukshana"
         },
         {
-            id: 9875441212312,
+            id: 9875441212313,
             from: {
                 name: "Shubham Raj",
                 avatar: "http://reactify.theironnetwork.org/data/images/user-7.jpg",
@@ -246,7 +246,7 @@ function* getContactsFromServer() {
     }
 }
 
-// wat
+// watcher
 export function* getContacts() {
     yield takeEvery(GET_CONTACTS, getContactsFromServer);
 }

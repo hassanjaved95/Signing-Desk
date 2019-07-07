@@ -12,15 +12,14 @@ const DocumentListItem = ({
 }) => (
   <li
     className="d-flex justify-content-between align-items-center list-item"
-    onClick={onReadEmail}
   >
     <div className="d-flex align-items-center w-100">
       <div className="checkbox-wrap">
-        <Checkbox checked={document.selected} onClick={onSelectEmail} />
+        <Checkbox checked={document.selected} 
+        />
       </div>
       <div className="icon-wrap">
         <IconButton
-          onClick={handleMarkAsStar}
           className="mx-10 d-none d-sm-block"
         >
           <i

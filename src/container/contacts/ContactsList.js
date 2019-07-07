@@ -7,16 +7,16 @@ import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 
 import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
+import { getContacts } from "Actions/ContactsActions";
 
-import ContactsListItem from "./../../components/ListItem/ContactsListItem";
+import ContactsListItem from "Components/ListItem/ContactsListItem";
 import IntlMessages from "Util/IntlMessages";
-
-import { getContacts } from "Actions";
 
 class ContactsList extends Component {
     componentDidMount() {
-        console.log(this.props);
-        // this.props.getContacts();
+        // console.log(this.props);
+        // console.log('getContactsData:', getContactsData);
+        this.props.getContacts();
     }
 
     /**
@@ -49,12 +49,13 @@ class ContactsList extends Component {
     };
 
     render() {
+        console.log('this.props', this.props);
         const { contacts } = this.props;
         return (
             <ul className="list-unstyled m-0">
                 {contacts && contacts.length > 0 && contacts !== null ? (
-                    contacts.map((document, key) => (
-                        <ContactsListItem />
+                    contacts.map((contact, key) => (
+                        <ContactsListItem key={contact.id} />
                     ))
                 ) : (
                         <div className="d-flex justify-content-center align-items-center py-50">
@@ -71,10 +72,7 @@ const mapStateToProps = ({ contacts }) => {
     return contacts;
 };
 
-export default withRouter(
-    connect(mapStateToProps,
-        {
-            getContacts
-        }
-    )(ContactsList)
-);
+
+export default connect(mapStateToProps,
+    { getContacts }
+)(ContactsList);
