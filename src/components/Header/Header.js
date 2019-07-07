@@ -40,6 +40,8 @@ import { logoutUserFromFirebase } from "Actions";
 import SupportPage from "../Support/Support";
 import { blue } from '@material-ui/core/colors';
 import { Transform } from 'stream';
+import DashboardFilters from './DashboardFilters';
+import DashBoardCaption from './DashboardCaption';
 
 class Header extends Component {
 
@@ -126,9 +128,7 @@ class Header extends Component {
 
       
       const { horizontalMenu, agencyMenu, location, Users } = this.props;
-      var currentPathName = this.props.location.pathname.split("/")[this.props.location.pathname.split("/").length - 1];
-      var isDashboard = true;
-      isDashboard = currentPathName == "dashboard" ? true : false;
+      
       return (
          <AppBar position="static" className="rct-header">
             <Toolbar className="d-flex justify-content-between w-100 pl-0">
@@ -164,16 +164,9 @@ class Header extends Component {
                               </Tooltip>
                            </li>
 
-
                         }
 
-                        <li className="list-inline-item" style={{ color: 'black' }}>
-                           <span style={{ textTransform: 'capitalize' }}>{currentPathName}</span>
-
-                        </li>
-
-
-                        
+                       <DashBoardCaption/>
 
                         {/* {!horizontalMenu && <QuickLinks />} <li className="list-inline-item search-icon d-inline-block">
                            <SearchForm />
@@ -189,19 +182,7 @@ class Header extends Component {
                   }
                </div>
                <ul className="navbar-right list-inline mb-0">
-               {currentPathName == "dashboard" ?
-                           <li className="list-inline-item" style={{ color: 'black' }}>
-                              <span className="DBFM0 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(0)}> 1 Week </span>
-                              <span className="DBFM1 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(1)}>1 Month </span>
-                              <span className="DBFM2 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(2)}>3 Months </span>
-                              <span className="DBFM3 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(3)}>1 Year </span>
-
-                           </li> :
-
-                           <li className="list-inline-item" style={{ color: 'black' }}>
-                              <span>Test2</span>
-                           </li>
-                        }
+               <DashboardFilters/>
 
 
                   {/* {!horizontalMenu &&
