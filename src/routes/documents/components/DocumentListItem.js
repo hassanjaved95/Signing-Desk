@@ -8,11 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { textTruncate } from "Helpers/helpers";
 
 const DocumentListItem = ({
-  document,
-  onSelectEmail,
-  handleMarkAsStar,
-  onReadEmail,
-  getTaskLabelNames
+  document
 }) => (
   <li
     className="d-flex justify-content-between align-items-center list-item"

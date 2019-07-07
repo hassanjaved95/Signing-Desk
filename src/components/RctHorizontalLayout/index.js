@@ -39,6 +39,7 @@ class RctHorizontalLayout extends Component {
     }
 
     render() {
+        console.log('RctHorizontalLayout');
         return (
             <div className="app-horizontal collapsed-sidebar">
                 <div className="app-container">

@@ -157,7 +157,7 @@ class ThemeOptions extends Component {
             isDarkSidenav
         } = this.props;
         return (
-            <div className="fixed-plugin">
+            <div className="fixed-plugin" style={{display: 'none'}}>
                 {AppConfig.enableThemeOptions &&
                     <Dropdown isOpen={this.state.themeOptionPanelOpen} toggle={() => this.toggleThemePanel()}>
                         <DropdownToggle className="bg-primary">
