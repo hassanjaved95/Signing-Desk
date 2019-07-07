@@ -5,6 +5,7 @@ export * from "./ChatAppActions";
 export * from "./AppSettingsActions";
 export * from "./EmailAppActions";
 export * from "./DocumentsActions";
+export * from "./ContactsActions";
 export * from "./TodoAppActions";
 export * from "./AuthActions";
 export * from "./FeedbacksActions";

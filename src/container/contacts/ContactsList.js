@@ -1,21 +1,19 @@
 /**
- * Email Listing
+ * Contacts Listing
  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 
-import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
-import { getContacts } from "Actions/ContactsActions";
+import { getContacts } from "Actions";
 
 import ContactsListItem from "Components/ListItem/ContactsListItem";
+import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
+
 import IntlMessages from "Util/IntlMessages";
 
 class ContactsList extends Component {
     componentDidMount() {
-        // console.log(this.props);
-        // console.log('getContactsData:', getContactsData);
         this.props.getContacts();
     }
 
@@ -48,21 +46,47 @@ class ContactsList extends Component {
         return elements;
     };
 
+    onClickContact = (e, contact) => {
+        console.log('onClickContact e:', e);
+        console.log('onClickContact Contact:', contact);
+    };
+
     render() {
-        console.log('this.props', this.props);
         const { contacts } = this.props;
+        console.log('Contacts:', contacts);
         return (
-            <ul className="list-unstyled m-0">
-                {contacts && contacts.length > 0 && contacts !== null ? (
-                    contacts.map((contact, key) => (
-                        <ContactsListItem key={contact.id} />
-                    ))
-                ) : (
-                        <div className="d-flex justify-content-center align-items-center py-50">
-                            <h4>No contacts Found In Selected Folder</h4>
-                        </div>
-                    )}
-            </ul>
+            <div className="content-container">
+                <div className="actions-sec">
+                    ACTION BUTTONS SECTION
+                </div>
+                <div className="content-sec">
+                    <div className="content-header-fixed header-shadow head-container">
+                        <ContactsListItemHeader />
+                    </div>
+                    <div className="content-scroller">
+                        <ul className="list-unstyled m-0">
+                            {
+                                contacts && contacts.length > 0 && contacts !== null ? (
+                                    contacts.map((contact) => (
+                                        <ContactsListItem
+                                            key={contact.corporatesID}
+                                            contact={contact}
+                                            onClickContact={(e) => this.onClickContact(e, contact)}
+                                        />
+                                    ))
+
+                                ) : (
+                                        <div className="d-flex justify-content-center align-items-center py-50">
+                                            <h4>No contacts Found In Selected Folder</h4>
+                                        </div>
+                                    )
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
         );
     }
 }

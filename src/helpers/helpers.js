@@ -61,3 +61,27 @@ export function getAppLayout(url) {
     let path = location.split('/');
     return path[1];
 }
+
+export function getNameInitials(name = "") {
+    let splitName = name.trim().split(' ');
+    var initials = [];
+
+    splitName.forEach(namePart => {
+        let letter = namePart.trim();
+        if (letter) {
+            initials.push(letter[0].toUpperCase());
+        }
+    });
+
+    return initials.join('');
+}
+
+export function getRandomColor(str, s = 50, l = 50) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    var h = hash % 360;
+    return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+}
