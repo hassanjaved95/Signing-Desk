@@ -10,7 +10,7 @@ import { fieldToTextField } from "formik-material-ui";
 
 const ContactsListItemHeader = (props) => (
     <li onClick={props.onClickContact}>
-        <table className="row-container">
+        <table className="header-row-container row-container">
             <tbody>
                 <tr >
                     <td className="selectable"><Checkbox color="primary" /></td>

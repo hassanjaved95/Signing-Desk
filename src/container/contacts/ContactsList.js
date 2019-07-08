@@ -9,6 +9,7 @@ import { getContacts } from "Actions";
 
 import ContactsListItem from "Components/ListItem/ContactsListItem";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
+import PageActions from "Components/ListItem/PageActions";
 
 import IntlMessages from "Util/IntlMessages";
 
@@ -55,15 +56,17 @@ class ContactsList extends Component {
         const { contacts } = this.props;
         console.log('Contacts:', contacts);
         return (
-            <div className="content-container">
-                <div className="actions-sec">
-                    ACTION BUTTONS SECTION
+            <div className="page-content">
+                <div className="page-actions">
+                    <PageActions page="Contacts" />
                 </div>
-                <div className="content-sec">
-                    <div className="content-header-fixed header-shadow head-container">
-                        <ContactsListItemHeader />
+                <div className="content-area">
+                    <div className="content-head header-shadow head-container">
+                        <ul className="list-unstyled m-0">
+                            <ContactsListItemHeader />
+                        </ul>
                     </div>
-                    <div className="content-scroller">
+                    <div className="content-detail">
                         <ul className="list-unstyled m-0">
                             {
                                 contacts && contacts.length > 0 && contacts !== null ? (
