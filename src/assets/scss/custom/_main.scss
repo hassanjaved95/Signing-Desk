@@ -123,3 +123,48 @@
 		}
 	}
 }
+
+.dropZoner{
+	width:880px;
+	margin-top:15px;
+	height: 375px;
+	border: 2px dashed #e5e5e5;
+	text-align: center;
+	padding: 15% 0;
+	
+}
+
+.dropZonee{
+	width: 269px !important;
+	height: 142px !important;
+	background-color: #ffffff !important;
+	border: 0px solid red !important;
+	// margin-left:33.5%;
+	display: inline-block;
+	padding: 15% 0;
+}
+.dropZonee .filepicker-file-icon{
+	// margin-top:200px;
+}
+
+.dropzone .dz-message{
+	// margin-top:-100px !important;
+	font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 4px;
+	font-weight: 600;
+	color: #e5e5e5;
+}
+
+.footerNote{
+	color: #a2a2a2;
+	font-size: 12px;
+	margin-bottom: 4px;
+	margin-top:75px;
+
+}
+
+.DocumentIcon{
+	width: 50px !important;
+	height: 50px !important;
+}
