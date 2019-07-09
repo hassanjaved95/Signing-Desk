@@ -6,7 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FileUpload, ArrowDropDown, Add } from '@material-ui/icons';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+import DocumentUpload from './../../routes/documents/components/DocumentUpload';
 
 var val = "";
 const StyledMenu = withStyles({
@@ -56,13 +57,18 @@ const StyledButton = withStyles({
     },
 })(Button);
 
-
+var state={
+    showDialog:false,
+};
 export default function CustomizedMenus(props) {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    
+
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
+        state.showDialog = true;
     }
 
     function handleClose() {
@@ -87,7 +93,9 @@ export default function CustomizedMenus(props) {
 
     if (isDocument()) {
         return (
+            
             <div>
+                
                 <StyledButton
                     aria-controls="customized-menu"
                     aria-haspopup="true"
@@ -106,10 +114,12 @@ export default function CustomizedMenus(props) {
                     onClose={handleClose}
                 >
                     <StyledMenuItem>
-                        <ListItemIcon>
+                    
+                         {/* <ListItemIcon>
                             <FileUpload />
-                        </ListItemIcon>
-                        <ListItemText primary="Upload Document" />
+                        </ListItemIcon> */}
+                        {/* <ListItemText primary="Upload Document"  /> */}
+                        <DocumentUpload open={state.showDialog} />
                     </StyledMenuItem>
                      {/*<StyledMenuItem>
               <ListItemIcon>

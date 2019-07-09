@@ -9,6 +9,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { FileUpload, ArrowDropDown, Add } from '@material-ui/icons';
+
 
 export default class FormDialog extends React.Component {
 
@@ -27,7 +29,8 @@ export default class FormDialog extends React.Component {
    render() {
       return (
          <div>
-            <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button>
+            <div onClick={this.handleClickOpen}> <FileUpload /> Upload Document</div>
+            {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
             <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
                <DialogContent>
