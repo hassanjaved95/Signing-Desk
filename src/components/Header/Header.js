@@ -102,21 +102,21 @@ class Header extends Component {
    /*
    *DashBoard Main Filter Reset Filters
    */
-    resetDashBoardMainFilters(){
-       $(".DBFM0").removeClass("dashBoardMainFiltersActive");
-       $(".DBFM1").removeClass("dashBoardMainFiltersActive");
-       $(".DBFM2").removeClass("dashBoardMainFiltersActive");
-       $(".DBFM3").removeClass("dashBoardMainFiltersActive");
-    }
+   resetDashBoardMainFilters() {
+      $(".DBFM0").removeClass("dashBoardMainFiltersActive");
+      $(".DBFM1").removeClass("dashBoardMainFiltersActive");
+      $(".DBFM2").removeClass("dashBoardMainFiltersActive");
+      $(".DBFM3").removeClass("dashBoardMainFiltersActive");
+   }
    /*
    *DashBoard Main Filter Click Logic
    */
-    getDocumentStatsByMainFilter(num){
-       this.resetDashBoardMainFilters();
-      $(".DBFM"+num).addClass("dashBoardMainFiltersActive");
-    }
+   getDocumentStatsByMainFilter(num) {
+      this.resetDashBoardMainFilters();
+      $(".DBFM" + num).addClass("dashBoardMainFiltersActive");
+   }
 
-    
+
 
    render() {
       const { isMobileSearchFormVisible } = this.state;
@@ -126,9 +126,9 @@ class Header extends Component {
          $('body').css('overflow', '');
       });
 
-      
+
       const { horizontalMenu, agencyMenu, location, Users } = this.props;
-      
+
       return (
          <AppBar position="static" className="rct-header">
             <Toolbar className="d-flex justify-content-between w-100 pl-0">
@@ -166,7 +166,7 @@ class Header extends Component {
 
                         }
 
-                       <DashBoardCaption/>
+                        <DashBoardCaption />
 
                         {/* {!horizontalMenu && <QuickLinks />} <li className="list-inline-item search-icon d-inline-block">
                            <SearchForm />
@@ -182,7 +182,7 @@ class Header extends Component {
                   }
                </div>
                <ul className="navbar-right list-inline mb-0">
-               <DashboardFilters/>
+                  <DashboardFilters />
 
 
                   {/* {!horizontalMenu &&
@@ -203,13 +203,14 @@ class Header extends Component {
                               className="rct-dropdown"
                            >
                               <DropdownToggle tag="div" className="d-flex align-items-center">
-                                 <div className="user-profile">
+                                 <div className="user-profile" >
                                     <Avatar
                                        alt={`${this.props.user.profile.info.firstName} ${
                                           this.props.user.profile.info.lastName
                                           }`}
                                        src={this.props.user.profile.info.avatar}
                                        className="rounded-circle"
+                                       style={{display:'block'}}
                                     />
                                  </div>
 
@@ -290,7 +291,7 @@ class Header extends Component {
                   </li> */}
                   <li className="list-inline-item summary-icon">
                      <Tooltip title="Summary" placement="bottom">
-                        <a style={{ margin: '-34px 0 0 10px' }} href="javascript:void(0)" className="header-icon tour-step-3" onClick={() => this.openDashboardOverlay()}>
+                        <a style={{ margin: '0px 0 0 10px' }} href="javascript:void(0)" className="header-icon tour-step-3" onClick={() => this.openDashboardOverlay()}>
                            <i className="zmdi zmdi-info-outline"></i>
                         </a>
                      </Tooltip>

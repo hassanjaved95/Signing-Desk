@@ -34,7 +34,7 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles(theme => ({
     root: {
         '&:focus': {
-            backgroundColor: '#585f78', //theme.palette.primary.main,
+            backgroundColor: theme.palette.primary.main,
             '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
                 color: theme.palette.common.white,
             },
@@ -43,19 +43,19 @@ const StyledMenuItem = withStyles(theme => ({
     },
 }))(MenuItem);
 
-const StyledButton = withStyles({
-    root: {
-        backgroundColor: '#585f78',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height:30,
-        boxShadow: '0 3px 5px 2px rgba(88, 95, 120, 1)',
-    },
-    label: {
-        textTransform: 'capitalize',
-    },
-})(Button);
+// const StyledButton = withStyles({
+//     root: {
+//         backgroundColor: '#585f78',
+//         borderRadius: 3,
+//         border: 0,
+//         color: 'white',
+//         height:30,
+//         boxShadow: '0 3px 5px 2px rgba(88, 95, 120, 1)',
+//     },
+//     label: {
+//         textTransform: 'capitalize',
+//     },
+// })(Button);
 
 var state={
     showDialog:false,
@@ -96,7 +96,7 @@ export default function CustomizedMenus(props) {
             
             <div>
                 
-                <StyledButton
+                <Button
                     aria-controls="customized-menu"
                     aria-haspopup="true"
                     variant="contained"
@@ -105,7 +105,7 @@ export default function CustomizedMenus(props) {
                     style={{ textTransform: 'uppercase' }}
                 >
                     {evaluatePathName()} <ArrowDropDown />
-                </StyledButton>
+                </Button>
                 <StyledMenu
                     id="customized-menu"
                     anchorEl={anchorEl}
@@ -142,7 +142,7 @@ export default function CustomizedMenus(props) {
     else if (isContacts()) {
         return (
             <div>
-                <StyledButton
+                <Button
                     aria-controls="customized-menu"
                     aria-haspopup="true"
                     variant="contained"
@@ -151,7 +151,7 @@ export default function CustomizedMenus(props) {
                     style={{ textTransform: 'uppercase' }}
                 >
                     {evaluatePathName()} <ArrowDropDown />
-                </StyledButton>
+                </Button>
                 <StyledMenu
                     id="customized-menu"
                     anchorEl={anchorEl}
