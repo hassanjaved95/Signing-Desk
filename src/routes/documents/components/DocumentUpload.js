@@ -11,6 +11,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { FileUpload, ArrowDropDown, Add, Description } from '@material-ui/icons';
 import DropzoneComponent from 'react-dropzone-component';
+import $ from 'jquery';
 
 
 
@@ -63,6 +64,7 @@ export default class DocumentUpload extends React.Component {
     render() {
         const config = this.componentConfig;
         const djsConfig = this.djsConfig;
+        $(".headerMenuOpener").last().find("ul").css("padding","2px 0px 2px 0px");
 
         // For a list of all possible events (there are many), see README.md!
         const eventHandlers = {
