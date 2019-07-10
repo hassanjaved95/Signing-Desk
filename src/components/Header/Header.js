@@ -144,7 +144,7 @@ class Header extends Component {
                      </div>
                   }
                   {!agencyMenu &&
-                     <ul className="list-inline mb-0 navbar-left">
+                     <ul className="list-inline mb-0 navbar-left" >
                         {!horizontalMenu ?
                            <li className="list-inline-item" onClick={(e) => this.onToggleNavCollapsed(e)}>
                               <Tooltip title="Sidebar Toggle" placement="bottom">

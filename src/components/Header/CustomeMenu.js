@@ -39,7 +39,7 @@ const StyledMenuItem = withStyles(theme => ({
         //         color: theme.palette.common.white,
         //     },
         height:10,
-            
+        
         //},
     },
 }))(MenuItem);
@@ -96,7 +96,6 @@ export default function CustomizedMenus(props) {
         return (
             
             <div>
-                
                 <Button
                     aria-controls="customized-menu"
                     aria-haspopup="true"
@@ -107,7 +106,7 @@ export default function CustomizedMenus(props) {
                 >
                     {evaluatePathName()} <ArrowDropDown />
                 </Button>
-                <StyledMenu
+                <StyledMenu className="headerMenuOpener"
                     id="customized-menu"
                     anchorEl={anchorEl}
                     keepMounted
@@ -153,7 +152,7 @@ export default function CustomizedMenus(props) {
                 >
                     {evaluatePathName()} <ArrowDropDown />
                 </Button>
-                <StyledMenu
+                <StyledMenu className="headerMenuOpener"
                     id="customized-menu"
                     anchorEl={anchorEl}
                     keepMounted
