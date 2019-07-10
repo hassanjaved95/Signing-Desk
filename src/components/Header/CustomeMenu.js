@@ -114,13 +114,13 @@ export default function CustomizedMenus(props) {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <StyledMenuItem>
+                    <StyledMenuItem onClick={handleClose}>
                     
                          {/* <ListItemIcon>
                             <FileUpload />
                         </ListItemIcon> */}
                         {/* <ListItemText primary="Upload Document"  /> */}
-                        <DocumentUpload open={state.showDialog} />
+                        <DocumentUpload open={state.showDialog}  />
                     </StyledMenuItem>
                      {/*<StyledMenuItem>
               <ListItemIcon>

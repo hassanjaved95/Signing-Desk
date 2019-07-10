@@ -133,6 +133,10 @@
 	padding: 15% 0;
 	
 }
+.dropZoner .filepicker{
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 
 .dropZonee{
 	width: 269px !important;
@@ -150,10 +154,12 @@
 .dropzone .dz-message{
 	// margin-top:-100px !important;
 	font-size: 20px;
-    line-height: 24px;
-    margin-bottom: 4px;
+    // line-height: 24px;
+	// margin-bottom: 4px;
+	// margin-top:30px !important;
 	font-weight: 600;
 	color: #e5e5e5;
+	margin: 0.5em 0 !important;
 }
 
 .footerNote{
@@ -167,4 +173,16 @@
 .DocumentIcon{
 	width: 50px !important;
 	height: 50px !important;
+}
+
+.popupCloser{
+	float: right;
+    cursor: pointer;
+    color: #e2e2e2;
+}
+.popupCloser:hover{
+	color: black;
+}
+.fileUploadIcon{
+	color: #5d92f4;
 }
