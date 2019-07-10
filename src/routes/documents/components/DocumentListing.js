@@ -79,10 +79,10 @@ class DocumentListing extends Component {
             />
           ))
         ) : (
-          <div className="d-flex justify-content-center align-items-center py-50">
-            <h4>No Documents Found In Selected Folder</h4>
-          </div>
-        )}
+            <div className="d-flex justify-content-center align-items-center py-50">
+              <h4>No Documents Found In Selected Folder</h4>
+            </div>
+          )}
       </ul>
     );
   }
@@ -94,7 +94,7 @@ const mapStateToProps = ({ documents }) => {
 };
 
 export default withRouter(
-  connect(    mapStateToProps,
+  connect(mapStateToProps,
     {
       getDocuments,
       readEmail,

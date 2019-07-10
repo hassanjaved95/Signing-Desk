@@ -7,7 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FileUpload, ArrowDropDown, Add } from '@material-ui/icons';
 import ReactDOM from 'react-dom';
-import DocumentUpload from './../../routes/documents/components/DocumentUpload';
+import DocumentUpload from 'Routes/documents/components/DocumentUpload';
 
 var val = "";
 const StyledMenu = withStyles({

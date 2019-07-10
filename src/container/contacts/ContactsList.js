@@ -4,7 +4,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-
+import { withRouter } from "react-router-dom";
 import { getContacts } from "Actions";
 
 import ContactsListItem from "Components/ListItem/ContactsListItem";
@@ -14,6 +14,13 @@ import PageActions from "Components/ListItem/PageActions";
 import IntlMessages from "Util/IntlMessages";
 
 class ContactsList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            newContact: false,
+            search: false
+        }
+    }
     componentDidMount() {
         this.props.getContacts();
     }
@@ -47,18 +54,26 @@ class ContactsList extends Component {
         return elements;
     };
 
-    onClickContact = (e, contact) => {
+    onClickContactItem = (e, contact) => {
         console.log('onClickContact e:', e);
         console.log('onClickContact Contact:', contact);
     };
+
+    onClickNewContact = () => {
+        this.setState({
+            newContact: !this.state.newContact
+        });
+
+    }
 
     render() {
         const { contacts } = this.props;
         console.log('Contacts:', contacts);
         return (
             <div className="page-content">
+                {this.state.newContact && <h1> Hello World </h1>}
                 <div className="page-actions">
-                    <PageActions page="Contacts" />
+                    <PageActions page="Contacts" onNewContact={() => { this.onClickNewContact() }} />
                 </div>
                 <div className="content-area">
                     <div className="content-head header-shadow head-container">
@@ -74,7 +89,7 @@ class ContactsList extends Component {
                                         <ContactsListItem
                                             key={contact.corporatesID}
                                             contact={contact}
-                                            onClickContact={(e) => this.onClickContact(e, contact)}
+                                            onClickContactItem={(e) => this.onClickContactItem(e, contact)}
                                         />
                                     ))
 
@@ -100,6 +115,6 @@ const mapStateToProps = ({ contacts }) => {
 };
 
 
-export default connect(mapStateToProps,
+export default withRouter(connect(mapStateToProps,
     { getContacts }
-)(ContactsList);
+)(ContactsList));

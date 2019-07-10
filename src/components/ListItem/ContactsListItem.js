@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { getNameInitials, getRandomColor } from "Helpers/helpers";
 
 const ContactsListItem = (props) => (
-    <li onClick={props.onClickContact}>
+    <li onClick={props.onClickContactItem}>
         <table className="row-container">
             <tbody>
                 <tr >

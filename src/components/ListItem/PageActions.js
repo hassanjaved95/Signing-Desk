@@ -18,7 +18,7 @@ const PageActions = (props) => (
         <div className="action-button">
             <div className="actn-btn-container">
                 <div>
-                    <Button variant="contained" color="primary" >
+                    <Button variant="contained" color="primary" onClick={props.onNewContact} >
                         <i class="zmdi zmdi-account-add"></i>
                         <span style={{ marginLeft: '5px' }}> NEW CONTACT </span>
                     </Button>
