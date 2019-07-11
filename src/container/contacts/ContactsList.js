@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { getContacts } from "Actions";
-
+import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import ContactsListItem from "Components/ListItem/ContactsListItem";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
 import PageActions from "Components/ListItem/PageActions";
@@ -21,38 +21,10 @@ class ContactsList extends Component {
             search: false
         }
     }
+
     componentDidMount() {
         this.props.getContacts();
     }
-
-    /**
-     * Function to return task label name
-     */
-    getTaskLabelNames = taskLabels => {
-        let elements = [];
-        const { labels } = this.props;
-        for (const taskLabel of taskLabels) {
-            for (const label of labels) {
-                if (label.value === taskLabel) {
-                    let ele = (
-                        <span
-                            key={label.value}
-                            className={classnames("badge badge-pill", {
-                                "badge-success": label.value === 1,
-                                "badge-primary": label.value === 2,
-                                "badge-info": label.value === 3,
-                                "badge-danger": label.value === 4
-                            })}
-                        >
-                            <IntlMessages id={label.name} />
-                        </span>
-                    );
-                    elements.push(ele);
-                }
-            }
-        }
-        return elements;
-    };
 
     onClickContactItem = (e, contact) => {
         console.log('onClickContact e:', e);
@@ -61,9 +33,26 @@ class ContactsList extends Component {
 
     onClickNewContact = () => {
         this.setState({
-            newContact: !this.state.newContact
+            newContact: true
         });
+    }
 
+    onCloseDlg = () => {
+        this.setState({
+            newContact: false
+        });
+    }
+
+    onSaveDlg = () => {
+        console.log('onSaveDlg');
+        this.onCloseDlg();
+    }
+
+    dlgButtons = {
+        save: {
+            onSave: this.onSaveDlg,
+            text: "ADD CONTACT"
+        }
     }
 
     render() {
@@ -71,7 +60,17 @@ class ContactsList extends Component {
         console.log('Contacts:', contacts);
         return (
             <div className="page-content">
-                {this.state.newContact && <h1> Hello World </h1>}
+                {this.state.newContact &&
+                    (<DialogTemplate
+                        title="New contact"
+                        open={this.state.newContact}
+                        onClose={this.onCloseDlg}
+                        buttons={this.dlgButtons}
+                        disabled={this.state.newContact}
+                    >
+                        <h1>This is my Content Section</h1>
+                    </DialogTemplate>)
+                }
                 <div className="page-actions">
                     <PageActions page="Contacts" onNewContact={() => { this.onClickNewContact() }} />
                 </div>
@@ -92,7 +91,6 @@ class ContactsList extends Component {
                                             onClickContactItem={(e) => this.onClickContactItem(e, contact)}
                                         />
                                     ))
-
                                 ) : (
                                         <div className="d-flex justify-content-center align-items-center py-50">
                                             <h4>No contacts Found In Selected Folder</h4>
@@ -102,8 +100,6 @@ class ContactsList extends Component {
                         </ul>
                     </div>
                 </div>
-
-
             </div>
         );
     }
