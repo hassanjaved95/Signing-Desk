@@ -18,6 +18,7 @@ import Crm from "Routes/crm";
 import ImageCropper from "Routes/image-cropper";
 import VideoPlayer from "Routes/video-player";
 import Dropzone from "Routes/dropzone";
+// import Contacts from "Routes/contacts";
 
 // async component
 import {

@@ -131,8 +131,8 @@ class Header extends Component {
 
       return (
          <AppBar position="static" className="rct-header">
-            <Toolbar className="d-flex justify-content-between w-100 pl-0">
-               <div className="d-flex align-items-center">
+            <Toolbar className="d-flex justify-content-between w-100 pl-0 header-shadow" >
+               <div className="d-flex align-items-center" >
                   {(horizontalMenu || agencyMenu) &&
                      <div className="site-logo">
                         <Link to="/" className="logo-mini">

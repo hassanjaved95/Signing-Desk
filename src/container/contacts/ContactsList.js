@@ -1,64 +1,80 @@
 /**
  * Contacts Listing
  */
-import React, { Component } from "react";
+import React, { Component, useState  } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-
+import { withRouter } from "react-router-dom";
 import { getContacts } from "Actions";
-
+import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import ContactsListItem from "Components/ListItem/ContactsListItem";
+import NewContact from "Components/ListItem/NewContact";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
 import PageActions from "Components/ListItem/PageActions";
 
 import IntlMessages from "Util/IntlMessages";
 
 class ContactsList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            newContact: false,
+            search: false
+        }
+    }
+
+    
     componentDidMount() {
         this.props.getContacts();
     }
 
-    /**
-     * Function to return task label name
-     */
-    getTaskLabelNames = taskLabels => {
-        let elements = [];
-        const { labels } = this.props;
-        for (const taskLabel of taskLabels) {
-            for (const label of labels) {
-                if (label.value === taskLabel) {
-                    let ele = (
-                        <span
-                            key={label.value}
-                            className={classnames("badge badge-pill", {
-                                "badge-success": label.value === 1,
-                                "badge-primary": label.value === 2,
-                                "badge-info": label.value === 3,
-                                "badge-danger": label.value === 4
-                            })}
-                        >
-                            <IntlMessages id={label.name} />
-                        </span>
-                    );
-                    elements.push(ele);
-                }
-            }
-        }
-        return elements;
-    };
-
-    onClickContact = (e, contact) => {
+    onClickContactItem = (e, contact) => {
         console.log('onClickContact e:', e);
         console.log('onClickContact Contact:', contact);
     };
+
+    onClickNewContact = () => {
+        this.setState({
+            newContact: true
+        });
+    }
+
+    onCloseDlg = () => {
+        this.setState({
+            newContact: false
+        });
+    }
+
+    onSaveDlg = () => {
+        console.log('onSaveDlg');
+        this.onCloseDlg();
+    }
+
+    dlgButtons = {
+        save: {
+            onSave: this.onSaveDlg,
+            text: "ADD CONTACT"
+        }
+    }
 
     render() {
         const { contacts } = this.props;
         console.log('Contacts:', contacts);
         return (
             <div className="page-content">
+                {this.state.newContact &&
+                    (<DialogTemplate
+                        title="New contact"
+                        open={this.state.newContact}
+                        onClose={this.onCloseDlg}
+                        buttons={this.dlgButtons}
+                        disabled={this.state.newContact}
+                    >
+                        <NewContact classes={{textField: ''}} showAddress={() => {}} />
+                    </DialogTemplate>)
+                }
                 <div className="page-actions">
-                    <PageActions page="Contacts" />
+                    <PageActions page="Contacts" onNewContact={() => { this.onClickNewContact() }} />
                 </div>
                 <div className="content-area">
                     <div className="content-head header-shadow head-container">
@@ -74,10 +90,9 @@ class ContactsList extends Component {
                                         <ContactsListItem
                                             key={contact.corporatesID}
                                             contact={contact}
-                                            onClickContact={(e) => this.onClickContact(e, contact)}
+                                            onClickContactItem={(e) => this.onClickContactItem(e, contact)}
                                         />
                                     ))
-
                                 ) : (
                                         <div className="d-flex justify-content-center align-items-center py-50">
                                             <h4>No contacts Found In Selected Folder</h4>
@@ -87,8 +102,6 @@ class ContactsList extends Component {
                         </ul>
                     </div>
                 </div>
-
-
             </div>
         );
     }
@@ -100,6 +113,6 @@ const mapStateToProps = ({ contacts }) => {
 };
 
 
-export default connect(mapStateToProps,
+export default withRouter(connect(mapStateToProps,
     { getContacts }
-)(ContactsList);
+)(ContactsList));

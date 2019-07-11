@@ -6,6 +6,7 @@ import DocumentListing from "./components/DocumentListing";
 
 const Documents = ({ match }) => (
   <div className="content-wrapper">
+  {console.log('DocumentListing:', DocumentListing)}
     <Switch>
       {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/`} /> */}
       <Route path={`${match.url}/`} component={DocumentListing} />
