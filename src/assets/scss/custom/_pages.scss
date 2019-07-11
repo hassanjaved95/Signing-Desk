@@ -1510,3 +1510,39 @@ figure.img-wrapper {
    line-height: 1.2;
    font-weight: 400;
 }
+
+.dlg-txt-field {
+   margin: 8; 
+   width: '100%'; 
+   height: '32px'; 
+
+   label {
+      letter-spacing: 1.2px;
+   }
+
+   input {
+      font-size: 12px;
+   }
+}
+
+.dlg-new-contact-address {
+   box-sizing: border-box;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 100%;
+   min-height: 52px;
+   color: #43454e;
+   cursor: pointer;
+   font-size: 16px;
+   box-shadow: inset 0 1px 0 hsla(0,0%,90%,0);
+   transition: box-shadow .2s;
+}
+
+#customized-dialog-title {
+   padding-bottom: 0;
+   padding-right: 0;
+   padding-left: 9px;
+   border-bottom: 1px solid;
+}

@@ -11,7 +11,7 @@ const DialogTemplate = (props) => {
         <div>
             <Dialog fullWidth={fullWidth} onClose={props.onClose} aria-labelledby="customized-dialog-title" open={props.open}>
                 <MuiDialogTitle id="customized-dialog-title" onClose={props.onClose}>
-                    <div className="flex-row flex-row-center">
+                    <div className="flex-row flex-row-center dlg-header-styles">
                         <div className="flex-split-2-left dlg-header-font">
                             {props.title}
                         </div>
@@ -23,7 +23,7 @@ const DialogTemplate = (props) => {
                     </div>
 
                 </MuiDialogTitle>
-                <MuiDialogContent dividers="true">
+                <MuiDialogContent dividers="true" style={{padding: '10px'}}>
                     {props.children}
                 </MuiDialogContent>
                 <MuiDialogActions>

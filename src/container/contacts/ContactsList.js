@@ -1,13 +1,14 @@
 /**
  * Contacts Listing
  */
-import React, { Component } from "react";
+import React, { Component, useState  } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { getContacts } from "Actions";
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import ContactsListItem from "Components/ListItem/ContactsListItem";
+import NewContact from "Components/ListItem/NewContact";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
 import PageActions from "Components/ListItem/PageActions";
 
@@ -22,6 +23,7 @@ class ContactsList extends Component {
         }
     }
 
+    
     componentDidMount() {
         this.props.getContacts();
     }
@@ -68,7 +70,7 @@ class ContactsList extends Component {
                         buttons={this.dlgButtons}
                         disabled={this.state.newContact}
                     >
-                        <h1>This is my Content Section</h1>
+                        <NewContact classes={{textField: ''}} showAddress={() => {}} />
                     </DialogTemplate>)
                 }
                 <div className="page-actions">
