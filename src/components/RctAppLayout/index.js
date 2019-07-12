@@ -25,7 +25,6 @@ import AppConfig from "Constants/AppConfig";
 
 // actions
 import { collapsedSidebarAction, startUserTour } from "Actions";
-import { CreateNewFolder, Delete } from '@material-ui/icons';
 
 class MainApp extends Component {
   state = {
@@ -79,7 +78,6 @@ class MainApp extends Component {
   renderPage() {
     const { pathname } = this.props.location;
     const { children } = this.props;
-    // const {folderChildren} = this.props;
     if (
       pathname === "/app/chat" ||
       pathname.startsWith("/app/mail") ||
@@ -94,20 +92,10 @@ class MainApp extends Component {
         autoHideDuration={100}
         style={this.getScrollBarStyle()}
       >
-        <div className="floder-bar-documents">
-          <div className="item-a">
-            {/* {folderChildren} */}
-            <div className="folderbar">
-              <CreateNewFolder className="createnewfoldericon" />
-            </div>
-          </div>
-          <div className="rct-page-content item-b">
-            {children}
-            {/* <Footer /> */}
-          </div>
+        <div className="rct-page-content">
+          {children}
+          {/* <Footer /> */}
         </div>
-
-
       </Scrollbars>
     );
   }
