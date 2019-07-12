@@ -54,6 +54,16 @@ function NewContact(props) {
         state: ''
     };
 
+    const validationSchema = Yup.object().shape({
+        email: Yup.string()
+            .email("Please provide a valid email")
+            .required('Email is required')
+    });
+
+    var validateEmail = () => {
+
+    }
+
     return (
         <Formik
             initialValues={initialState}
@@ -61,15 +71,7 @@ function NewContact(props) {
                 props.onSubmit
             }}
 
-            validationSchema={Yup.object().shape({
-                email: Yup.string()
-                    .email()
-                    .required('Required'),
-                name: Yup.string()
-                    .required('Required'),
-                comment: Yup.string()
-                    .required('Required'),
-            })}
+            validationSchema={validationSchema}
         >
             {(formikProps) => {
                 const {
@@ -84,6 +86,7 @@ function NewContact(props) {
                     handleReset,
                 } = formikProps;
                 return (
+                    
                     <form onSubmit={handleSubmit}>
                         <div className="flex-row">
                             <div className="flex-split-2-left">
@@ -121,7 +124,7 @@ function NewContact(props) {
                                 />
                             </div>
                         </div>
-
+                        
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
@@ -207,7 +210,7 @@ function NewContact(props) {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 helperText={(errors.notes && touched.notes) && errors.notes}
-                                placeholder="Enter a any notes"
+                                placeholder="Enter any notes"
                                 margin="normal"
                                 InputLabelProps={{
                                     shrink: true,
@@ -215,105 +218,108 @@ function NewContact(props) {
                             />
                         </div>
 
-                        <div className="dlg-new-contact-address" onClick={props.showAddress()}>
+                        <div className="dlg-new-contact-address" onClick={props.toggleAddressFields}>
                             <div className="flex-row flex-row-center">
-                                Address {props.showAddress && <i class="zmdi zmdi-caret-down" style={{fontSize: '24px', marginLeft: '10px'}}></i>}
-                                {!props.showAddress && <i class="zmdi zmdi-caret-up" style={{fontSize: '24px', marginLeft: '10px'}}></i>}
+                                Address {props.showAddressFields && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                {!props.showAddressFields && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
                             </div>
                         </div>
 
-                        <div className="flex-row">
-                            <TextField
-                                label="STREET ADDRESS"
-                                name="streetAdd"
-                                value={values.streetAdd}
-                                className="dlg-txt-field"
-                                style={{ width: '100%' }}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                helperText={(errors.streetAdd && touched.streetAdd) && errors.streetAdd}
-                                placeholder="Street, apt, suite, bldg"
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </div>
+                        {props.showAddressFields && (
+                            <React.Fragment>
+                                <div className="flex-row">
+                                    <TextField
+                                        label="STREET ADDRESS"
+                                        name="streetAdd"
+                                        value={values.streetAdd}
+                                        className="dlg-txt-field"
+                                        style={{ width: '100%' }}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={(errors.streetAdd && touched.streetAdd) && errors.streetAdd}
+                                        placeholder="Street, apt, suite, bldg"
+                                        margin="normal"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
 
-                        <div className="flex-row">
-                            <div className="flex-split-2-left">
-                                <TextField
-                                    label="CITY"
-                                    name="city"
-                                    value={values.city}
-                                    className="dlg-txt-field"
-                                    style={{ width: '95%' }}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.city && touched.city) && errors.city}
-                                    placeholder="Enter a city"
-                                    margin="normal"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </div>
-                            <div className="flex-split-2-right">
-                                <TextField
-                                    label="POSTAL CODE"
-                                    name="postalCode"
-                                    value={values.postalCode}
-                                    className="dlg-txt-field"
-                                    style={{ width: '95%' }}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.postalCode && touched.postalCode) && errors.postalCode}
-                                    placeholder="Enter a postal code"
-                                    margin="normal"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </div>
-                        </div>
+                                <div className="flex-row">
+                                    <div className="flex-split-2-left">
+                                        <TextField
+                                            label="CITY"
+                                            name="city"
+                                            value={values.city}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.city && touched.city) && errors.city}
+                                            placeholder="Enter a city"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="flex-split-2-right">
+                                        <TextField
+                                            label="POSTAL CODE"
+                                            name="postalCode"
+                                            value={values.postalCode}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.postalCode && touched.postalCode) && errors.postalCode}
+                                            placeholder="Enter a postal code"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
 
-                        <div className="flex-row">
-                            <div className="flex-split-2-left">
-                                <TextField
-                                    label="COUNTRY"
-                                    name="country"
-                                    value={values.country}
-                                    className="dlg-txt-field"
-                                    style={{ width: '95%' }}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.country && touched.country) && errors.country}
-                                    placeholder="Enter a country"
-                                    margin="normal"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </div>
-                            <div className="flex-split-2-right">
-                                <TextField
-                                    label="STATE/REGION"
-                                    name="state"
-                                    value={values.state}
-                                    className="dlg-txt-field"
-                                    style={{ width: '95%' }}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={(errors.state && touched.state) && errors.state}
-                                    placeholder="Enter a state or region"
-                                    margin="normal"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </div>
-                        </div>
-
+                                <div className="flex-row">
+                                    <div className="flex-split-2-left">
+                                        <TextField
+                                            label="COUNTRY"
+                                            name="country"
+                                            value={values.country}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.country && touched.country) && errors.country}
+                                            placeholder="Enter a country"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="flex-split-2-right">
+                                        <TextField
+                                            label="STATE/REGION"
+                                            name="state"
+                                            value={values.state}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.state && touched.state) && errors.state}
+                                            placeholder="Enter a state or region"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        )}
                     </form>
                 );
             }}

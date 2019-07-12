@@ -9,28 +9,30 @@ import { getNameInitials, getRandomColor } from "Helpers/helpers";
 import { fieldToTextField } from "formik-material-ui";
 
 const ContactsListItemHeader = (props) => (
-    <li onClick={props.onClickContact}>
+    <li>
         <table className="header-row-container row-container">
             <tbody>
                 <tr >
-                    <td className="selectable"><Checkbox color="primary" /></td>
+                    <td className="selectable"><Checkbox color="primary" checked={props.checked} onChange={props.onSelectAll} /></td>
                     <td>
-                    <div className="td-container show-inline">
+                        <div className="td-container show-inline" onClick={() => { props.sortContactsBy('name') }}>
                             <div className="split-td split-content-left">
                                 Name
                             </div>
-                            {/* <div className="split-td split-content-right">
-                                <i class="zmdi zmdi-caret-down"></i>
-                            </div> */}
+                            <div className="split-td split-content-right sort-icon" >
+                                {props.sortBy.nameAsc && <i class="zmdi zmdi-caret-up"></i>}
+                                {props.sortBy.nameAsc == false && <i class="zmdi zmdi-caret-down"></i>}
+                            </div>
                         </div>
                     </td>
                     <td>
-                        <div className="td-container show-inline">
+                        <div className="td-container show-inline" onClick={() => { props.sortContactsBy('email') }}>
                             <div className="split-td split-content-left">
                                 Email
                             </div>
                             <div className="split-td split-content-right sort-icon">
-                                <i class="zmdi zmdi-caret-down"></i>
+                                {props.sortBy.emailAsc && <i class="zmdi zmdi-caret-up"></i>}
+                                {props.sortBy.emailAsc == false && <i class="zmdi zmdi-caret-down"></i>}
                             </div>
                         </div>
                     </td>
