@@ -1,21 +1,35 @@
 /**
  * Email Listing
  */
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
-
 import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
-
 import DocumentListItem from "./DocumentListItem";
 import IntlMessages from "Util/IntlMessages";
-
 import { getDocuments } from "Actions";
+import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
+import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
+import $ from 'jquery';
+import DialogTemplate from "Components/Dialogs/DialogTemplate";
+import NewFolder from 'Components/FolderItem/NewFolder';
+
+
 
 class DocumentListing extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      folderListControl: true,
+      folderCreationDialog: false,
+      folderList: ['New Folder', 'New Folder 1', 'New Folder 2']
+    }
+  }
   componentDidMount() {
     this.props.getDocuments();
+    if (!this.state.folderListControl)
+      $(".folderbar").hide();
   }
 
   readEmail(email) {
@@ -33,6 +47,68 @@ class DocumentListing extends Component {
     e.stopPropagation();
     this.props.markAsStarEmail(email);
   }
+
+
+
+  onCloseFolderListControl = () => {
+    this.setState({
+      folderListControl: false
+    });
+  }
+
+  onCreateNewFolder = () => {
+    this.setState({
+      folderCreationDialog: true
+    });
+  }
+
+  folderCollection() {
+
+    return this.items = this.state.folderList.map((item) =>
+      <li className="foldersList">
+        <div className="liContainer">
+
+          <Folder className="listItemIconsLeft hild-featured" />
+          <div className="child-featured">{item}</div>
+          <Delete className="listItemIconsRight hild-featured" />
+        </div>
+      </li>
+
+    );
+
+  }
+
+  // onCloseList = (e,document) => {
+  //   Console.log("i am called");
+  // }
+  oncloseList = (e) => {
+    this.setState({
+      folderListControl: false
+    });
+  };
+
+
+
+
+  onCloseDlg = () => {
+    this.setState({
+      folderCreationDialog: false
+    });
+  }
+
+  onSaveDlg = () => {
+    console.log('onSaveDlg');
+    this.onCloseDlg();
+  }
+
+  dlgButtons = {
+    save: {
+      onSave: this.onSaveDlg,
+      text: "Save"
+    }
+  }
+
+
 
   /**
    * Function to return task label name
@@ -66,24 +142,55 @@ class DocumentListing extends Component {
   render() {
     const { documents } = this.props;
     return (
-      <ul className="list-unstyled m-0">
-        {documents && documents.length > 0 && documents !== null ? (
-          documents.map((document, key) => (
-            <DocumentListItem
-              document={document}
-              handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
-              key={key}
-              getTaskLabelNames={() =>
-                this.getTaskLabelNames(document.email_labels)
-              }
-            />
-          ))
-        ) : (
-            <div className="d-flex justify-content-center align-items-center py-50">
-              <h4>No Documents Found In Selected Folder</h4>
-            </div>
-          )}
-      </ul>
+
+      <div className="page-content">
+        {
+          this.state.folderCreationDialog &&
+          (<DialogTemplate
+            title="New Folder"
+            open={this.state.folderCreationDialog}
+            buttons={this.dlgButtons}
+            onClose={this.onCloseDlg}
+
+          >
+            <NewFolder />
+          </DialogTemplate>)
+        }
+        <div className="floder-bar-documents" >
+          <div className="item-a">
+            <ContentMenu
+              onCreateNewFolder={this.onCreateNewFolder}
+              oncloseList={(e) => this.oncloseList(e)}
+              folderListItems={this.folderCollection()} />
+
+          </div>
+          <div className="item-b">
+            <ul className="list-unstyled m-0">
+              {documents && documents.length > 0 && documents !== null ? (
+                documents.map((document, key) => (
+                  <DocumentListItem
+                    document={document}
+                    handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
+                    key={key}
+                    getTaskLabelNames={() =>
+                      this.getTaskLabelNames(document.email_labels)
+                    }
+                  />
+                ))
+              ) : (
+                  <div className="d-flex justify-content-center align-items-center py-50">
+                    <h4>No Documents Found In Selected Folder</h4>
+                  </div>
+                )}
+            </ul>
+          </div>
+
+        </div >
+      </div>
+
+
+
+
     );
   }
 }

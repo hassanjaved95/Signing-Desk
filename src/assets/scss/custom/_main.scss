@@ -123,7 +123,7 @@
 		}
 	}
 }
-
+//File Uploader component CSS
 .dropZoner{
 	width:880px;
 	margin-top:15px;
@@ -191,4 +191,86 @@
 }
 .fileUploadIcon{
 	color: #5d92f4;
+}
+//Document Listing Side Bar CSS
+.floder-bar-documents{
+	display: grid;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-template-columns: 235px calc(100% - 235px);
+}
+.item-a{
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 1;
+	  grid-row-end:  1;
+	background-color: black;
+}
+.item-b{
+	grid-column-start: 2;
+	grid-column-end: 2;
+	grid-row-start: 1;
+  	grid-row-end:  1;
+}
+
+.createnewfoldericon{
+	height: 1rem !important;
+	color:#e2e2e2;
+	cursor: pointer;
+}
+.createnewfoldericon:hover{
+	color:white;
+}
+.editicon{
+	height: 1rem !important;
+	margin-right:2px;
+	color:#e2e2e2;
+	cursor: pointer;
+}
+.editicon:hover{
+	color:white;
+}
+
+.listItemIconsLeft{
+	height: 1rem !important;
+	margin-right:2px;
+	color:#e2e2e2;
+}
+.listItemIconsLeft:hover{
+	color:white;
+}
+.listItemIconsRight{
+	height: 1rem !important;
+	margin-right:2px;
+	color:#e2e2e2;
+}
+.listItemIconsRight:hover{
+	color:white;
+}
+.folderbar{
+	color: white;
+    justify-content: flex-end;
+    display: flex;
+	margin-right: 5px;
+	margin-top: 5px;
+}
+.menu-content{
+	margin-top:30px;
+	color: #fff;
+}
+.foldersList{
+	margin-left:5px;
+	color:#ffff;
+	font-size:14px;
+	margin-bottom:10px !important;
+}
+
+.liContainer{
+	display: flex;
+	flex-direction: row;
+}
+.child-featured{
+   flex-grow:1;
 }
