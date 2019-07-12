@@ -1347,6 +1347,10 @@ figure.img-wrapper {
       flex-direction: row;
    }
 
+   .content-area > td {
+      cursor: pointer; 
+   }
+
    .content-head {
       height: 39px;
    }
