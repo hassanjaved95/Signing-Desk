@@ -3,11 +3,15 @@ import {
     GET_CONTACTS_SUCCESS,
     GET_CONTACTS_FAILURE,
     SORT_CONTACTS_BY_NAME,
-    SORT_CONTACTS_BY_EMAIL
+    SORT_CONTACTS_BY_EMAIL,
+    SEARCH_CONTACTS,
+    DELETE_CONTACTS,
+    DELETE_CONTACTS_SUCCESS
 } from "Actions/types";
 
 const INITIAL_STATE = {
-    contacts: null
+    contacts: null,
+    filterdContacts: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,19 +22,26 @@ export default (state = INITIAL_STATE, action) => {
         case GET_CONTACTS_SUCCESS:
             return {
                 ...state,
-                contacts: action.payload
+                contacts: action.payload,
+                filterdContacts: action.payload
             };
 
         case GET_CONTACTS_FAILURE:
             return {
                 ...state,
-                contacts: null
+                contacts: null,
+                filterdContacts: null
             };
 
         case SORT_CONTACTS_BY_NAME: {
             return {
                 ...state,
                 contacts: [...state.contacts.sort((a, b) => {
+                    if (action.payload)
+                        return a.name.localeCompare(b.name);
+                    return b.name.localeCompare(a.name);
+                })],
+                filterdContacts: [...state.filterdContacts.sort((a, b) => {
                     if (action.payload)
                         return a.name.localeCompare(b.name);
                     return b.name.localeCompare(a.name);
@@ -44,9 +55,42 @@ export default (state = INITIAL_STATE, action) => {
                     if (action.payload)
                         return a.email.localeCompare(b.email);
                     return b.email.localeCompare(a.email);
+                })],
+                filterdContacts: [...state.filterdContacts.sort((a, b) => {
+                    if (action.payload)
+                        return a.email.localeCompare(b.email);
+                    return b.email.localeCompare(a.email);
                 })]
             };
+
+        case SEARCH_CONTACTS: {
+            var searchVal = action.payload;
+            return {
+                ...state,
+                filterdContacts: state.contacts.filter(c => c.name.toLowerCase().indexOf(searchVal) != -1
+                    || c.email.toLowerCase().indexOf(searchVal) != -1)
+            };
+        }
+
+        case DELETE_CONTACTS: {
+            var deleteIds = action.payload;
+            return {
+                ...state
+            };
+        }
+
+        case DELETE_CONTACTS_SUCCESS: {
+            var deleteIds = action.payload;
+            return {
+                ...state,
+                contacts: state.contacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1),
+                filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1)
+            };
+        }
+
         default:
-            return { ...state };
+            return state;
     }
-};
+
+
+}

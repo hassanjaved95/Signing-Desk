@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+// import RaisedButton from '@material-ui/core/RaisedButton';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,6 +19,8 @@ import * as Yup from 'yup';
 function NewContact(props) {
     const { classes } = props;
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
+    const [isAddressVisible, setAddressVisibility] = useState(false);
+    const [isCertVisible, setCertVisibility] = useState(false);
 
     // const useStyles = makeStyles(theme => ({
     //     container: {
@@ -40,18 +43,23 @@ function NewContact(props) {
     // const classes = useStyles();
 
     const initialState = {
-        fName: '',
-        lName: '',
+        FirstName: '',
+        LastName: '',
         email: '',
-        phNumber: '',
-        company: '',
+        PhoneNumber: '',
+        Company: '',
         jobTitle: '',
-        notes: '',
-        streetAdd: '',
-        city: '',
-        postalCode: '',
+        Notes: '',
+        StreetAddress: '',
+        City: '',
+        PostalCode: '',
         country: '',
-        state: ''
+        StateOrRegion: '',
+        CertEmail: '',
+        CertPassword: '',
+        CertAlias: '',
+        CertFriendlyName: '',
+        CertPEM: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -86,19 +94,19 @@ function NewContact(props) {
                     handleReset,
                 } = formikProps;
                 return (
-                    
+
                     <form onSubmit={handleSubmit}>
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
                                     label="FIRST NAME"
-                                    name="fName"
-                                    value={values.fName}
+                                    name="FirstName"
+                                    value={values.FirstName}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.name && touched.name) && errors.name}
+                                    helperText={(errors.FirstName && touched.FirstName) && errors.FirstName}
                                     placeholder="Enter first name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -109,13 +117,13 @@ function NewContact(props) {
                             <div className="flex-split-2-right">
                                 <TextField
                                     label="LAST NAME"
-                                    name="lName"
-                                    value={values.lName}
+                                    name="LastName"
+                                    value={values.LastName}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.lName && touched.lName) && errors.lName}
+                                    helperText={(errors.LastName && touched.LastName) && errors.LastName}
                                     placeholder="Enter last name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -124,7 +132,7 @@ function NewContact(props) {
                                 />
                             </div>
                         </div>
-                        
+
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
@@ -147,13 +155,13 @@ function NewContact(props) {
                             <div className="flex-split-2-right">
                                 <TextField
                                     label="PHONE"
-                                    name="phNumber"
-                                    value={values.phNumber}
+                                    name="PhoneNumber"
+                                    value={values.PhoneNumber}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.phNumber && touched.phNumber) && errors.phNumber}
+                                    helperText={(errors.PhoneNumber && touched.PhoneNumber) && errors.PhoneNumber}
                                     placeholder="Enter a phone number"
                                     margin="normal"
                                     InputLabelProps={{
@@ -167,13 +175,13 @@ function NewContact(props) {
                             <div className="flex-split-2-left">
                                 <TextField
                                     label="COMPANY"
-                                    name="company"
-                                    value={values.company}
+                                    name="Company"
+                                    value={values.Company}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.company && touched.company) && errors.company}
+                                    helperText={(errors.Company && touched.Company) && errors.Company}
                                     placeholder="Enter a company name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -203,13 +211,13 @@ function NewContact(props) {
                         <div className="flex-row">
                             <TextField
                                 label="NOTES"
-                                name="notes"
-                                value={values.notes}
+                                name="Notes"
+                                value={values.Notes}
                                 className="dlg-txt-field"
                                 style={{ width: '100%' }}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.notes && touched.notes) && errors.notes}
+                                helperText={(errors.Notes && touched.Notes) && errors.Notes}
                                 placeholder="Enter any notes"
                                 margin="normal"
                                 InputLabelProps={{
@@ -218,25 +226,25 @@ function NewContact(props) {
                             />
                         </div>
 
-                        <div className="dlg-new-contact-address" onClick={props.toggleAddressFields}>
+                        <div className="dlg-new-contact-address" onClick={() => { setAddressVisibility(!isAddressVisible) }}>
                             <div className="flex-row flex-row-center">
-                                Address {props.showAddressFields && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
-                                {!props.showAddressFields && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                Address {isAddressVisible && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                {!isAddressVisible && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
                             </div>
                         </div>
 
-                        {props.showAddressFields && (
+                        {isAddressVisible && (
                             <React.Fragment>
                                 <div className="flex-row">
                                     <TextField
                                         label="STREET ADDRESS"
-                                        name="streetAdd"
-                                        value={values.streetAdd}
+                                        name="StreetAddress"
+                                        value={values.StreetAddress}
                                         className="dlg-txt-field"
                                         style={{ width: '100%' }}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        helperText={(errors.streetAdd && touched.streetAdd) && errors.streetAdd}
+                                        helperText={(errors.StreetAddress && touched.StreetAddress) && errors.StreetAddress}
                                         placeholder="Street, apt, suite, bldg"
                                         margin="normal"
                                         InputLabelProps={{
@@ -249,13 +257,13 @@ function NewContact(props) {
                                     <div className="flex-split-2-left">
                                         <TextField
                                             label="CITY"
-                                            name="city"
-                                            value={values.city}
+                                            name="City"
+                                            value={values.City}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.city && touched.city) && errors.city}
+                                            helperText={(errors.City && touched.City) && errors.City}
                                             placeholder="Enter a city"
                                             margin="normal"
                                             InputLabelProps={{
@@ -266,13 +274,13 @@ function NewContact(props) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="POSTAL CODE"
-                                            name="postalCode"
-                                            value={values.postalCode}
+                                            name="PostalCode"
+                                            value={values.PostalCode}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.postalCode && touched.postalCode) && errors.postalCode}
+                                            helperText={(errors.PostalCode && touched.PostalCode) && errors.PostalCode}
                                             placeholder="Enter a postal code"
                                             margin="normal"
                                             InputLabelProps={{
@@ -303,13 +311,13 @@ function NewContact(props) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="STATE/REGION"
-                                            name="state"
-                                            value={values.state}
+                                            name="StateOrRegion"
+                                            value={values.StateOrRegion}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.state && touched.state) && errors.state}
+                                            helperText={(errors.StateOrRegion && touched.StateOrRegion) && errors.StateOrRegion}
                                             placeholder="Enter a state or region"
                                             margin="normal"
                                             InputLabelProps={{
@@ -320,6 +328,104 @@ function NewContact(props) {
                                 </div>
                             </React.Fragment>
                         )}
+
+                        <div className="dlg-new-contact-address" onClick={() => { setCertVisibility(!isCertVisible) }}>
+                            <div className="flex-row flex-row-center">
+                                Certificate {isCertVisible && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                {!isCertVisible && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                            </div>
+                        </div>
+
+                        {isCertVisible && (
+                            <React.Fragment>
+                                <div className="flex-row">
+                                    <input
+                                        accept=".cer"
+                                        type="file"
+                                        name="CertPM"
+                                        value={values.CertPM}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+
+                                <div className="flex-row">
+                                    <div className="flex-split-2-left">
+                                        <TextField
+                                            label="CERTIFICATE EMAIL"
+                                            name="CertEmail"
+                                            value={values.CertEmail}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.CertEmail && touched.CertEmail) && errors.CertEmail}
+                                            placeholder="Enter certificate email"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="flex-split-2-right">
+                                        <TextField
+                                            label="CERTIFICATE PASSWORD"
+                                            name="CertPassword"
+                                            type="password"
+                                            value={values.CertPassword}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.CertPassword && touched.CertPassword) && errors.CertPassword}
+                                            placeholder="Enter certificate password"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex-row">
+                                    <div className="flex-split-2-left">
+                                        <TextField
+                                            label="CERTIFICATE ALIAS"
+                                            name="CertAlias"
+                                            value={values.CertAlias}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.CertAlias && touched.CertAlias) && errors.CertAlias}
+                                            placeholder="Enter certificate alias"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="flex-split-2-right">
+                                        <TextField
+                                            label="CERTIFICATE FRIENDLY NAME"
+                                            name="CertFriendlyName"
+                                            value={values.CertFriendlyName}
+                                            className="dlg-txt-field"
+                                            style={{ width: '95%' }}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            helperText={(errors.CertFriendlyName && touched.CertFriendlyName) && errors.CertFriendlyName}
+                                            placeholder="Enter certificate friendly name"
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        )}
+
                     </form>
                 );
             }}
