@@ -232,10 +232,45 @@
 .editicon:hover{
 	color:white;
 }
+
+.listItemIconsLeft{
+	height: 1rem !important;
+	margin-right:2px;
+	color:#e2e2e2;
+}
+.listItemIconsLeft:hover{
+	color:white;
+}
+.listItemIconsRight{
+	height: 1rem !important;
+	margin-right:2px;
+	color:#e2e2e2;
+}
+.listItemIconsRight:hover{
+	color:white;
+}
 .folderbar{
 	color: white;
     justify-content: flex-end;
     display: flex;
 	margin-right: 5px;
 	margin-top: 5px;
+}
+.menu-content{
+	margin-top:30px;
+	color: #fff;
+}
+.foldersList{
+	margin-left:5px;
+	color:#ffff;
+	font-size:14px;
+	margin-bottom:10px !important;
+}
+
+.liContainer{
+	display: flex;
+	flex-direction: row;
+}
+.child-featured{
+   flex-grow:1;
 }

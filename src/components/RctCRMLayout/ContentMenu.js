@@ -1,15 +1,20 @@
 import React from "react";
-import { CreateNewFolder, Edit } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder,Delete } from '@material-ui/icons';
 
 
 const ContentMenu = (props) => (
-    <div className="folderbar">
-        <Edit className="editicon" />
-        <CreateNewFolder className="createnewfoldericon" onClick={props.onCreateNewFolder} />
-        {/* <ul   >
-          <li onClick={props.oncloseList} style={{width:'30px', height:'30px', backgroundColor:'#fff', color:'black'}}> 
-          test </li> </ul> */}
-    </div>
+    <React.Fragment>
+        <div className="folderbar">
+            <Edit className="editicon" />
+            <CreateNewFolder className="createnewfoldericon" onClick={props.onCreateNewFolder} />
+        </div>
+        <div className="menu-content">
+            <ul className="foldersList">
+                {props.folderListItems}
+            </ul>
+        </div>
+    </React.Fragment>
+
 );
 
 export default ContentMenu;

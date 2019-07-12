@@ -9,11 +9,12 @@ import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
 import DocumentListItem from "./DocumentListItem";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import NewFolder from 'Components/FolderItem/NewFolder';
+
 
 
 class DocumentListing extends Component {
@@ -22,6 +23,7 @@ class DocumentListing extends Component {
     this.state = {
       folderListControl: true,
       folderCreationDialog: false,
+      folderList: ['New Folder', 'New Folder 1', 'New Folder 2']
     }
   }
   componentDidMount() {
@@ -60,6 +62,22 @@ class DocumentListing extends Component {
     });
   }
 
+  folderCollection() {
+
+    return this.items = this.state.folderList.map((item) =>
+      <li className="foldersList">
+        <div className="liContainer">
+
+          <Folder className="listItemIconsLeft hild-featured" />
+          <div className="child-featured">{item}</div>
+          <Delete className="listItemIconsRight hild-featured" />
+        </div>
+      </li>
+
+    );
+
+  }
+
   // onCloseList = (e,document) => {
   //   Console.log("i am called");
   // }
@@ -79,8 +97,6 @@ class DocumentListing extends Component {
   }
 
   onSaveDlg = () => {
-    debugger;
-    this.props.folderList.push(NewFolder);
     console.log('onSaveDlg');
     this.onCloseDlg();
   }
@@ -142,7 +158,10 @@ class DocumentListing extends Component {
         }
         <div className="floder-bar-documents" >
           <div className="item-a">
-            <ContentMenu onCreateNewFolder={this.onCreateNewFolder} oncloseList={(e) => this.oncloseList(e)} />
+            <ContentMenu
+              onCreateNewFolder={this.onCreateNewFolder}
+              oncloseList={(e) => this.oncloseList(e)}
+              folderListItems={this.folderCollection()} />
 
           </div>
           <div className="item-b">
