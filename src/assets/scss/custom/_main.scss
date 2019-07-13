@@ -8,7 +8,7 @@
 	flex-wrap: nowrap;
 }
 .rct-page-content {
-  padding: $grid-gutter-width; //24px;
+  padding: 15px;// $grid-gutter-width; //24px;
 //   background-color: rgb(239, 237, 236);
 }
 .rct-footer {
@@ -237,17 +237,18 @@
 	height: 1rem !important;
 	margin-right:2px;
 	color:#e2e2e2;
+	
 }
 .listItemIconsLeft:hover{
 	color:white;
 }
 .listItemIconsRight{
-	height: 1rem !important;
+	height: 1.2rem !important;
 	margin-right:2px;
-	color:#e2e2e2;
+	color:#e34e48!important;
 }
 .listItemIconsRight:hover{
-	color:white;
+	color: #fb7b76 !important;
 }
 .folderbar{
 	color: white;
@@ -261,10 +262,16 @@
 	color: #fff;
 }
 .foldersList{
+	font-family: Graphik,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif !important;
+	list-style-type: none;
 	margin-left:5px;
-	color:#ffff;
+	color:#e2e2e2;
 	font-size:14px;
 	margin-bottom:10px !important;
+	cursor: pointer;
+}
+.foldersList:hover{
+	color:#fff;
 }
 
 .liContainer{
@@ -273,4 +280,15 @@
 }
 .child-featured{
    flex-grow:1;
+}
+.folder-bar-edit-button{
+	color: #47b972;
+	font-size:12px;
+	font-family: Graphik,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif !important;
+	margin-right: 5px;
+	cursor: pointer;
+
+}
+.document-list-content{
+	height: calc(100vh -50px) !important;
 }
