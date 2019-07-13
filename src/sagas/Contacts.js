@@ -1,40 +1,40 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { GET_CONTACTS } from "Actions/types";
+import { GET_CONTACTS, DELETE_CONTACTS } from "Actions/types";
 
-import { getContactsSuccess, getContactsFailure } from "Actions/ContactsActions";
+import { getContactsSuccess, getContactsFailure, deleteContactsSuccess } from "Actions/ContactsActions";
 
 const response = {
     data: [
         {
-            "email": "teste1@signingdesk.com",
+            "email": "mqasim@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c8343e6",
-            "name": "DigitalSign Pakistan 1"
+            "name": "Muhammad Qasim"
         },
         {
-            "email": "teste2@signingdesk.com",
+            "email": "hjaved@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c8343e7",
-            "name": "DigitalSign Pakistan 2"
+            "name": "Hassan Javed"
         },
         {
-            "email": "teste3@signingdesk.com",
+            "email": "mkhan@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c8343e8",
-            "name": "DigitalSign Pakistan 3"
+            "name": "Muhammad Saqlain"
         },
         {
-            "email": "teste4@signingdesk.com",
+            "email": "hahmad@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c8343e9",
-            "name": "DigitalSign Pakistan 4"
+            "name": "Hafeez Ahmad"
         },
         {
-            "email": "teste5@signingdesk.com",
+            "email": "snawaz@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c834310",
-            "name": "DigitalSign Pakistan 5"
+            "name": "Sarfaraz Nawaz"
         },
         {
-            "email": "teste6@signingdesk.com",
+            "email": "sheeda@signingdesk.com",
             "corporatesID": "d1da11e6-286b-445f-9930-922f3c834311",
-            "name": "DigitalSign Pakistan 6"
+            "name": "Sheeda Talli"
         }
     ]
 };
@@ -42,6 +42,10 @@ const response = {
 const getContactsRequest = () => {
     return response;
 };
+
+const deleteContactsRequest = (ids) => {
+    return true;
+}
 
 function* getContactsFromServer() {
     try {
@@ -52,11 +56,28 @@ function* getContactsFromServer() {
     }
 }
 
+function* deleteContactsFromServer({ payload }) {
+    try {
+        debugger;
+        const response = yield call(deleteContactsRequest, payload);
+        yield put(deleteContactsSuccess(payload));
+    } catch (error) {
+        // yield put(getContactsFailure(error));
+    }
+}
+
 // watcher
 export function* getContacts() {
     yield takeEvery(GET_CONTACTS, getContactsFromServer);
 }
 
+export function* deleteContacts() {
+    yield takeEvery(DELETE_CONTACTS, deleteContactsFromServer);
+}
+
 export default function* rootSaga() {
-    yield all([fork(getContacts)]);
+    yield all([
+        fork(getContacts),
+        fork(deleteContacts)
+    ]);
 }

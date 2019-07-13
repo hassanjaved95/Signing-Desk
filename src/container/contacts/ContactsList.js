@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
-import { getContacts, sortContactsByEmail, sortContactsByName } from "Actions";
+import { getContacts, sortContactsByEmail, sortContactsByName, searchContacts, deleteContacts } from "Actions";
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import ContactsListItem from "Components/ListItem/ContactsListItem";
 import NewContact from "Components/ListItem/NewContact";
@@ -31,6 +31,7 @@ class ContactsList extends Component {
         }
     }
 
+    searchTimerId = null;
     componentDidMount() {
         this.props.getContacts();
     }
@@ -114,11 +115,20 @@ class ContactsList extends Component {
             });
 
         }
-        console.log('sortContactsBy:', sortBy);
     }
 
     onChangeSearchValue = (event) => {
-        console.log('onChangeSearchValue:', event.target.value);
+        if (this.searchTimerId) {
+            clearTimeout(this.searchTimerId);
+        }
+
+        var searchVal = event.target.value;
+        this.searchTimerId = setTimeout(() => {
+            console.log('onChangeSearchValue:', searchVal);
+            this.props.searchContacts(searchVal);
+        }, 250);
+
+
     }
 
     onCloseDlg = () => {
@@ -130,6 +140,16 @@ class ContactsList extends Component {
     onSaveDlg = () => {
         console.log('onSaveDlg');
         this.onCloseDlg();
+    }
+
+    onDeleteContacts = () => {
+        this.props.deleteContacts(this.state.selectedContacts);
+        this.setState({
+            selectedContacts: [],
+            allContactsAreSelected: false
+        });
+        // console.log('Delete these contacts:', this.state.selectedContacts);
+
     }
 
     dlgButtons = {
@@ -161,8 +181,9 @@ class ContactsList extends Component {
     }
 
     render() {
-        const { contacts } = this.props;
-        console.log('Contacts:', contacts);
+        const { contacts, filterdContacts } = this.props;
+        const renderContacts = this.state.search ? filterdContacts : contacts;
+
         return (
             <div className="page-content">
                 {this.state.newContact &&
@@ -189,6 +210,7 @@ class ContactsList extends Component {
                         search={this.state.search}
                         selectedContacts={this.state.selectedContacts.length}
                         onChangeSearchValue={this.onChangeSearchValue}
+                        onDeleteContacts={this.onDeleteContacts}
                     />
                 </div>
                 <div className="content-area">
@@ -205,8 +227,8 @@ class ContactsList extends Component {
                     <div className="content-detail">
                         <ul className="list-unstyled m-0">
                             {
-                                contacts && contacts.length > 0 && contacts !== null ? (
-                                    contacts.map((contact) => (
+                                renderContacts && renderContacts.length > 0 && renderContacts !== null ? (
+                                    renderContacts.map((contact) => (
                                         <ContactsListItem
                                             key={contact.corporatesID}
                                             checked={this.state.selectedContacts.find(c => c == contact.corporatesID) ? true : false}
@@ -234,10 +256,12 @@ const mapStateToProps = ({ contacts }) => {
     return contacts;
 };
 
-const mapDispatchToProps = ({ dispatch }) => {
-
-}
-
 export default withRouter(connect(mapStateToProps,
-    { getContacts, sortContactsByName, sortContactsByEmail }
+    {
+        getContacts,
+        sortContactsByName,
+        sortContactsByEmail,
+        searchContacts,
+        deleteContacts
+    }
 )(ContactsList));
