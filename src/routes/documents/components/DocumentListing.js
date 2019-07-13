@@ -13,6 +13,7 @@ import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
+import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import NewFolder from 'Components/FolderItem/NewFolder';
 
 
@@ -163,6 +164,18 @@ class DocumentListing extends Component {
       <div className="page-content">
         {
           this.state.folderCreationDialog &&
+          <SmallDialogTemplate
+            title="New Folder"
+            open={this.state.folderCreationDialog}
+            onClose={this.onCloseDlg}
+          >
+            <NewFolder />
+          </SmallDialogTemplate>
+   
+    
+            }
+        {/* {
+          this.state.folderCreationDialog &&
           (<DialogTemplate
             title="New Folder"
             open={this.state.folderCreationDialog}
@@ -172,7 +185,7 @@ class DocumentListing extends Component {
           >
             <NewFolder />
           </DialogTemplate>)
-        }
+        } */}
         <div className="floder-bar-documents" >
           <div className="item-a">
             <ContentMenu
@@ -183,24 +196,24 @@ class DocumentListing extends Component {
 
           </div>
           <div className="item-b">
-              <ul className="list-unstyled m-0">
-                {documents && documents.length > 0 && documents !== null ? (
-                  documents.map((document, key) => (
-                    <DocumentListItem
-                      document={document}
-                      handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
-                      key={key}
-                      getTaskLabelNames={() =>
-                        this.getTaskLabelNames(document.email_labels)
-                      }
-                    />
-                  ))
-                ) : (
-                    <div className="d-flex justify-content-center align-items-center py-50">
-                      <h4>No Documents Found In Selected Folder</h4>
-                    </div>
-                  )}
-              </ul>
+            <ul className="list-unstyled m-0">
+              {documents && documents.length > 0 && documents !== null ? (
+                documents.map((document, key) => (
+                  <DocumentListItem
+                    document={document}
+                    handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
+                    key={key}
+                    getTaskLabelNames={() =>
+                      this.getTaskLabelNames(document.email_labels)
+                    }
+                  />
+                ))
+              ) : (
+                  <div className="d-flex justify-content-center align-items-center py-50">
+                    <h4>No Documents Found In Selected Folder</h4>
+                  </div>
+                )}
+            </ul>
           </div>
         </div >
       </div>

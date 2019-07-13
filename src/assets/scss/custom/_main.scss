@@ -292,3 +292,66 @@
 .document-list-content{
 	height: calc(100vh -50px) !important;
 }
+
+.flex-container-smalldialog div:nth-child(2){
+  flex-direction: row !important;
+  align-items: start !important;
+}
+.small-dlg-header-font{
+	color:#e2e2e2;
+	font-size:17px;
+	font-stretch: 100%
+}
+.clearElements div:nth-child(1)::before {
+	border: 0px solid #e2e2e2;
+	content:"";
+	position: relative;
+}
+.clearElements div:nth-child(1)::after {
+	border: 0px solid #e2e2e2;
+	content:"";
+	position: relative;
+	
+}
+.clearElements div:nth-child(1):hover {
+	border: 0px solid #e2e2e2;
+	content:"";
+}
+.smallDialog-flex-split-2-right{
+	width: 20% !important;
+	margin-top:16px !important;
+}
+.btn-save-foldername{
+	background: #59b671;
+    color: #fff;
+    outline-offset: -2px!important;
+    font-weight: 600;
+    text-transform: uppercase;
+	letter-spacing: .5px;
+	display: inline-block;
+    padding: 7px 15px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    vertical-align: middle;
+    border: 0;
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: .1s;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+	user-select: none;
+	width:90px;
+	height: 31px;
+	font-weight: 700;
+}
+
+.btn-save-foldername:hover{
+	background: #70b481;
+
+
+}
