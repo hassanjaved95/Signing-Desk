@@ -23,7 +23,7 @@ const SmallDialogTemplate = (props) => {
                     </div>
 
                 </MuiDialogTitle>
-                <MuiDialogContent dividers="true" style={{padding: '10px', width:'482px'}}>
+                <MuiDialogContent dividers="true" style={{padding: '10px', width:'482px',maxHeight:'calc(100vh - 1rem)'}}>
                     {props.children}
                 </MuiDialogContent>
                 {/* <MuiDialogActions>

@@ -352,6 +352,47 @@
 
 .btn-save-foldername:hover{
 	background: #70b481;
+}
+.foldersListMoveFolder{
+	margin-top:-30px;
+	margin-right:20px;
+}
+.foldersListMoveFolder li {
+	font-family: system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+	border-bottom: 1px solid #e5e5e5;
+	line-height: 3.125rem;
+	margin-left: 5px;
+	color:#e2e2e2;
+	list-style: none;
+	margin-left:20px;
+	cursor: pointer;
+	//align-items: center;
+	font-size:12px;
+}
+.foldersListMoveFolder li .liContainer{
+	align-items: center;
+}
 
+.foldersListMoveFolder li .liContainer .child-featured{
+	margin-left:5px;
+}
+.foldersListMoveFolder li .liContainer .listItemIconsLeftt{
+	color:black;
+}
+.ActivefoldersListMoveFolder{
+	background: hsla(0,0%,50%,.07);
+	 color: #59b671 !important;
+	font-weight: bold;
 
+}
+.foldersListMoveFolder li:first-child {
+	 
+	margin-left: 10px;
+	//cursor: pointer;
+	//align-items: center;
+}
+.move-folder-footer{
+	font-size:14px;
+	font-family: system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+	color:#e2e2e2;
 }
