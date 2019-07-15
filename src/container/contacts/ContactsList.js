@@ -3,6 +3,7 @@
  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import $ from "jquery";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { getContacts, sortContactsByEmail, sortContactsByName, searchContacts, deleteContacts } from "Actions";
@@ -17,6 +18,7 @@ import IntlMessages from "Util/IntlMessages";
 class ContactsList extends Component {
     constructor(props) {
         super(props);
+        this.ref = React.createRef();
         this.state = {
             newContact: false,
             search: false,
@@ -35,6 +37,8 @@ class ContactsList extends Component {
     componentDidMount() {
         this.props.getContacts();
     }
+
+
 
     onClickContactItem = (contact, e) => {
         console.log('onClickContact e:', e);
@@ -137,9 +141,17 @@ class ContactsList extends Component {
         });
     }
 
-    onSaveDlg = () => {
-        console.log('onSaveDlg');
+    onSubmitForm = (obj) => {
+
+        console.log('onSubmit:', obj);
         this.onCloseDlg();
+    }
+
+    onSaveDlg = () => {
+        // console.log('onSaveDlg');
+        console.log('onSaveDlg-Ref:', this.ref.current);
+        // console.log('jQuery selector', $(this.ref.current));
+        $(this.ref.current).submit();
     }
 
     onDeleteContacts = () => {
@@ -165,24 +177,23 @@ class ContactsList extends Component {
         });
     }
 
+    validateOnChange = (values) => {
+
+    }
+
     activateAddContactBtn = ({ touched, errors }) => {
-        var activate = true;
+        console.log('ForwardRef:', this.ref);
+        // var activate = this.ref.current.
 
-        console.log('touched:', touched);
-        console.log('errors:', errors);
-
-        if (touched.email && errors.email) {
-            activate = false;
-        }
-
-        this.setState({
-            activateAddContactBtn: activate
-        });
+        // this.setState({
+        //     activateAddContactBtn: activate
+        // });
     }
 
     render() {
         const { contacts, filterdContacts } = this.props;
         const renderContacts = this.state.search ? filterdContacts : contacts;
+
 
         return (
             <div className="page-content">
@@ -192,13 +203,16 @@ class ContactsList extends Component {
                         open={this.state.newContact}
                         onClose={this.onCloseDlg}
                         buttons={this.dlgButtons}
-                        disabled={this.state.newContact}
+                        disabled={!this.state.activateAddContactBtn}
                     >
                         <NewContact
                             classes={{ textField: '' }}
                             toggleAddressFields={this.toggleAddressFieldSet}
                             showAddressFields={this.state.address}
                             enableAddContact={this.activateAddContactBtn}
+                            onSubmit={this.onSubmitForm}
+                            ref={this.ref}
+                            validateOnChange={this.validateOnChange}
                         />
                     </DialogTemplate>)
                 }

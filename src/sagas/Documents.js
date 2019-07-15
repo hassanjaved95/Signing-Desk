@@ -233,8 +233,333 @@ const response = {
   ]
 };
 
+const documents = {
+  data: [
+    {
+      id: 1,
+      title: 'ReSharper_DefaultKeymap_VSscheme',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: '10 minutes ago'
+    },
+    {
+      id: 2,
+      title: 'DegreeAttestationChallanForm',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 05, 2019'
+    },
+    {
+      id: 3,
+      title: 'Comsat MSPM - Challan Form',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 15, 2019'
+    },
+    {
+      id: 4,
+      title: 'Eat_That_Frog',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 11, 2019'
+    },
+    {
+      id: 5,
+      title: 'CourseCompletionCertificate',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'June 21, 2019'
+    },
+    {
+      id: 11,
+      title: 'ReSharper_DefaultKeymap_VSscheme',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: '10 minutes ago'
+    },
+    {
+      id: 12,
+      title: 'DegreeAttestationChallanForm',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 05, 2019'
+    },
+    {
+      id: 13,
+      title: 'Comsat MSPM - Challan Form',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 15, 2019'
+    },
+    {
+      id: 14,
+      title: 'Eat_That_Frog',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 11, 2019'
+    },
+    {
+      id: 15,
+      title: 'CourseCompletionCertificate',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'June 21, 2019'
+    },
+    {
+      id: 111,
+      title: 'ReSharper_DefaultKeymap_VSscheme',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: '10 minutes ago'
+    },
+    {
+      id: 112,
+      title: 'DegreeAttestationChallanForm',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 05, 2019'
+    },
+    {
+      id: 113,
+      title: 'Comsat MSPM - Challan Form',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 15, 2019'
+    },
+    {
+      id: 114,
+      title: 'Eat_That_Frog',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 11, 2019'
+    },
+    {
+      id: 115,
+      title: 'CourseCompletionCertificate',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'June 21, 2019'
+    },
+    {
+      id: 211,
+      title: 'ReSharper_DefaultKeymap_VSscheme',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: '10 minutes ago'
+    },
+    {
+      id: 212,
+      title: 'DegreeAttestationChallanForm',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 05, 2019'
+    },
+    {
+      id: 213,
+      title: 'Comsat MSPM - Challan Form',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 15, 2019'
+    },
+    {
+      id: 214,
+      title: 'Eat_That_Frog',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'July 11, 2019'
+    },
+    {
+      id: 215,
+      title: 'CourseCompletionCertificate',
+      status: 'Draft',
+      tags: [
+        'One',
+        'two',
+        'three'
+      ],
+      grandTotal: '$4.00',
+      approversRecepients: [
+        'Muhammad Qasim',
+        'Hassan Javed'
+      ],
+      created: 'June 21, 2019'
+    }
+  ]
+}
+
 const getDocumentsRequest = () => {
-  return response;
+  return documents; // response;
 };
 
 function* getDocumentsFromServer() {

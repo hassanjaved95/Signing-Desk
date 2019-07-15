@@ -2,15 +2,14 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import DocumentListing from "./components/DocumentListing";
+import UserDocumentsList from "Container/documents/UserDocumentsList";
 
 const Documents = ({ match }) => (
  
   <div className="content-wrapper">
-  {console.log('DocumentListing:', DocumentListing)}
     <Switch>
       {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/`} /> */}
-      <Route path={`${match.url}/`} component={DocumentListing} />
+      <Route path={`${match.url}/`} component={UserDocumentsList} />
     </Switch>
   </div>
 );
