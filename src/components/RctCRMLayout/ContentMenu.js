@@ -1,17 +1,14 @@
 import React from "react";
-import { CreateNewFolder, Edit, Folder,Delete } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
 
 
 const ContentMenu = (props) => (
     <React.Fragment>
         <div className="folderbar">
-            <Edit className="editicon" />
-            <CreateNewFolder className="createnewfoldericon" onClick={props.onCreateNewFolder} />
+            {props.folderBarItems}
         </div>
         <div className="menu-content">
-            <ul className="foldersList">
-                {props.folderListItems}
-            </ul>
+            {props.folderListItems}
         </div>
     </React.Fragment>
 

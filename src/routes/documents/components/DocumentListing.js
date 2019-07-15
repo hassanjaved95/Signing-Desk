@@ -9,11 +9,13 @@ import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
 import DocumentListItem from "./DocumentListItem";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
+import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import NewFolder from 'Components/FolderItem/NewFolder';
+import MoveToFolder from "../../../components/FolderItem/MoveToFolder";
 
 
 
@@ -23,7 +25,11 @@ class DocumentListing extends Component {
     this.state = {
       folderListControl: true,
       folderCreationDialog: false,
-      folderList: ['New Folder', 'New Folder 1', 'New Folder 2']
+      folderList: ['New Folder', 'New Folder 1', 'New Folder 2'],
+      inEditModeFolderList: false,
+      moveDocumentsToFolder: false,
+      moveDocumentsListOpen: true,
+      selectedFolderName: "Documents"
     }
   }
   componentDidMount() {
@@ -62,20 +68,96 @@ class DocumentListing extends Component {
     });
   }
 
+  onMoveDocumentsToFolder = () => {
+    this.setState({
+      moveDocumentsToFolder: true
+    });
+  }
+
+  onEditFolderList = () => {
+    this.setState({
+      inEditModeFolderList: !this.state.inEditModeFolderList
+    });
+  }
+
+  folderBarItems() {
+    return (
+      <React.Fragment>
+        {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
+        <CreateNewFolder className="createnewfoldericon" onClick={this.onCreateNewFolder} />
+      </React.Fragment>
+    );
+  }
   folderCollection() {
-
-    return this.items = this.state.folderList.map((item) =>
+    this.items = this.state.folderList.map((item) =>
       <li className="foldersList">
-        <div className="liContainer">
+        <div className="liContainer" data-item={item}>
 
-          <Folder className="listItemIconsLeft hild-featured" />
+          {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
           <div className="child-featured">{item}</div>
-          <Delete className="listItemIconsRight hild-featured" />
+          {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
         </div>
       </li>
-
     );
+    return (
+      <ul className="foldersList">
+        {this.items}
+      </ul>
+    );
+  }
 
+  folderCollectionMoveFolders() {
+    this.items = this.state.folderList.map((item) =>
+      <li className="MoveFolderListItem childListItem folderChildVisible" data-sat="1" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
+        <div className="liContainer" data-item={item}>
+          <Folder className="listItemIconsLeftt" />
+          <div className="child-featured">{item}</div>
+        </div>
+      </li>
+    );
+    return (
+      <ul className="foldersListMoveFolder">
+        <li className="MoveFolderListItem parentListItem ActivefoldersListMoveFolder" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
+          <div className="liContainer">
+           {this.state.moveDocumentsListOpen ? 
+           <FolderOpen className="listItemIconsLeftt" /> :
+           <Folder className="listItemIconsLeftt" /> 
+          }   Documents
+          </div>
+        </li>
+        {this.items}
+      </ul>
+    );
+  }
+
+  onClickMoveFolderItems = (e, obj) => {
+    if (!obj.classList.contains("foldersListMoveFolder")) {
+      this.setState({
+        selectedFolderName: obj.textContent
+      });
+      if (obj.parentElement.classList.contains("parentListItem")) {
+        if ($(".folderChildVisible").attr("data-sat") == "1") {
+          $(".folderChildVisible").hide();
+          $(".folderChildVisible").attr("data-sat", "0");
+          this.setState({
+            moveDocumentsListOpen:false
+          });
+        } else {
+          $(".folderChildVisible").show();
+          $(".folderChildVisible").attr("data-sat", "1");
+          this.setState({
+            moveDocumentsListOpen:true
+          });
+        }
+        $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+        obj.parentElement.classList.add("ActivefoldersListMoveFolder");
+
+      } else {
+        $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+        obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
+      }
+
+    }
   }
 
   // onCloseList = (e,document) => {
@@ -93,6 +175,12 @@ class DocumentListing extends Component {
   onCloseDlg = () => {
     this.setState({
       folderCreationDialog: false
+    });
+  }
+
+  onCloseDlgMoveDocuments = () => {
+    this.setState({
+      moveDocumentsToFolder: false
     });
   }
 
@@ -142,26 +230,39 @@ class DocumentListing extends Component {
   render() {
     const { documents } = this.props;
     return (
-
       <div className="page-content">
+        <div style={{ border: "1px solid #3b5999", cursor: "pointer" }} onClick={this.onMoveDocumentsToFolder}>Click Me to Move</div>
+
         {
           this.state.folderCreationDialog &&
-          (<DialogTemplate
+          <SmallDialogTemplate
             title="New Folder"
             open={this.state.folderCreationDialog}
-            buttons={this.dlgButtons}
             onClose={this.onCloseDlg}
-
           >
             <NewFolder />
-          </DialogTemplate>)
+          </SmallDialogTemplate>
         }
+
+        {
+          this.state.moveDocumentsToFolder &&
+          <SmallDialogTemplate
+            title="Move documents to folder"
+            open={this.state.moveDocumentsToFolder}
+            onClose={this.onCloseDlgMoveDocuments}
+
+          >
+            <MoveToFolder folderItemsToMove={this.folderCollectionMoveFolders()} selectedFolderName={this.state.selectedFolderName} />
+          </SmallDialogTemplate>
+        }
+
         <div className="floder-bar-documents" >
           <div className="item-a">
             <ContentMenu
               onCreateNewFolder={this.onCreateNewFolder}
               oncloseList={(e) => this.oncloseList(e)}
-              folderListItems={this.folderCollection()} />
+              folderListItems={this.folderCollection()}
+              folderBarItems={this.folderBarItems()} />
 
           </div>
           <div className="item-b">
@@ -184,7 +285,6 @@ class DocumentListing extends Component {
                 )}
             </ul>
           </div>
-
         </div >
       </div>
 

@@ -12,6 +12,7 @@ import {
     Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import * as Yup from 'yup';
+import $ from 'jquery';
 
 
 
@@ -42,7 +43,7 @@ function NewFolder(props) {
     const initialState = {
         folderName: ''
     };
-
+    // $(".small-dlg-txt-field").parent().css("border-bottom","0px !important");
     return (
         <Formik
             initialValues={initialState}
@@ -70,22 +71,27 @@ function NewFolder(props) {
                 return (
                     <form onSubmit={handleSubmit}>
                         <div className="flex-row">
-                            <div className="flex-split-2-left">
+                            <div className="flex-split-2-left clearElements" style={{ width: '75%' }}>
                                 <TextField
-                                    label="Folder Name"
+                                    label=""
                                     name="folderName"
                                     value={values.folderName}
-                                    className="dlg-txt-field"
-                                    style={{ width: '100%' }}
+                                    className="small-dlg-txt-field"
+                                    style={{ width: '100%', border: '1px solid #e2e2e2', borderRadius: '3px' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     helperText={(errors.name && touched.name) && errors.name}
-                                    placeholder="Enter folder name"
+                                    placeholder=""
                                     margin="normal"
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
                                 />
+                            </div>
+                            <div className="flex-split-2-right smallDialog-flex-split-2-right">
+                                <div className="header-shadow">
+                                    <input type="submit" className="btn-save-foldername" value="save" />
+                                </div>
                             </div>
                         </div>
 
