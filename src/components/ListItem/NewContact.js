@@ -16,31 +16,13 @@ import * as Yup from 'yup';
 
 
 
-function NewContact(props) {
+function fwdRefContact(props, ref) {
+    console.log('fwdRefContact-props:', props);
+    console.log('fwdRefContact-ref:', ref);
     const { classes } = props;
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [isAddressVisible, setAddressVisibility] = useState(false);
     const [isCertVisible, setCertVisibility] = useState(false);
-
-    // const useStyles = makeStyles(theme => ({
-    //     container: {
-    //         display: 'flex',
-    //         flexWrap: 'wrap',
-    //     },
-    //     textField: {
-    //         marginLeft: theme.spacing(1),
-    //         marginRight: theme.spacing(1),
-    //         width: 200,
-    //     },
-    //     dense: {
-    //         marginTop: 19,
-    //     },
-    //     menu: {
-    //         width: 200,
-    //     },
-    // }));
-
-    // const classes = useStyles();
 
     const initialState = {
         FirstName: '',
@@ -75,10 +57,10 @@ function NewContact(props) {
     return (
         <Formik
             initialValues={initialState}
-            onSubmit={(values) => {
-                props.onSubmit
+            onSubmit={(values, actions) => {
+                props.onSubmit(values, actions);
             }}
-
+            validate={(values) => { props.validateOnChange(values) }}
             validationSchema={validationSchema}
         >
             {(formikProps) => {
@@ -95,7 +77,7 @@ function NewContact(props) {
                 } = formikProps;
                 return (
 
-                    <form onSubmit={handleSubmit}>
+                    <form ref={ref} action="#">
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
@@ -433,4 +415,5 @@ function NewContact(props) {
     );
 }
 
+const NewContact = React.forwardRef(fwdRefContact);
 export default NewContact;
