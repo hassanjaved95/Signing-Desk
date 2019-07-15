@@ -9,14 +9,14 @@ import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
 import DocumentListItem from "./DocumentListItem";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete, FolderOpen, NoEncryption } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import NewFolder from 'Components/FolderItem/NewFolder';
 import MoveToFolder from "../../../components/FolderItem/MoveToFolder";
-
+import SearchTags from "Components/ListItem/SearchTags";
 
 
 class DocumentListing extends Component {
@@ -29,7 +29,8 @@ class DocumentListing extends Component {
       inEditModeFolderList: false,
       moveDocumentsToFolder: false,
       moveDocumentsListOpen: true,
-      selectedFolderName: "Documents"
+      selectedFolderName: "Documents",
+      showSearchTags: false,
     }
   }
   componentDidMount() {
@@ -119,10 +120,10 @@ class DocumentListing extends Component {
       <ul className="foldersListMoveFolder">
         <li className="MoveFolderListItem parentListItem ActivefoldersListMoveFolder" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
           <div className="liContainer">
-           {this.state.moveDocumentsListOpen ? 
-           <FolderOpen className="listItemIconsLeftt" /> :
-           <Folder className="listItemIconsLeftt" /> 
-          }   Documents
+            {this.state.moveDocumentsListOpen ?
+              <FolderOpen className="listItemIconsLeftt" /> :
+              <Folder className="listItemIconsLeftt" />
+            }   Documents
           </div>
         </li>
         {this.items}
@@ -140,13 +141,13 @@ class DocumentListing extends Component {
           $(".folderChildVisible").hide();
           $(".folderChildVisible").attr("data-sat", "0");
           this.setState({
-            moveDocumentsListOpen:false
+            moveDocumentsListOpen: false
           });
         } else {
           $(".folderChildVisible").show();
           $(".folderChildVisible").attr("data-sat", "1");
           this.setState({
-            moveDocumentsListOpen:true
+            moveDocumentsListOpen: true
           });
         }
         $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
@@ -196,7 +197,32 @@ class DocumentListing extends Component {
     }
   }
 
+  loadSearchTags() {
 
+    return (
+      this.state.showSearchTags == false ? "" :
+
+        <div className="search-tag-ul" onMouseLeave={(e) => this.onCloseSearchTags(e)}>
+          <ul onMouseOver={this.onShowSearchTags}>
+            <li onMouseOver={this.onShowSearchTags}>test</li>
+            <li onMouseOver={this.onShowSearchTags}>test2</li>
+          </ul>
+        </div>
+
+    );
+  }
+
+  onCloseSearchTags = (e) => {
+      this.setState({
+        showSearchTags: false
+      });
+  }
+
+  onShowSearchTags = () => {
+    this.setState({
+      showSearchTags: true
+    });
+  }
 
   /**
    * Function to return task label name
@@ -232,6 +258,9 @@ class DocumentListing extends Component {
     return (
       <div className="page-content">
         <div style={{ border: "1px solid #3b5999", cursor: "pointer" }} onClick={this.onMoveDocumentsToFolder}>Click Me to Move</div>
+        <div style={{ border: "1px solid #3b5999", cursor: "pointer", paddingLeft: "200px" }} >
+          <SearchTags children={this.loadSearchTags()} ShowSearchTags={this.onShowSearchTags} />
+        </div>
 
         {
           this.state.folderCreationDialog &&
