@@ -1,7 +1,14 @@
 import {
   GET_DOCUMENTS,
   GET_DOCUMENTS_SUCCESS,
-  GET_DOCUMENTS_FAILURE
+  GET_DOCUMENTS_FAILURE,
+  SEARCH_DOCUMENTS,
+  DELETE_DOCUMENTS,
+  DELETE_DOCUMENTS_SUCCESS,
+  MOVE_DOCUMENTS,
+  MOVE_DOCUMENTS_SUCCESS,
+  DUPLICATE_DOCUMENTS,
+  DUPLICATE_DOCUMENTS_SUCCESS
 } from "./types";
 
 export const getDocuments = () => ({
@@ -16,4 +23,37 @@ export const getDocumentsSuccess = response => ({
 export const getDocumentsFailure = error => ({
   type: GET_DOCUMENTS_FAILURE,
   payload: error
+});
+
+export const searchDocuments = (payload) => ({
+  type: SEARCH_DOCUMENTS,
+  payload
+});
+
+export const deleteDocuments = (payload) => ({
+  type: DELETE_DOCUMENTS,
+  payload
+});
+
+export const deleteDocumentsSuccess = (payload) => ({
+  type: DELETE_DOCUMENTS_SUCCESS,
+  payload
+});
+export const moveDocuments = (payload) => ({
+  type: MOVE_DOCUMENTS,
+  payload
+});
+
+export const moveDocumentsSuccess = (payload) => ({
+  type: MOVE_DOCUMENTS_SUCCESS,
+  payload
+});
+export const duplicateDocuments = (payload) => ({
+  type: DUPLICATE_DOCUMENTS,
+  payload
+});
+
+export const duplicateDocumentsSuccess = (payload) => ({
+  type: DUPLICATE_DOCUMENTS_SUCCESS,
+  payload
 });

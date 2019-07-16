@@ -24,7 +24,9 @@ class UserDocumentsList extends Component {
         this.state = {
             search: false,
             selectedDocuments: [],
-            allDocumentsAreSelected: false
+            allDocumentsAreSelected: false,
+            actions: ["Duplicate", "Move", "Rename", "Delete"],
+            
         }
     }
     componentDidMount() {
@@ -81,6 +83,10 @@ class UserDocumentsList extends Component {
         return state;
     }
 
+    handleRowAction = () => {
+        console.log('Arguments', arguments);
+    }
+
     render() {
         const { documents } = this.props;
         return (
@@ -119,6 +125,10 @@ class UserDocumentsList extends Component {
                                                     checked={this.getListItemCheckState(document)}
                                                     onClickDocumentItem={this.onClickDocumentItem.bind(this, document)}
                                                     onCheckSingleDocument={this.onCheckSingleDocument.bind(this, document)}
+                                                    selectedDocuments={this.state.selectedDocuments.length}
+                                                    options={this.state.actions}
+                                                    onClickAction={this.handleRowAction}
+                                                    onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
                                                 />
                                             ))
                                         ) : (

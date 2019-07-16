@@ -1,8 +1,8 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { GET_DOCUMENTS } from "Actions/types";
+import { GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
-import { getDocumentsSuccess, getDocumentsFailure } from "Actions";
+import { getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
 
 const response = {
   data: [
@@ -561,6 +561,17 @@ const documents = {
 const getDocumentsRequest = () => {
   return documents; // response;
 };
+const deleteDocumentsRequest = () => {
+  return true; // response;
+};
+
+const moveDocumentsRequest = () => {
+  return true; // response;
+};
+
+const duplicateDocumentsRequest = () => {
+  return true; // response;
+};
 
 function* getDocumentsFromServer() {
   try {
@@ -570,12 +581,52 @@ function* getDocumentsFromServer() {
     yield put(getDocumentsFailure(error));
   }
 }
+function* deleteDocumentsFromServer() {
+  try {
+    const response = yield call(deleteDocumentsRequest);
+    yield put(deleteDocumentsSuccess(response));
+  } catch (error) {
+    console.log('deleteDocumentsFromServer error:', error);
+    // yield put(getDocumentsFailure(error));
+  }
+}
+function* moveDocumentsOnServer() {
+  try {
+    const response = yield call(moveDocumentsRequest);
+    yield put(moveDocumentsSuccess(response));
+  } catch (error) {
+    console.log('moveDocumentsOnServer error:', error);
+    // yield put(getDocumentsFailure(error));
+  }
+}
+function* duplicateDocumentsOnServer() {
+  try {
+    const response = yield call(duplicateDocumentsRequest);
+    yield put(duplicateDocumentsSuccess(response));
+  } catch (error) {
+    // yield put(getDocumentsFailure(error));
+  }
+}
 
 // watcher
 export function* getDocuments() {
   yield takeEvery(GET_DOCUMENTS, getDocumentsFromServer);
 }
+export function* deleteDocuments() {
+  yield takeEvery(DELETE_DOCUMENTS, deleteDocumentsFromServer);
+}
+export function* moveDocuments() {
+  yield takeEvery(MOVE_DOCUMENTS, moveDocumentsOnServer);
+}
+export function* duplicateDocuments() {
+  yield takeEvery(DUPLICATE_DOCUMENTS, duplicateDocumentsOnServer);
+}
 
 export default function* rootSaga() {
-  yield all([fork(getDocuments)]);
+  yield all([
+    fork(getDocuments),
+    fork(deleteDocuments),
+    fork(moveDocuments),
+    fork(duplicateDocuments)
+  ]);
 }
