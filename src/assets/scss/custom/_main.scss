@@ -298,9 +298,10 @@
   align-items: start !important;
 }
 .small-dlg-header-font{
-	color:#e2e2e2;
+	color:black;
 	font-size:17px;
-	font-stretch: 100%
+	font-stretch: 100%;
+	margin-left: 14px !important;
 }
 .clearElements div:nth-child(1)::before {
 	border: 0px solid #e2e2e2;

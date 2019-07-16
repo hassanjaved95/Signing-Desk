@@ -10,13 +10,16 @@ import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete,FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import NewFolder from 'Components/FolderItem/NewFolder';
+import MoveToFolder from "Components/FolderItem/MoveToFolder";
 import PageActions from "Components/ListItem/PageActions";
 import { getGuid } from "Helpers/helpers";
+import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
+
 
 class UserDocumentsList extends Component {
     constructor(props) {
@@ -24,11 +27,20 @@ class UserDocumentsList extends Component {
         this.state = {
             search: false,
             selectedDocuments: [],
-            allDocumentsAreSelected: false
+            allDocumentsAreSelected: false,
+            folderListControl: true,
+            folderCreationDialog: false,
+            folderList: ['New Folder', 'New Folder 1', 'New Folder 2'],
+            inEditModeFolderList: false,
+            moveDocumentsToFolder: false,
+            moveDocumentsListOpen: true,
+            selectedFolderName: "Documents",
         }
     }
     componentDidMount() {
         this.props.getDocuments();
+        if (!this.state.folderListControl)
+            $(".folderbar").hide();
     }
 
     onChangeSearchValue = (searchVal) => {
@@ -81,17 +93,170 @@ class UserDocumentsList extends Component {
         return state;
     }
 
+    /* All methods related to Folders */
+
+    onCloseFolderListControl = () => {
+        this.setState({
+            folderListControl: false
+        });
+    }
+
+    onCreateNewFolder = () => {
+        this.setState({
+            folderCreationDialog: true
+        });
+    }
+
+    onMoveDocumentsToFolder = () => {
+        this.setState({
+            moveDocumentsToFolder: true
+        });
+    }
+
+    onEditFolderList = () => {
+        this.setState({
+            inEditModeFolderList: !this.state.inEditModeFolderList
+        });
+    }
+
+    folderBarItems() {
+        return (
+            <React.Fragment>
+                {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
+                <CreateNewFolder className="createnewfoldericon" onClick={this.onCreateNewFolder} />
+            </React.Fragment>
+        );
+    }
+    folderCollection() {
+        this.items = this.state.folderList.map((item) =>
+            <li className="foldersList">
+                <div className="liContainer" data-item={item}>
+
+                    {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
+                    <div className="child-featured">{item}</div>
+                    {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
+                </div>
+            </li>
+        );
+        return (
+            <ul className="foldersList">
+                {this.items}
+            </ul>
+        );
+    }
+
+    folderCollectionMoveFolders() {
+        this.items = this.state.folderList.map((item) =>
+            <li className="MoveFolderListItem childListItem folderChildVisible" data-sat="1" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
+                <div className="liContainer" data-item={item}>
+                    <Folder className="listItemIconsLeftt" />
+                    <div className="child-featured">{item}</div>
+                </div>
+            </li>
+        );
+        return (
+            <ul className="foldersListMoveFolder">
+                <li className="MoveFolderListItem parentListItem ActivefoldersListMoveFolder" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
+                    <div className="liContainer">
+                        {this.state.moveDocumentsListOpen ?
+                            <FolderOpen className="listItemIconsLeftt" /> :
+                            <Folder className="listItemIconsLeftt" />
+                        }   Documents
+              </div>
+                </li>
+                {this.items}
+            </ul>
+        );
+    }
+
+    onClickMoveFolderItems = (e, obj) => {
+        if (!obj.classList.contains("foldersListMoveFolder")) {
+            this.setState({
+                selectedFolderName: obj.textContent
+            });
+            if (obj.parentElement.classList.contains("parentListItem")) {
+                if ($(".folderChildVisible").attr("data-sat") == "1") {
+                    $(".folderChildVisible").hide();
+                    $(".folderChildVisible").attr("data-sat", "0");
+                    this.setState({
+                        moveDocumentsListOpen: false
+                    });
+                } else {
+                    $(".folderChildVisible").show();
+                    $(".folderChildVisible").attr("data-sat", "1");
+                    this.setState({
+                        moveDocumentsListOpen: true
+                    });
+                }
+                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+                obj.parentElement.classList.add("ActivefoldersListMoveFolder");
+
+            } else {
+                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+                obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
+            }
+
+        }
+    }
+
+    oncloseList = (e) => {
+        this.setState({
+            folderListControl: false
+        });
+    };
+
+    onCloseDlg = () => {
+        this.setState({
+            folderCreationDialog: false
+        });
+    }
+
+    onCloseDlgMoveDocuments = () => {
+        this.setState({
+            moveDocumentsToFolder: false
+        });
+    }
+
+    /* End All Methods related to folders */
+
     render() {
         const { documents } = this.props;
         return (
             <div className="documents-page">
+                {
+                    this.state.folderCreationDialog &&
+                    <SmallDialogTemplate
+                        title="New Folder"
+                        open={this.state.folderCreationDialog}
+                        onClose={this.onCloseDlg}
+                    >
+                        <NewFolder />
+                    </SmallDialogTemplate>
+                }
+
+                {
+                    this.state.moveDocumentsToFolder &&
+                    <SmallDialogTemplate
+                        title="Move documents to folder"
+                        open={this.state.moveDocumentsToFolder}
+                        onClose={this.onCloseDlgMoveDocuments}
+
+                    >
+                        <MoveToFolder folderItemsToMove={this.folderCollectionMoveFolders()} selectedFolderName={this.state.selectedFolderName} />
+                    </SmallDialogTemplate>
+                }
                 <div className="documents-folders">
-                    {/* FOLDERS COMPONENT TO BE INSERTED HERE BY HJ */}
+                    <ContentMenu
+                        onCreateNewFolder={this.onCreateNewFolder}
+                        oncloseList={(e) => this.oncloseList(e)}
+                        folderListItems={this.folderCollection()}
+                        folderBarItems={this.folderBarItems()} />
                 </div>
                 <div className="documents-area">
                     <div className="page-content">
                         <div className="page-actions">
                             <PageActions page="Documents"
+                                onMoveDocuments = {this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
