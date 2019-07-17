@@ -39,7 +39,8 @@ class UserDocumentsList extends Component {
             moveDocumentsListOpen: true,
             selectedFolderName: "Documents",
             folderBarItems: [],
-            folderContainerItems: []
+            folderContainerItems: [],
+            clickedMovedToFolderID:"0",
 
         }
     }
@@ -182,11 +183,15 @@ class UserDocumentsList extends Component {
     // }
 
 
-    MoveFolderItems = (documentName) => {
-        console.log('Folder selected');
-        // this.setState({
-        //     selectedFolderName : documentName
-        // });
+    MoveFolderItems = (documentName,documentId,obj) => {
+        debugger;
+        this.setState({
+            selectedFolderName : documentName
+        });
+        this.setState({
+            clickedMovedToFolderID: documentId
+        });
+        
         // if (!obj.classList.contains("foldersListMoveFolder")) {
         //     this.setState({
         //         selectedFolderName: obj.textContent
@@ -287,6 +292,8 @@ class UserDocumentsList extends Component {
                             documents={documents}
                             MoveFolderItems={this.MoveFolderItems}
                             selectedFolderName={this.state.selectedFolderName}
+                            clickedMovedToFolderID={this.state.clickedMovedToFolderID}
+                            
                         />
                     </SmallDialogTemplate>
                 }
