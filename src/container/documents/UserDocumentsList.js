@@ -10,7 +10,7 @@ import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete,FolderOpen } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
@@ -30,17 +30,28 @@ class UserDocumentsList extends Component {
             allDocumentsAreSelected: false,
             folderListControl: true,
             folderCreationDialog: false,
-            folderList: ['New Folder', 'New Folder 1', 'New Folder 2'],
+            folderListPath: "",
+            folderList: ['Apple', 'Bananna', 'Orange'],
             inEditModeFolderList: false,
             moveDocumentsToFolder: false,
             moveDocumentsListOpen: true,
             selectedFolderName: "Documents",
+            folderBarItems: [],
+            folderContainerItems: []
+
         }
     }
     componentDidMount() {
         this.props.getDocuments();
-        if (!this.state.folderListControl)
-            $(".folderbar").hide();
+
+        // if (!this.state.folderListControl)
+        //     $(".folderbar").hide();
+    }
+
+    componentDidUpdate() {
+        //debugger;
+        //this.onfolderCollection(this.props.documents);
+        // this.folderBarItems();
     }
 
     onChangeSearchValue = (searchVal) => {
@@ -119,30 +130,58 @@ class UserDocumentsList extends Component {
         });
     }
 
-    folderBarItems() {
+    folderBarItems = () => {
         return (
             <React.Fragment>
                 {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
                 <CreateNewFolder className="createnewfoldericon" onClick={this.onCreateNewFolder} />
             </React.Fragment>
         );
-    }
-    folderCollection() {
-        this.items = this.state.folderList.map((item) =>
-            <li className="foldersList">
-                <div className="liContainer" data-item={item}>
 
+        // this.setState({
+        //     folderBarItems
+        // })
+    }
+    onfolderCollection = (documents) => {
+        // 
+        // var items = null;
+        // var TempList = [];
+        // if (this.state.folderListPath == "") {
+        //     this.setState({
+        //         folderListPath: "defaulft"
+        //     });
+        // }
+
+        // this.props.documents.forEach(function (itm) {
+        //     TempList.push(itm);
+        // });
+
+        debugger;
+        this.items = documents.map((document) =>
+            <li className="foldersList" key={document.id}>
+                <div className="liContainer" data-item={document.id}>
                     {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
-                    <div className="child-featured">{item}</div>
+                    <div className="child-featured" onClick={(e, doc) => this.onOpenDetailFolder(e, document.subFolders)}>{document.name}</div>
                     {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
                 </div>
             </li>
         );
-        return (
+
+        var folderBarItems = (
             <ul className="foldersList">
                 {this.items}
             </ul>
         );
+
+            this.setState({
+                folderBarItems : folderBarItems
+            });
+    }
+
+    onOpenDetailFolder = (e, doc) => {
+       
+        this.onfolderCollection(doc);
+
     }
 
     folderCollectionMoveFolders() {
@@ -246,17 +285,23 @@ class UserDocumentsList extends Component {
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
-                    <ContentMenu
-                        onCreateNewFolder={this.onCreateNewFolder}
-                        oncloseList={(e) => this.oncloseList(e)}
-                        folderListItems={this.folderCollection()}
-                        folderBarItems={this.folderBarItems()} />
+                    {
+                        documents &&
+                        <ContentMenu
+                            onCreateNewFolder={this.onCreateNewFolder}
+                            oncloseList={(e) => this.oncloseList(e)}
+                            folderListItems={this.state.folderBarItems}
+                            folderBarItems={this.folderBarItems()}
+                        />
+                    }
+
+
                 </div>
                 <div className="documents-area">
                     <div className="page-content">
                         <div className="page-actions">
                             <PageActions page="Documents"
-                                onMoveDocuments = {this.onMoveDocumentsToFolder}
+                                onMoveDocuments={this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
@@ -278,13 +323,16 @@ class UserDocumentsList extends Component {
                                     {
                                         documents && documents.length > 0 && documents !== null ? (
                                             documents.map((document, index) => (
-                                                <UserDocumentListItem
-                                                    key={getGuid()}
-                                                    document={document}
-                                                    checked={this.getListItemCheckState(document)}
-                                                    onClickDocumentItem={this.onClickDocumentItem.bind(this, document)}
-                                                    onCheckSingleDocument={this.onCheckSingleDocument.bind(this, document)}
-                                                />
+                                                document.documents.length > 0 &&
+                                                document.documents.map((doc, index) => (
+                                                    <UserDocumentListItem
+                                                        key={getGuid()}
+                                                        document={doc}
+                                                        checked={this.getListItemCheckState(document)}
+                                                        onClickDocumentItem={this.onClickDocumentItem.bind(this, document)}
+                                                        onCheckSingleDocument={this.onCheckSingleDocument.bind(this, document)}
+                                                    />
+                                                ))
                                             ))
                                         ) : (
                                                 <div className="d-flex justify-content-center align-items-center py-50">

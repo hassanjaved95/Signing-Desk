@@ -268,7 +268,7 @@
 	color:#e2e2e2;
 	font-size:14px;
 	margin-bottom:10px !important;
-	cursor: pointer;
+	cursor: pointer !important;
 }
 .foldersList:hover{
 	color:#fff;
@@ -277,9 +277,11 @@
 .liContainer{
 	display: flex;
 	flex-direction: row;
+	cursor: pointer !important;
 }
 .child-featured{
    flex-grow:1;
+   cursor: pointer !important;
 }
 .folder-bar-edit-button{
 	color: #47b972;

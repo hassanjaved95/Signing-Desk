@@ -15,10 +15,10 @@ const UserDocumentListItem = (props) => {
         <li>
             <table className="row-container">
                 <tbody>
-                    <tr onMouseOver={() => { setTagVisibility(true) }} onMouseOut={() => { setTagVisibility(false) }}>
+                    <tr  onMouseOver={() => { setTagVisibility(true) }} onMouseOut={() => { setTagVisibility(false) }}>
                         <td className="selectable"><Checkbox color="primary" checked={props.checked} onChange={props.onCheckSingleDocument} /></td>
                         <td onClick={props.onClickDocumentItem}>
-                            {props.document.title}
+                            {props.document.name}
                         </td>
                         <td onClick={props.onClickDocumentItem}>
                             <i class="zmdi zmdi-circle" style={{ color: '#607d8b', fontSize: '10px', marginRight: '5px' }}></i>
