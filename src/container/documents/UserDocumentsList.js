@@ -6,11 +6,12 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
+import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete,FolderOpen } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
@@ -38,6 +39,30 @@ class UserDocumentsList extends Component {
             selectedFolderName: "Documents",
         }
     }
+
+    actions = [
+        {
+            text: 'Duplicate',
+            icon: '<i class="zmdi zmdi-copy"></i>',
+            handleClick: this.onDuplicateDocuments
+        },
+        {
+            text: 'Move',
+            icon: '<i class="zmdi zmdi-folder-star"></i>',
+            handleClick: this.onMoveDocumentsToFolder
+        },
+        {
+            text: 'Rename',
+            icon: '<i class="zmdi zmdi-edit"></i>',
+            handleClick: this.onRenameDocument
+        },
+        {
+            text: 'Delete',
+            icon: '<i class="zmdi zmdi-delete"></i>',
+            handleClick: this.onDeleteDocuments
+        }
+    ];
+
     componentDidMount() {
         this.props.getDocuments();
         if (!this.state.folderListControl)
@@ -67,6 +92,7 @@ class UserDocumentsList extends Component {
             allDocumentsAreSelected: checked
         })
     }
+
 
     onClickDocumentItem = (document, e) => {
         console.log('Document Row Clicked');
@@ -131,6 +157,7 @@ class UserDocumentsList extends Component {
             </React.Fragment>
         );
     }
+
     folderCollection() {
         this.items = this.state.folderList.map((item) =>
             <li className="foldersList">
@@ -223,6 +250,28 @@ class UserDocumentsList extends Component {
 
     /* End All Methods related to folders */
 
+    getScrollBarStyle() {
+        return {
+            height: "calc(100vh - 50px)"
+        };
+    }
+
+    onDuplicateDocuments = (doc) => {
+        console.log('onDuplicateDocuments');
+    }
+
+    onMoveDocuments = (doc) => {
+        console.log('onMoveDocuments');
+    }
+
+    onDeleteDocuments = (doc) => {
+        console.log('onDeleteDocuments');
+    }
+
+    onRenameDocument = (doc) => {
+        console.log('onRenameDocument');
+    }
+
     render() {
         const { documents } = this.props;
         return (
@@ -260,8 +309,10 @@ class UserDocumentsList extends Component {
                     <div className="page-content">
                         <div className="page-actions">
                             <PageActions page="Documents"
-                                onMoveDocuments = {this.onMoveDocumentsToFolder}
+                                onMoveDocuments={this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
+                                onDuplicateDocuments={this.onDuplicateDocuments}
+                                onDeleteDocuments={this.onDeleteDocuments}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
                                 onClickSearch={() => { this.setState({ search: true }) }}
@@ -277,6 +328,7 @@ class UserDocumentsList extends Component {
                                     />
                                 </ul>
                             </div>
+
                             <div className="content-detail">
                                 <ul className="list-unstyled m-0">
                                     {
@@ -289,7 +341,7 @@ class UserDocumentsList extends Component {
                                                     onClickDocumentItem={this.onClickDocumentItem.bind(this, document)}
                                                     onCheckSingleDocument={this.onCheckSingleDocument.bind(this, document)}
                                                     selectedDocuments={this.state.selectedDocuments.length}
-                                                    options={this.state.actions}
+                                                    options={this.actions}
                                                     onClickAction={this.handleRowAction}
                                                     onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
                                                 />
@@ -302,6 +354,7 @@ class UserDocumentsList extends Component {
                                     }
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                 </div>

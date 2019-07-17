@@ -32,6 +32,7 @@ const UserDocumentListItemHeader = (props) => (
                     <td>
                         Created
                     </td>
+                    <td style={{ width: '40px' }}></td>
                 </tr>
             </tbody>
         </table>

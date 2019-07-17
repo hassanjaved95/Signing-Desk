@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import Checkbox from "@material-ui/core/Checkbox";
+import MenuList from "Components/MenuList/MenuList";
+import IconButton from '@material-ui/core/IconButton';
+import MoreVert from '@material-ui/icons/MoreVert';
 
 const UserDocumentListItem = (props) => {
-    const [showTag, setTagVisibility] = useState(false);
+    const [showTag, setTagVisibility] = useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    function onClickMoreVert(e) {
+        setAnchorEl(e.currentTarget);
+    }
+
 
     return (
         <li>
             <table className="row-container">
                 <tbody>
-                    <tr onMouseOver={() => { setTagVisibility(true) }} onMouseOut={() => { setTagVisibility(false) }}>
+                    <tr>
                         <td className="selectable"><Checkbox color="primary" checked={props.checked} onChange={props.onCheckSingleDocument} /></td>
                         <td onClick={props.onClickDocumentItem}>
                             {props.document.title}
@@ -44,25 +53,23 @@ const UserDocumentListItem = (props) => {
                             {props.document.approversRecipients}
                         </td>
                         <td onClick={props.onClickDocumentItem}>
-                            <div className="flex-row">
-                                <div className="flex-auto-width-left">
-                                    <div className="flex-column">
-                                        <div>
-                                            [CREATOR NAME]
+                            <div className="flex-column">
+                                <div>
+                                    [CREATOR NAME]
                                     </div>
-                                        <div>
-                                            {props.document.created}
-                                        </div>
-                                    </div>
+                                <div>
+                                    {props.document.created}
                                 </div>
-
-                                {showTag && props.selectedDocuments == 0 && <div className="documents-action-btn-right" style={{pointerEvents:'none'}}>
-                                    <div className="flex-row flex-row-right flex-vertical-center">
-                                        <i class="zmdi zmdi-more-vert" style={{ fontSize: '18px', pointerEvents: 'none' }}></i>
-                                    </div>
-                                </div>}
                             </div>
+                        </td>
+                        <td style={{ width: '40px' }}>
+                            {showTag && props.selectedDocuments == 0 && <div className="documents-action-btn-right" >
+                                {/* <MenuList anchorEl={anchorEl} setAnchor={() => { setAnchorEl(false) }} items={props.options} /> */}
+                                <IconButton aria-label="MoreVert" onClick={onClickMoreVert}>
+                                    <MoreVert />
+                                </IconButton>
 
+                            </div>}
                         </td>
                     </tr>
                 </tbody>

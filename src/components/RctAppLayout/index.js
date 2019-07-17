@@ -86,17 +86,12 @@ class MainApp extends Component {
       return <div className="rct-page-content p-0">{children}</div>;
     }
     return (
-      <Scrollbars
-        className="rct-scroll"
-        autoHide
-        autoHideDuration={100}
-        style={this.getScrollBarStyle()}
-      >
-        <div className="rct-page-content">
-          {children}
-          {/* <Footer /> */}
-        </div>
-      </Scrollbars>
+
+      <div className="rct-page-content" style={{ overflow: 'hidden' }}>
+        {children}
+        {/* <Footer /> */}
+      </div>
+
     );
   }
 
