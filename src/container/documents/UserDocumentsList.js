@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
+import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
@@ -42,24 +43,39 @@ class UserDocumentsList extends Component {
 
         }
     }
+
+    actions = [
+        {
+            text: 'Duplicate',
+            icon: '<i class="zmdi zmdi-copy"></i>',
+            handleClick: this.onDuplicateDocuments
+        },
+        {
+            text: 'Move',
+            icon: '<i class="zmdi zmdi-folder-star"></i>',
+            handleClick: this.onMoveDocumentsToFolder
+        },
+        {
+            text: 'Rename',
+            icon: '<i class="zmdi zmdi-edit"></i>',
+            handleClick: this.onRenameDocument
+        },
+        {
+            text: 'Delete',
+            icon: '<i class="zmdi zmdi-delete"></i>',
+            handleClick: this.onDeleteDocuments
+        }
+    ];
+
     componentDidMount() {
         this.props.getDocuments();
-debugger;
-        // if (!this.state.folderListControl)
-        //     $(".folderbar").hide();
-    }
-
-    componentDidUpdate() {
-        //debugger;
-        //this.onfolderCollection(this.props.documents);
-        // this.folderBarItems();
     }
 
     onChangeSearchValue = (searchVal) => {
         console.log('Search By:', searchVal);
     }
 
-    selectAllContacts = (event, checked) => {
+    selectAllDocuments = (event, checked) => {
         event.stopPropagation();
 
         const { documents } = this.props;
@@ -78,6 +94,7 @@ debugger;
             allDocumentsAreSelected: checked
         })
     }
+
 
     onClickDocumentItem = (document, e) => {
         console.log('Document Row Clicked');
@@ -108,6 +125,7 @@ debugger;
     handleRowAction = () => {
         console.log('Arguments', arguments);
     }
+
     /* All methods related to Folders */
 
     onCloseFolderListControl = () => {
@@ -134,116 +152,71 @@ debugger;
         });
     }
 
-    folderBarItems = () => {
-        this.onfolderCollection(this.props.documents);
-        return (
-            <React.Fragment>
-                {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
-                <CreateNewFolder className="createnewfoldericon" onClick={this.onCreateNewFolder} />
-            </React.Fragment>
-        );
 
+    // onfolderCollection = (documents) => {
+    //     this.items = documents.map((document) =>
+    //         <li className="foldersList" key={document.id}>
+    //             <div className="liContainer" data-item={document.id}>
+    //                 {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
+    //                 <div className="child-featured" onClick={(e, doc) => this.onOpenDetailFolder(e, document.subFolders)}>{document.name}</div>
+    //                 {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
+    //             </div>
+    //         </li>
+    //     );
+
+    //     var folderBarItems = (
+    //         <ul className="foldersList">
+    //             {this.items}
+    //         </ul>
+    //     );
+
+    //     this.setState({
+    //         folderBarItems: folderBarItems
+    //     });
+    // }
+
+    // onOpenDetailFolder = (e, doc) => {
+
+    //     this.onfolderCollection(doc);
+
+    // }
+
+
+    MoveFolderItems = (documentName) => {
+        console.log('Folder selected');
         // this.setState({
-        //     folderBarItems
-        // })
-    }
-    onfolderCollection(documents){
-        // 
-        // var items = null;
-        // var TempList = [];
-        // if (this.state.folderListPath == "") {
-        //     this.setState({
-        //         folderListPath: "defaulft"
-        //     });
-        // }
-
-        // this.props.documents.forEach(function (itm) {
-        //     TempList.push(itm);
+        //     selectedFolderName : documentName
         // });
+        // if (!obj.classList.contains("foldersListMoveFolder")) {
+        //     this.setState({
+        //         selectedFolderName: obj.textContent
+        //     });
+        //     if (obj.parentElement.classList.contains("parentListItem")) {
+        //         if ($(".folderChildVisible").attr("data-sat") == "1") {
+        //             $(".folderChildVisible").hide();
+        //             $(".folderChildVisible").attr("data-sat", "0");
+        //             this.setState({
+        //                 moveDocumentsListOpen: false
+        //             });
+        //         } else {
+        //             $(".folderChildVisible").show();
+        //             $(".folderChildVisible").attr("data-sat", "1");
+        //             this.setState({
+        //                 moveDocumentsListOpen: true
+        //             });
+        //         }
+        //         $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+        //         obj.parentElement.classList.add("ActivefoldersListMoveFolder");
 
-        debugger;
-        this.items = documents.map((document) =>
-            <li className="foldersList" key={document.id}>
-                <div className="liContainer" data-item={document.id}>
-                    {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
-                    <div className="child-featured" onClick={(e, doc) => this.onOpenDetailFolder(e, document.subFolders)}>{document.name}</div>
-                    {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
-                </div>
-            </li>
-        );
+        //     } else {
+        //         $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
+        //         obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
+        //     }
 
-        var folderBarItems = (
-            <ul className="foldersList">
-                {this.items}
-            </ul>
-        );
-
-        this.setState({
-            folderBarItems: folderBarItems
-        });
+       // }
     }
 
-    onOpenDetailFolder = (e, doc) => {
-
-        this.onfolderCollection(doc);
-
-    }
-
-    folderCollectionMoveFolders() {
-        this.items = this.state.folderList.map((item) =>
-            <li className="MoveFolderListItem childListItem folderChildVisible" data-sat="1" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
-                <div className="liContainer" data-item={item}>
-                    <Folder className="listItemIconsLeftt" />
-                    <div className="child-featured">{item}</div>
-                </div>
-            </li>
-        );
-        return (
-            <ul className="foldersListMoveFolder">
-                <li className="MoveFolderListItem parentListItem ActivefoldersListMoveFolder" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
-                    <div className="liContainer">
-                        {this.state.moveDocumentsListOpen ?
-                            <FolderOpen className="listItemIconsLeftt" /> :
-                            <Folder className="listItemIconsLeftt" />
-                        }   Documents
-              </div>
-                </li>
-                {this.items}
-            </ul>
-        );
-    }
-
-    onClickMoveFolderItems = (e, obj) => {
-        if (!obj.classList.contains("foldersListMoveFolder")) {
-            this.setState({
-                selectedFolderName: obj.textContent
-            });
-            if (obj.parentElement.classList.contains("parentListItem")) {
-                if ($(".folderChildVisible").attr("data-sat") == "1") {
-                    $(".folderChildVisible").hide();
-                    $(".folderChildVisible").attr("data-sat", "0");
-                    this.setState({
-                        moveDocumentsListOpen: false
-                    });
-                } else {
-                    $(".folderChildVisible").show();
-                    $(".folderChildVisible").attr("data-sat", "1");
-                    this.setState({
-                        moveDocumentsListOpen: true
-                    });
-                }
-                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-                obj.parentElement.classList.add("ActivefoldersListMoveFolder");
-
-            } else {
-                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-                obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
-            }
-
-        }
-    }
-
-    oncloseList = (e) => {
+    onCloseList = (e) => {
         this.setState({
             folderListControl: false
         });
@@ -263,6 +236,28 @@ debugger;
 
     /* End All Methods related to folders */
 
+    getScrollBarStyle() {
+        return {
+            height: "calc(100vh - 50px)"
+        };
+    }
+
+    onDuplicateDocuments = (doc) => {
+        console.log('onDuplicateDocuments');
+    }
+
+    onMoveDocuments = (doc) => {
+        console.log('onMoveDocuments');
+    }
+
+    onDeleteDocuments = (doc) => {
+        console.log('onDeleteDocuments');
+    }
+
+    onRenameDocument = (doc) => {
+        console.log('onRenameDocument');
+    }
+
     render() {
 
         const { documents } = this.props;
@@ -278,7 +273,7 @@ debugger;
                         <NewFolder />
                     </SmallDialogTemplate>
                 }
-                
+
                 {
                     this.state.moveDocumentsToFolder &&
                     <SmallDialogTemplate
@@ -287,7 +282,12 @@ debugger;
                         onClose={this.onCloseDlgMoveDocuments}
 
                     >
-                        <MoveToFolder folderItemsToMove={this.folderCollectionMoveFolders()} selectedFolderName={this.state.selectedFolderName} />
+                        <MoveToFolder
+                            moveDocumentsListOpen={this.state.moveDocumentsListOpen}
+                            documents={documents}
+                            MoveFolderItems={this.MoveFolderItems}
+                            selectedFolderName={this.state.selectedFolderName}
+                        />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
@@ -295,13 +295,13 @@ debugger;
                         documents &&
                         <ContentMenu
                             onCreateNewFolder={this.onCreateNewFolder}
-                            oncloseList={(e) => this.oncloseList(e)}
-                            folderListItems={this.state.folderBarItems}
-                            folderBarItems={this.folderBarItems()}
+                            oncloseList={this.onCloseList}
+                            inEditModeFolderList={this.state.inEditModeFolderList}
+                            onEditFolderList={this.onEditFolderList}
+                            documents={documents}
+                            onCreateNewFolder={this.onCreateNewFolder}
                         />
                     }
-
-
                 </div>
                 <div className="documents-area">
                     <div className="page-content">
@@ -309,6 +309,8 @@ debugger;
                             <PageActions page="Documents"
                                 onMoveDocuments={this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
+                                onDuplicateDocuments={this.onDuplicateDocuments}
+                                onDeleteDocuments={this.onDeleteDocuments}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
                                 onClickSearch={() => { this.setState({ search: true }) }}
@@ -319,11 +321,12 @@ debugger;
                             <div className="content-head header-shadow head-container">
                                 <ul className="list-unstyled m-0">
                                     <UserDocumentListItemHeader
-                                        onSelectAll={this.selectAllContacts}
+                                        onSelectAll={this.selectAllDocuments}
                                         checked={this.state.allDocumentsAreSelected}
                                     />
                                 </ul>
                             </div>
+
                             <div className="content-detail">
                                 <ul className="list-unstyled m-0">
                                     {
@@ -342,7 +345,6 @@ debugger;
                                                         onClickAction={this.handleRowAction}
                                                         onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
                                                     />
-
                                                 ))
                                             ))
                                         ) : (
@@ -353,6 +355,7 @@ debugger;
                                     }
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                 </div>
