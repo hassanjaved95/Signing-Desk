@@ -15,6 +15,7 @@ const UserDocumentListItem = (props) => {
 
     return (
         <li>
+            <div className="flex-row"></div>
             <table className="row-container">
                 <tbody>
                     <tr  onMouseOver={() => { setTagVisibility(true) }} onMouseOut={() => { setTagVisibility(false) }}>

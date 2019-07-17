@@ -69,22 +69,13 @@ class UserDocumentsList extends Component {
 
     componentDidMount() {
         this.props.getDocuments();
-
-        // if (!this.state.folderListControl)
-        //     $(".folderbar").hide();
-    }
-
-    componentDidUpdate() {
-        //debugger;
-        //this.onfolderCollection(this.props.documents);
-        // this.folderBarItems();
     }
 
     onChangeSearchValue = (searchVal) => {
         console.log('Search By:', searchVal);
     }
 
-    selectAllContacts = (event, checked) => {
+    selectAllDocuments = (event, checked) => {
         event.stopPropagation();
 
         const { documents } = this.props;
@@ -134,6 +125,7 @@ class UserDocumentsList extends Component {
     handleRowAction = () => {
         console.log('Arguments', arguments);
     }
+
     /* All methods related to Folders */
 
     onCloseFolderListControl = () => {
@@ -160,33 +152,8 @@ class UserDocumentsList extends Component {
         });
     }
 
-    folderBarItems = () => {
-        return (
-            <React.Fragment>
-                {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
-                <CreateNewFolder className="createnewfoldericon" onClick={this.onCreateNewFolder} />
-            </React.Fragment>
-        );
 
-        // this.setState({
-        //     folderBarItems
-        // })
-    }
     onfolderCollection = (documents) => {
-        // 
-        // var items = null;
-        // var TempList = [];
-        // if (this.state.folderListPath == "") {
-        //     this.setState({
-        //         folderListPath: "defaulft"
-        //     });
-        // }
-
-        // this.props.documents.forEach(function (itm) {
-        //     TempList.push(itm);
-        // });
-
-        debugger;
         this.items = documents.map((document) =>
             <li className="foldersList" key={document.id}>
                 <div className="liContainer" data-item={document.id}>
@@ -268,7 +235,7 @@ class UserDocumentsList extends Component {
         }
     }
 
-    oncloseList = (e) => {
+    onCloseList = (e) => {
         this.setState({
             folderListControl: false
         });
@@ -341,13 +308,13 @@ class UserDocumentsList extends Component {
                         documents &&
                         <ContentMenu
                             onCreateNewFolder={this.onCreateNewFolder}
-                            oncloseList={(e) => this.oncloseList(e)}
-                            folderListItems={this.state.folderBarItems}
-                            folderBarItems={this.folderBarItems()}
+                            oncloseList={this.onCloseList}
+                            inEditModeFolderList={this.state.inEditModeFolderList}
+                            onEditFolderList={this.onEditFolderList}
+                            documents={documents}
+                            onCreateNewFolder={this.onCreateNewFolder}
                         />
                     }
-
-
                 </div>
                 <div className="documents-area">
                     <div className="page-content">
@@ -367,7 +334,7 @@ class UserDocumentsList extends Component {
                             <div className="content-head header-shadow head-container">
                                 <ul className="list-unstyled m-0">
                                     <UserDocumentListItemHeader
-                                        onSelectAll={this.selectAllContacts}
+                                        onSelectAll={this.selectAllDocuments}
                                         checked={this.state.allDocumentsAreSelected}
                                     />
                                 </ul>

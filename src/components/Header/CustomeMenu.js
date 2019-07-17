@@ -38,8 +38,8 @@ const StyledMenuItem = withStyles(theme => ({
         //     '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
         //         color: theme.palette.common.white,
         //     },
-        height:10,
-        
+        height: 10,
+
         //},
     },
 }))(MenuItem);
@@ -58,14 +58,14 @@ const StyledMenuItem = withStyles(theme => ({
 //     },
 // })(Button);
 
-var state={
-    showDialog:false,
+var state = {
+    showDialog: false,
 };
 export default function CustomizedMenus(props) {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    
+
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -79,8 +79,19 @@ export default function CustomizedMenus(props) {
 
     function evaluatePathName() {
         var currentPathName = location.pathname.split("/")[location.pathname.split("/").length - 1];
-        currentPathName = currentPathName == "dashboard" ? "DOCUENTS" : currentPathName;
-        return currentPathName = "NEW " + currentPathName;
+        switch (currentPathName) {
+            case 'dashboard':
+                currentPathName = "NEW DOCUMENTS";
+                break;
+            case 'documents':
+                currentPathName = "CREATE";
+                break;
+            default:
+                currentPathName = "NEW DOCUMENTS";
+                break
+        }
+        //currentPathName = currentPathName == "dashboard" ? "DOCUENTS" : currentPathName;
+        return currentPathName;
     }
 
     function isDocument() {
@@ -94,7 +105,7 @@ export default function CustomizedMenus(props) {
 
     if (isDocument()) {
         return (
-            
+
             <div>
                 <Button
                     aria-controls="customized-menu"
@@ -114,14 +125,14 @@ export default function CustomizedMenus(props) {
                     onClose={handleClose}
                 >
                     <StyledMenuItem onClick={handleClose}>
-                    
-                         {/* <ListItemIcon>
+
+                        {/* <ListItemIcon>
                             <FileUpload />
                         </ListItemIcon> */}
                         {/* <ListItemText primary="Upload Document"  /> */}
-                        <DocumentUpload open={state.showDialog}  />
+                        <DocumentUpload open={state.showDialog} />
                     </StyledMenuItem>
-                     {/*<StyledMenuItem>
+                    {/*<StyledMenuItem>
               <ListItemIcon>
                 <Add />
               </ListItemIcon>
