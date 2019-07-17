@@ -44,7 +44,7 @@ class UserDocumentsList extends Component {
     }
     componentDidMount() {
         this.props.getDocuments();
-
+debugger;
         // if (!this.state.folderListControl)
         //     $(".folderbar").hide();
     }
@@ -135,6 +135,7 @@ class UserDocumentsList extends Component {
     }
 
     folderBarItems = () => {
+        this.onfolderCollection(this.props.documents);
         return (
             <React.Fragment>
                 {this.state.inEditModeFolderList ? <div className="folder-bar-edit-button" onClick={this.onEditFolderList}> Done </div> : <Edit className="editicon" onClick={this.onEditFolderList} />}
@@ -146,7 +147,7 @@ class UserDocumentsList extends Component {
         //     folderBarItems
         // })
     }
-    onfolderCollection = (documents) => {
+    onfolderCollection(documents){
         // 
         // var items = null;
         // var TempList = [];
@@ -263,6 +264,7 @@ class UserDocumentsList extends Component {
     /* End All Methods related to folders */
 
     render() {
+
         const { documents } = this.props;
         return (
             <div className="documents-page">
@@ -276,7 +278,7 @@ class UserDocumentsList extends Component {
                         <NewFolder />
                     </SmallDialogTemplate>
                 }
-
+                
                 {
                     this.state.moveDocumentsToFolder &&
                     <SmallDialogTemplate
