@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import classnames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
-import Avatar from "@material-ui/core/Avatar";
-
-// helpers functions
-import { getGuid } from "Helpers/helpers";
-
-
 
 const UserDocumentListItem = (props) => {
     const [showTag, setTagVisibility] = useState(false);
+
     return (
         <li>
             <table className="row-container">
@@ -34,7 +27,7 @@ const UserDocumentListItem = (props) => {
                                             </span>
                                         </div>
                                     ))} */}
-                                {showTag && <i class="zmdi zmdi-label" style={
+                                {showTag && !props.checked && <i class="zmdi zmdi-label" style={
                                     {
                                         transform: 'rotate(90deg)',
                                         fontSize: '18px',
@@ -62,13 +55,12 @@ const UserDocumentListItem = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="documents-action-btn-right">
+
+                                {showTag && props.selectedDocuments == 0 && <div className="documents-action-btn-right" style={{pointerEvents:'none'}}>
                                     <div className="flex-row flex-row-right flex-vertical-center">
-                                        {showTag &&
-                                            <i class="zmdi zmdi-apps" style={{ fontSize: '18px', pointerEvents: 'none' }}></i>
-                                        }
+                                        <i class="zmdi zmdi-more-vert" style={{ fontSize: '18px', pointerEvents: 'none' }}></i>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
 
                         </td>

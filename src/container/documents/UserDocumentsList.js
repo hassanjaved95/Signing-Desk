@@ -28,6 +28,7 @@ class UserDocumentsList extends Component {
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
+            actions: ["Duplicate", "Move", "Rename", "Delete"],
             folderListControl: true,
             folderCreationDialog: false,
             folderListPath: "",
@@ -104,6 +105,9 @@ class UserDocumentsList extends Component {
         return state;
     }
 
+    handleRowAction = () => {
+        console.log('Arguments', arguments);
+    }
     /* All methods related to Folders */
 
     onCloseFolderListControl = () => {
@@ -173,13 +177,13 @@ class UserDocumentsList extends Component {
             </ul>
         );
 
-            this.setState({
-                folderBarItems : folderBarItems
-            });
+        this.setState({
+            folderBarItems: folderBarItems
+        });
     }
 
     onOpenDetailFolder = (e, doc) => {
-       
+
         this.onfolderCollection(doc);
 
     }
@@ -328,10 +332,15 @@ class UserDocumentsList extends Component {
                                                     <UserDocumentListItem
                                                         key={getGuid()}
                                                         document={doc}
-                                                        checked={this.getListItemCheckState(document)}
-                                                        onClickDocumentItem={this.onClickDocumentItem.bind(this, document)}
-                                                        onCheckSingleDocument={this.onCheckSingleDocument.bind(this, document)}
+                                                        checked={this.getListItemCheckState(doc)}
+                                                        onClickDocumentItem={this.onClickDocumentItem.bind(this, doc)}
+                                                        onCheckSingleDocument={this.onCheckSingleDocument.bind(this, doc)}
+                                                        selectedDocuments={this.state.selectedDocuments.length}
+                                                        options={this.state.actions}
+                                                        onClickAction={this.handleRowAction}
+                                                        onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
                                                     />
+
                                                 ))
                                             ))
                                         ) : (
