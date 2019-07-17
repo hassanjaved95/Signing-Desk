@@ -298,8 +298,9 @@ class DocumentListing extends Component {
             <ul className="list-unstyled m-0">
               {documents && documents.length > 0 && documents !== null ? (
                 documents.map((document, key) => (
+                  document.documents.length>0 &&
                   <DocumentListItem
-                    document={document}
+                    document={document.documents}
                     handleMarkAsStar={e => this.handleMarkAsStar(e, document)}
                     key={key}
                     getTaskLabelNames={() =>
