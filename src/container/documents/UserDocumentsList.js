@@ -39,7 +39,8 @@ class UserDocumentsList extends Component {
             moveDocumentsListOpen: true,
             selectedFolderName: "Documents",
             folderBarItems: [],
-            folderContainerItems: []
+            folderContainerItems: [],
+            clickedMovedToFolderID:"0",
 
         }
     }
@@ -152,87 +153,15 @@ class UserDocumentsList extends Component {
         });
     }
 
-
-    onfolderCollection = (documents) => {
-        this.items = documents.map((document) =>
-            <li className="foldersList" key={document.id}>
-                <div className="liContainer" data-item={document.id}>
-                    {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
-                    <div className="child-featured" onClick={(e, doc) => this.onOpenDetailFolder(e, document.subFolders)}>{document.name}</div>
-                    {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
-                </div>
-            </li>
-        );
-
-        var folderBarItems = (
-            <ul className="foldersList">
-                {this.items}
-            </ul>
-        );
-
+    MoveFolderItems = (documentName,documentId,obj) => {
         this.setState({
-            folderBarItems: folderBarItems
+            selectedFolderName : documentName
         });
-    }
-
-    onOpenDetailFolder = (e, doc) => {
-
-        this.onfolderCollection(doc);
-
-    }
-
-    folderCollectionMoveFolders() {
-        this.items = this.state.folderList.map((item) =>
-            <li className="MoveFolderListItem childListItem folderChildVisible" data-sat="1" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
-                <div className="liContainer" data-item={item}>
-                    <Folder className="listItemIconsLeftt" />
-                    <div className="child-featured">{item}</div>
-                </div>
-            </li>
-        );
-        return (
-            <ul className="foldersListMoveFolder">
-                <li className="MoveFolderListItem parentListItem ActivefoldersListMoveFolder" onClick={(e) => this.onClickMoveFolderItems(e, e.target)}>
-                    <div className="liContainer">
-                        {this.state.moveDocumentsListOpen ?
-                            <FolderOpen className="listItemIconsLeftt" /> :
-                            <Folder className="listItemIconsLeftt" />
-                        }   Documents
-              </div>
-                </li>
-                {this.items}
-            </ul>
-        );
-    }
-
-    onClickMoveFolderItems = (e, obj) => {
-        if (!obj.classList.contains("foldersListMoveFolder")) {
-            this.setState({
-                selectedFolderName: obj.textContent
-            });
-            if (obj.parentElement.classList.contains("parentListItem")) {
-                if ($(".folderChildVisible").attr("data-sat") == "1") {
-                    $(".folderChildVisible").hide();
-                    $(".folderChildVisible").attr("data-sat", "0");
-                    this.setState({
-                        moveDocumentsListOpen: false
-                    });
-                } else {
-                    $(".folderChildVisible").show();
-                    $(".folderChildVisible").attr("data-sat", "1");
-                    this.setState({
-                        moveDocumentsListOpen: true
-                    });
-                }
-                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-                obj.parentElement.classList.add("ActivefoldersListMoveFolder");
-
-            } else {
-                $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-                obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
-            }
-
-        }
+        this.setState({
+            clickedMovedToFolderID: documentId
+        });
+        
+        
     }
 
     onCloseList = (e) => {
@@ -278,6 +207,7 @@ class UserDocumentsList extends Component {
     }
 
     render() {
+
         const { documents } = this.props;
         return (
             <div className="documents-page">
@@ -300,7 +230,14 @@ class UserDocumentsList extends Component {
                         onClose={this.onCloseDlgMoveDocuments}
 
                     >
-                        <MoveToFolder folderItemsToMove={this.folderCollectionMoveFolders()} selectedFolderName={this.state.selectedFolderName} />
+                        <MoveToFolder
+                            moveDocumentsListOpen={this.state.moveDocumentsListOpen}
+                            documents={documents}
+                            MoveFolderItems={this.MoveFolderItems}
+                            selectedFolderName={this.state.selectedFolderName}
+                            clickedMovedToFolderID={this.state.clickedMovedToFolderID}
+                            
+                        />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">

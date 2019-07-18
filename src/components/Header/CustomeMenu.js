@@ -103,7 +103,7 @@ export default function CustomizedMenus(props) {
         return currentPathName == "contacts" ? true : false;
     }
 
-    if (isDocument()) {
+    //if (isDocument()) {
         return (
 
             <div>
@@ -149,56 +149,56 @@ export default function CustomizedMenus(props) {
 
         );
 
-    }
-    else if (isContacts()) {
-        return (
-            <div>
-                <Button
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleClick}
-                    style={{ textTransform: 'uppercase' }}
-                >
-                    {evaluatePathName()} <ArrowDropDown />
-                </Button>
-                <StyledMenu className="headerMenuOpener"
-                    id="customized-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                    <StyledMenuItem>
-                        <ListItemIcon>
-                            <Add />
-                        </ListItemIcon>
-                        <ListItemText primary="Create" />
-                    </StyledMenuItem>
-                    {/* <StyledMenuItem>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Drafts" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </StyledMenuItem> */}
-                </StyledMenu>
-            </div>
+   // }
+    // else if (isContacts()) {
+    //     return (
+    //         <div>
+    //             <Button
+    //                 aria-controls="customized-menu"
+    //                 aria-haspopup="true"
+    //                 variant="contained"
+    //                 color="primary"
+    //                 onClick={handleClick}
+    //                 style={{ textTransform: 'uppercase' }}
+    //             >
+    //                 {evaluatePathName()} <ArrowDropDown />
+    //             </Button>
+    //             <StyledMenu className="headerMenuOpener"
+    //                 id="customized-menu"
+    //                 anchorEl={anchorEl}
+    //                 keepMounted
+    //                 open={Boolean(anchorEl)}
+    //                 onClose={handleClose}
+    //             >
+    //                 <StyledMenuItem>
+    //                     <ListItemIcon>
+    //                         <Add />
+    //                     </ListItemIcon>
+    //                     <ListItemText primary="Create" />
+    //                 </StyledMenuItem>
+    //                 {/* <StyledMenuItem>
+    //           <ListItemIcon>
+    //             <DraftsIcon />
+    //           </ListItemIcon>
+    //           <ListItemText primary="Drafts" />
+    //         </StyledMenuItem>
+    //         <StyledMenuItem>
+    //           <ListItemIcon>
+    //             <InboxIcon />
+    //           </ListItemIcon>
+    //           <ListItemText primary="Inbox" />
+    //         </StyledMenuItem> */}
+    //             </StyledMenu>
+    //         </div>
 
-        );
+    //     );
 
-    }
-    else {
-        return (
-            <div></div>
-        );
-    }
+    // }
+    // else {
+    //     return (
+    //         <div></div>
+    //     );
+    // }
 
 
 }
