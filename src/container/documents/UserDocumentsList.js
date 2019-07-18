@@ -153,38 +153,7 @@ class UserDocumentsList extends Component {
         });
     }
 
-
-    // onfolderCollection = (documents) => {
-    //     this.items = documents.map((document) =>
-    //         <li className="foldersList" key={document.id}>
-    //             <div className="liContainer" data-item={document.id}>
-    //                 {this.state.inEditModeFolderList ? <Edit className="listItemIconsLeft editicon" onClick={this.onCreateNewFolder} /> : <Folder className="listItemIconsLeft hild-featured" />}
-    //                 <div className="child-featured" onClick={(e, doc) => this.onOpenDetailFolder(e, document.subFolders)}>{document.name}</div>
-    //                 {this.state.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
-    //             </div>
-    //         </li>
-    //     );
-
-    //     var folderBarItems = (
-    //         <ul className="foldersList">
-    //             {this.items}
-    //         </ul>
-    //     );
-
-    //     this.setState({
-    //         folderBarItems: folderBarItems
-    //     });
-    // }
-
-    // onOpenDetailFolder = (e, doc) => {
-
-    //     this.onfolderCollection(doc);
-
-    // }
-
-
     MoveFolderItems = (documentName,documentId,obj) => {
-        debugger;
         this.setState({
             selectedFolderName : documentName
         });
@@ -192,33 +161,7 @@ class UserDocumentsList extends Component {
             clickedMovedToFolderID: documentId
         });
         
-        // if (!obj.classList.contains("foldersListMoveFolder")) {
-        //     this.setState({
-        //         selectedFolderName: obj.textContent
-        //     });
-        //     if (obj.parentElement.classList.contains("parentListItem")) {
-        //         if ($(".folderChildVisible").attr("data-sat") == "1") {
-        //             $(".folderChildVisible").hide();
-        //             $(".folderChildVisible").attr("data-sat", "0");
-        //             this.setState({
-        //                 moveDocumentsListOpen: false
-        //             });
-        //         } else {
-        //             $(".folderChildVisible").show();
-        //             $(".folderChildVisible").attr("data-sat", "1");
-        //             this.setState({
-        //                 moveDocumentsListOpen: true
-        //             });
-        //         }
-        //         $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-        //         obj.parentElement.classList.add("ActivefoldersListMoveFolder");
-
-        //     } else {
-        //         $(".MoveFolderListItem").removeClass("ActivefoldersListMoveFolder");
-        //         obj.parentElement.parentElement.classList.add("ActivefoldersListMoveFolder");
-        //     }
-
-       // }
+        
     }
 
     onCloseList = (e) => {
