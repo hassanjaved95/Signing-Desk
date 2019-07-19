@@ -7,9 +7,24 @@ import { getGuid } from "Helpers/helpers";
 import { Search } from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 
+const loadAddTagButton = (props) => (
+    <div className= {props.writtenTags == "" ? "add-tag-button-Inactive" : "add-tag-button"}>
+        <span className="btn-span">+ Add Tag</span> <span className="text-span">{props.writtenTags}</span>
+    </div>
+)
 
-
-const lodTags = (props, document, tag) => (
+const loadTagsInput = (props) => (
+    <div className="tagsInput">
+        <Search />
+        <TextField style={{ borderBottom: '0px' }}
+            className="tag-text" 
+            placeholder="Add a Tag" 
+            onChange={props.onTagsInputChange}
+            onClick={props.onTagInputClick}
+            />
+    </div>
+)
+const loadTags = (props, document, tag) => (
     <span key={getGuid()}>
         {tag}
         <span className="remove-tag">X</span>
@@ -54,12 +69,14 @@ const UserDocumentListItem = (props) => {
                                     props.ShowSearchTags &&
 
                                     <div className="search-tag-ul" onMouseLeave={props.onCloseTagIcon}>
-                                        <div className="tagsInput">
-                                            <Search /> <TextField style={{borderBottom:'0px'}} className="tag-text" placeholder="Add a Tag" />
-                                        </div>
+                                        {loadTagsInput(props)}
                                         <div className="ul">
-                                            {props.document.tags.map(lodTags.bind(this, props, props.document))}
+                                            {props.document.tags.map(loadTags.bind(this, props, props.document))}
                                         </div>
+                                        {
+                                            loadAddTagButton(props)
+                                        }
+
                                     </div>
                                 }
                             </div>

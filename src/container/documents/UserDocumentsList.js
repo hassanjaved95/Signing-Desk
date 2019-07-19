@@ -23,6 +23,7 @@ import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 
 
 class UserDocumentsList extends Component {
+    searchTimerId = null;
     constructor(props) {
         super(props);
         this.state = {
@@ -43,6 +44,8 @@ class UserDocumentsList extends Component {
             clickedMovedToFolderID:"0",
             showSearchTags: false,
             clickedSearchTagKey:"",
+            showTagAddButton: false,
+            writtenTags:"",
 
         }
     }
@@ -225,7 +228,23 @@ class UserDocumentsList extends Component {
       }
 
       handleTagInputChange = (e) =>{
-          console.log('tag change');
+        e.preventDefault();
+        if (this.searchTimerId) {
+            clearTimeout(this.searchTimerId);
+        }
+
+        var tagVal = e.target.value;
+        this.searchTimerId = setTimeout(() => {
+            console.log('handleTagInputChange:', tagVal);
+            this.setState({
+                showAddTagButton: true,
+                writtenTags: tagVal
+            });
+        }, 1000);
+      }
+
+      onTagInputClick = (e) =>{
+        e.target.value = this.state.writtenTags;
       }
 
     /* End search Tag Methods */
@@ -324,6 +343,9 @@ class UserDocumentsList extends Component {
                                                         onClickTagIcon={this.onClickTagIcon.bind(this,doc)}
                                                         onCloseTagIcon={this.onCloseTagIcon.bind(this)}
                                                         onTagsInputChange={this.handleTagInputChange.bind(this)}
+                                                        showAddTagButton={this.state.showTagAddButton}
+                                                        writtenTags={this.state.writtenTags}
+                                                        onTagInputClick={this.onTagInputClick.bind(this)}
                                                         
                                                     />
                                                 ))

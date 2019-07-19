@@ -417,6 +417,7 @@
     position: fixed;
 	outline: 0;
 	padding:5px;
+	cursor: default;
 	
 }
 .search-tag-ul .ul{
@@ -446,4 +447,24 @@
 	margin-left:8px;
 	color:red;
 	cursor: pointer !important;
+}
+.add-tag-button{
+	background-color: #f1eeee;
+	
+}
+.add-tag-button-Inactive{
+	display: none;
+}
+
+.add-tag-button .btn-span{
+	color: green;
+	cursor: pointer;
+	background-color: transparent;
+}
+
+.add-tag-button .text-span{
+	color: green;
+	cursor: default;
+	background-color: transparent;
+	font-weight: bold;
 }
