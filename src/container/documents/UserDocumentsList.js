@@ -224,6 +224,10 @@ class UserDocumentsList extends Component {
           });
       }
 
+      handleTagInputChange = (e) =>{
+          console.log('tag change');
+      }
+
     /* End search Tag Methods */
 
     render() {
@@ -319,6 +323,7 @@ class UserDocumentsList extends Component {
                                                         ShowSearchTags={this.state.clickedSearchTagKey==doc.id}
                                                         onClickTagIcon={this.onClickTagIcon.bind(this,doc)}
                                                         onCloseTagIcon={this.onCloseTagIcon.bind(this)}
+                                                        onTagsInputChange={this.handleTagInputChange.bind(this)}
                                                         
                                                     />
                                                 ))

@@ -4,12 +4,15 @@ import MenuList from "Components/MenuList/MenuList";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import { getGuid } from "Helpers/helpers";
-import {Search} from '@material-ui/icons';
+import { Search } from '@material-ui/icons';
+import TextField from '@material-ui/core/TextField';
+
 
 
 const lodTags = (props, document, tag) => (
     <span key={getGuid()}>
         {tag}
+        <span className="remove-tag">X</span>
     </span>
 )
 
@@ -52,7 +55,7 @@ const UserDocumentListItem = (props) => {
 
                                     <div className="search-tag-ul" onMouseLeave={props.onCloseTagIcon}>
                                         <div className="tagsInput">
-                                        <Search />   <input type="text" value="" />
+                                            <Search /> <TextField style={{borderBottom:'0px'}} className="tag-text" placeholder="Add a Tag" />
                                         </div>
                                         <div className="ul">
                                             {props.document.tags.map(lodTags.bind(this, props, props.document))}

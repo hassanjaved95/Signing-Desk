@@ -424,14 +424,26 @@
 }
 .search-tag-ul span{
 	padding: 5px;
-	background-color: #c0bbbb;
+	background-color: #f1eeee;
 	margin:5px;
 	border-radius: 3px;
+	cursor: default;
 }
 .tagsInput{
-	border-bottom: 1px solid black;
+	border-bottom: 0px solid black;
+	max-width: 250px;
+	max-height: 240px;
+	overflow-y: auto;
+	
+	
 }
 
-// .tagsInput input{
-// 	border: 0px;
-// }
+.tagsInput .tag-text{
+	border: 0px;
+	//width: 197px;
+}
+.remove-tag{
+	margin-left:8px;
+	color:red;
+	cursor: pointer !important;
+}
