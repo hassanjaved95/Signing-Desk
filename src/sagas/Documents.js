@@ -11,7 +11,7 @@ const response = {
       "name": "Archive",
       "status": 0,
       "documents": [{
-        "id": "a3dcfb1c-77dd-4f59-9499-b118146279fc",
+        "id": "77dd-4f59-9499-b118146279fc",
         "name": "My Upload Document Archive",
         "description": "My uploaded document description Archive",
         "hasAttachment": false,
@@ -20,6 +20,11 @@ const response = {
         "verificationResult": null,
         "locked": false,
         "isDeleted": false,
+        tags: [
+          'One',
+          'two',
+          'three'
+        ],
         "lastAccessedOn": "2019-07-15T16:47:38",
         "documentFiles": [
           {
@@ -45,6 +50,11 @@ const response = {
             "hasAttachment": false,
             "hasFormFields": false,
             "status": 0,
+            tags: [
+              'One',
+              'two',
+              'three'
+            ],
             "verificationResult": null,
             "locked": false,
             "isDeleted": false,
@@ -79,6 +89,11 @@ const response = {
           "hasAttachment": false,
           "hasFormFields": false,
           "status": 0,
+          tags: [
+            'One',
+            'two',
+            'three'
+          ],
           "verificationResult": null,
           "locked": false,
           "isDeleted": false,
@@ -102,6 +117,11 @@ const response = {
           "hasAttachment": false,
           "hasFormFields": false,
           "status": 1,
+          tags: [
+            'One',
+            'two',
+            'three'
+          ],
           "verificationResult": null,
           "locked": false,
           "isDeleted": false,

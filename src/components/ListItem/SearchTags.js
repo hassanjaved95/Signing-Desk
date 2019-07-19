@@ -14,7 +14,12 @@ const SearchTags = (props) => {
                 </span>
 
                 <div>
-                {props.children}
+                <div className="search-tag-ul" onMouseLeave={(e) => this.onCloseSearchTags(e)}>
+                                    <ul onMouseOver={props.onShowSearchTags}>
+                                        <li onMouseOver={props.onShowSearchTags}>test</li>
+                                        <li onMouseOver={props.onShowSearchTags}>test2</li>
+                                    </ul>
+                                </div>
                 </div> 
                 
 

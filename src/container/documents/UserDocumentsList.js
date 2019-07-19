@@ -41,6 +41,8 @@ class UserDocumentsList extends Component {
             folderBarItems: [],
             folderContainerItems: [],
             clickedMovedToFolderID:"0",
+            showSearchTags: false,
+            clickedSearchTagKey:"",
 
         }
     }
@@ -206,6 +208,24 @@ class UserDocumentsList extends Component {
         console.log('onRenameDocument');
     }
 
+    /*Search Tag Methods */
+
+    onCloseTagIcon = (e) => {
+        this.setState({
+          showSearchTags: false,
+          clickedSearchTagKey:"0"
+        });
+    }
+
+    onClickTagIcon = (document,e) => {
+        this.setState({
+            showSearchTags: true,
+            clickedSearchTagKey: document.id
+          });
+      }
+
+    /* End search Tag Methods */
+
     render() {
 
         const { documents } = this.props;
@@ -294,6 +314,12 @@ class UserDocumentsList extends Component {
                                                         options={this.state.actions}
                                                         onClickAction={this.handleRowAction}
                                                         onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
+                                                        menuRelationKey={doc.id}
+                                                        clickedSearchTagID={this.state.clickedSearchTagKey}
+                                                        ShowSearchTags={this.state.clickedSearchTagKey==doc.id}
+                                                        onClickTagIcon={this.onClickTagIcon.bind(this,doc)}
+                                                        onCloseTagIcon={this.onCloseTagIcon.bind(this)}
+                                                        
                                                     />
                                                 ))
                                             ))

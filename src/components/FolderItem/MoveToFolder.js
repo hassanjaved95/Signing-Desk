@@ -3,7 +3,9 @@ import { Folder, FolderOpen } from '@material-ui/icons';
 
 
 const unfoldSubFolders = (props, document) => (
-    <li className={document.id === props.clickedMovedToFolderID ? "MoveFolderListItem childListItem folderChildVisible ActivefoldersListMoveFolder" : "MoveFolderListItem childListItem folderChildVisible"}  data-id={document.id} onClick={props.MoveFolderItems.bind(this,document.name,document.id)}>
+    <li className={document.id === props.clickedMovedToFolderID ? 
+    "MoveFolderListItem childListItem folderChildVisible ActivefoldersListMoveFolder" :
+    "MoveFolderListItem childListItem folderChildVisible"}  data-id={document.id} onClick={props.MoveFolderItems.bind(this,document.name,document.id)}>
         <div className="liContainer">
             <Folder className="listItemIconsLeftt" />
             <div className="child-featured">{document.name}</div>
