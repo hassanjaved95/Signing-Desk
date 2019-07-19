@@ -3,6 +3,7 @@ import {
   GET_DOCUMENTS_SUCCESS,
   GET_DOCUMENTS_FAILURE,
   SEARCH_DOCUMENTS,
+  SELECTED_FOLDER,
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS,
@@ -27,6 +28,11 @@ export const getDocumentsFailure = error => ({
 
 export const searchDocuments = (payload) => ({
   type: SEARCH_DOCUMENTS,
+  payload
+});
+
+export const setSelectedFolder = (payload) => ({
+  type: SELECTED_FOLDER,
   payload
 });
 
