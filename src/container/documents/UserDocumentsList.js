@@ -53,22 +53,22 @@ class UserDocumentsList extends Component {
     actions = [
         {
             text: 'Duplicate',
-            icon: '<i class="zmdi zmdi-copy"></i>',
+            icon: '<i className="zmdi zmdi-copy"></i>',
             handleClick: this.onDuplicateDocuments
         },
         {
             text: 'Move',
-            icon: '<i class="zmdi zmdi-folder-star"></i>',
+            icon: '<i className="zmdi zmdi-folder-star"></i>',
             handleClick: this.onMoveDocumentsToFolder
         },
         {
             text: 'Rename',
-            icon: '<i class="zmdi zmdi-edit"></i>',
+            icon: '<i className="zmdi zmdi-edit"></i>',
             handleClick: this.onRenameDocument
         },
         {
             text: 'Delete',
-            icon: '<i class="zmdi zmdi-delete"></i>',
+            icon: '<i className="zmdi zmdi-delete"></i>',
             handleClick: this.onDeleteDocuments
         }
     ];

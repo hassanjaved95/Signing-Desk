@@ -9,7 +9,7 @@ const ContactsActions = (props) => (
             {props.selectedContacts == 0 && !props.search && (props.page || "")}
             {props.selectedContacts == 0 && props.search && (
                 <div className="flex-row">
-                    <div><i class="zmdi zmdi-search"></i></div>
+                    <div><i className="zmdi zmdi-search"></i></div>
                     <div> <TextField
                         type="search"
                         placeholder="Search"
@@ -25,27 +25,27 @@ const ContactsActions = (props) => (
                     <React.Fragment>
                         <div>
                             <Button variant="contained" color="primary" onClick={props.onNewContact} >
-                                <i class="zmdi zmdi-account-add"></i>
-                                <span style={{ marginLeft: '5px' }}> NEW CONTACT </span>
+                                <i className="zmdi zmdi-account-add"></i>
+                                <span style={{ marginLeft: '5px' }}> NEW CONTACT</span>
                             </Button>
                         </div>
                         <div className="actn-search-container" >
-                            <Button variant="contained" color="white" onClick={props.onClickSearch}>
-                                <i class="zmdi zmdi-search"></i>
+                            <Button variant="contained" style={{color: "white"}}onClick={props.onClickSearch}>
+                                <i className="zmdi zmdi-search"></i>
                             </Button>
                         </div>
                     </React.Fragment>
                 )}
                 {props.selectedContacts == 0 && props.search && (<div className="actn-search-container">
-                    <Button variant="contained" color="white" onClick={props.onSearchClose}>
-                        <i class="zmdi zmdi-close"></i>
+                    <Button variant="contained" style={{color: "white"}} onClick={props.onSearchClose}>
+                        <i className="zmdi zmdi-close"></i>
                     </Button>
                 </div>)
                 }
                 {props.selectedContacts > 0 && (
                     <div>
                         <Button variant="contained" color="secondary" onClick={props.onDeleteContacts} >
-                            <i class="zmdi zmdi-delete"></i>
+                            <i className="zmdi zmdi-delete"></i>
                             <span style={{ marginLeft: '5px' }}> DELETE </span>
                         </Button>
                     </div>
@@ -63,7 +63,7 @@ const DocumentsActions = (props) => (
             {props.selectedDocuments == 0 && !props.search && (props.page || "")}
             {props.selectedDocuments == 0 && props.search && (
                 <div className="flex-row">
-                    <div><i class="zmdi zmdi-search"></i></div>
+                    <div><i className="zmdi zmdi-search"></i></div>
                     <div> <TextField
                         type="search"
                         placeholder="Search"
@@ -79,15 +79,15 @@ const DocumentsActions = (props) => (
                     <React.Fragment>
 
                         <div className="actn-search-container" >
-                            <Button variant="contained" color="white" onClick={props.onClickSearch}>
-                                <i class="zmdi zmdi-search"></i>
+                            <Button variant="contained" style={{color: "white"}} onClick={props.onClickSearch}>
+                                <i className="zmdi zmdi-search"></i>
                             </Button>
                         </div>
                     </React.Fragment>
                 )}
                 {props.selectedDocuments == 0 && props.search && (<div className="actn-search-container">
-                    <Button variant="contained" color="white" onClick={props.onSearchClose}>
-                        <i class="zmdi zmdi-close"></i>
+                    <Button variant="contained" style={{color: "white"}} onClick={props.onSearchClose}>
+                        <i className="zmdi zmdi-close"></i>
                     </Button>
                 </div>)
                 }
@@ -95,21 +95,21 @@ const DocumentsActions = (props) => (
                     <React.Fragment>
                         <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onDuplicateDocuments} >
-                                <i class="zmdi zmdi-copy"></i>
+                                <i className="zmdi zmdi-copy"></i>
                                 <span style={{ marginLeft: '5px' }}> Duplicate </span>
                             </Button>
                         </div>
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onMoveDocuments} >
-                                <i class="zmdi zmdi-folder-star"></i>
+                                <i className="zmdi zmdi-folder-star"></i>
                                 <span style={{ marginLeft: '5px' }}> Move </span>
                             </Button>
                         </div>
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="secondary" onClick={props.onDeleteDocuments} >
-                                <i class="zmdi zmdi-delete"></i>
+                                <i className="zmdi zmdi-delete"></i>
                                 <span style={{ marginLeft: '5px' }}> DELETE </span>
                             </Button>
                         </div>

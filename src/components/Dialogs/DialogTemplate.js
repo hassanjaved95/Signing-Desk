@@ -17,7 +17,7 @@ const DialogTemplate = (props) => {
                         </div>
                         <div className="flex-split-2-right">
                             <Button >
-                                <i class="zmdi zmdi-close" onClick={props.onClose} style={{ fontSize: '24px' }}></i>
+                                <i className="zmdi zmdi-close" onClick={props.onClose} style={{ fontSize: '24px' }}></i>
                             </Button>
                         </div>
                     </div>

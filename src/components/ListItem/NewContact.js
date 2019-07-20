@@ -210,8 +210,8 @@ function fwdRefContact(props, ref) {
 
                         <div className="dlg-new-contact-address" onClick={() => { setAddressVisibility(!isAddressVisible) }}>
                             <div className="flex-row flex-row-center">
-                                Address {isAddressVisible && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
-                                {!isAddressVisible && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                Address {isAddressVisible && <i className="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                {!isAddressVisible && <i className="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
                             </div>
                         </div>
 
@@ -313,8 +313,8 @@ function fwdRefContact(props, ref) {
 
                         <div className="dlg-new-contact-address" onClick={() => { setCertVisibility(!isCertVisible) }}>
                             <div className="flex-row flex-row-center">
-                                Certificate {isCertVisible && <i class="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
-                                {!isCertVisible && <i class="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                Certificate {isCertVisible && <i className="zmdi zmdi-caret-up" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
+                                {!isCertVisible && <i className="zmdi zmdi-caret-down" style={{ fontSize: '24px', marginLeft: '10px' }}></i>}
                             </div>
                         </div>
 

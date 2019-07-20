@@ -51,15 +51,14 @@ const UserDocumentListItem = (props) => {
                             {props.document.name}
                         </td>
                         <td /* onClick={props.onClickDocumentItem} */>
-                            <i class="zmdi zmdi-circle" style={{ color: '#607d8b', fontSize: '10px', marginRight: '5px' }}></i>
+                            <i className="zmdi zmdi-circle" style={{ color: '#607d8b', fontSize: '10px', marginRight: '5px' }}></i>
                             {props.document.status}
                         </td>
                         <td   >
-                            <div className="searchTagIcon" onClick={props.onClickTagIcon}
-                                menuRelationKey={props.document.id}>
-                                <span class="icon-M-1lY">
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor" class="Icon">
-                                        <path fill-rule="evenodd" d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">
+                            <div className="searchTagIcon" onClick={props.onClickTagIcon}>
+                                <span  className="icon-M-1lY">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"  className="Icon">
+                                        <path style={{fillRule: 'evenodd'}} d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">
                                         </path>
                                     </svg>
                                 </span>
@@ -80,7 +79,7 @@ const UserDocumentListItem = (props) => {
                                     </div>
                                 }
                             </div>
-                            {/* {showTag && !props.checked && <i class="zmdi zmdi-label" style={
+                            {/* {showTag && !props.checked && <i className="zmdi zmdi-label" style={
                                     {
                                         transform: 'rotate(90deg)',
                                         fontSize: '18px',

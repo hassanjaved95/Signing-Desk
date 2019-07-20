@@ -20,8 +20,8 @@ const ContactsListItemHeader = (props) => (
                                 Name
                             </div>
                             <div className="split-td split-content-right sort-icon" >
-                                {props.sortBy.nameAsc && <i class="zmdi zmdi-caret-up"></i>}
-                                {props.sortBy.nameAsc == false && <i class="zmdi zmdi-caret-down"></i>}
+                                {props.sortBy.nameAsc && <i className="zmdi zmdi-caret-up"></i>}
+                                {props.sortBy.nameAsc == false && <i className="zmdi zmdi-caret-down"></i>}
                             </div>
                         </div>
                     </td>
@@ -31,8 +31,8 @@ const ContactsListItemHeader = (props) => (
                                 Email
                             </div>
                             <div className="split-td split-content-right sort-icon">
-                                {props.sortBy.emailAsc && <i class="zmdi zmdi-caret-up"></i>}
-                                {props.sortBy.emailAsc == false && <i class="zmdi zmdi-caret-down"></i>}
+                                {props.sortBy.emailAsc && <i className="zmdi zmdi-caret-up"></i>}
+                                {props.sortBy.emailAsc == false && <i className="zmdi zmdi-caret-down"></i>}
                             </div>
                         </div>
                     </td>
