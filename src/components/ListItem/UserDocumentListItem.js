@@ -8,7 +8,7 @@ import { Search } from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 
 const loadAddTagButton = (props) => (
-    <div className= {props.writtenTags == "" ? "add-tag-button-Inactive" : "add-tag-button"}>
+    <div className={props.writtenTags == "" ? "add-tag-button-Inactive" : "add-tag-button"}>
         <span className="btn-span">+ Add Tag</span> <span className="text-span">{props.writtenTags}</span>
     </div>
 )
@@ -17,11 +17,11 @@ const loadTagsInput = (props) => (
     <div className="tagsInput">
         <Search />
         <TextField style={{ borderBottom: '0px' }}
-            className="tag-text" 
-            placeholder="Add a Tag" 
+            className="tag-text"
+            placeholder="Add a Tag"
             onChange={props.onTagsInputChange}
             onClick={props.onTagInputClick}
-            />
+        />
     </div>
 )
 const loadTags = (props, document, tag) => (
@@ -31,13 +31,45 @@ const loadTags = (props, document, tag) => (
     </span>
 )
 
+const loadContextMenu = (props) => (
+    <div className="row-context-menu-content">
+        <ul>
+            <li>
+                <div className="flex-row flex-vertical-center">
+                    <div className="flex-row-left"> <i className="zmdi zmdi-copy icon-size"></i></div>
+                    <div style={{ marginLeft: '5px' }}>Duplicate</div>
+                </div>
+            </li>
+            <li>
+                <div className="flex-row flex-vertical-center">
+                    <div className="flex-row-left"> <i className="zmdi zmdi-folder-star icon-size"></i></div>
+                    <div style={{ marginLeft: '5px' }}>Move</div>
+                </div>
+            </li>
+            <li>
+                <div className="flex-row flex-vertical-center">
+                    <div className="flex-row-left"> <i className="zmdi zmdi-edit icon-size"></i></div>
+                    <div style={{ marginLeft: '5px' }}>Rename</div>
+                </div>
+            </li>
+            <li>
+                <div className="flex-row flex-vertical-center">
+                    <div className="flex-row-left"> <i className="zmdi zmdi-delete icon-size"></i></div>
+                    <div style={{ marginLeft: '5px' }}>Delete</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+)
+
+
 const UserDocumentListItem = (props) => {
     const [showTag, setTagVisibility] = useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    function onClickMoreVert(e) {
-        setAnchorEl(e.currentTarget);
-    }
+    // function onClickMoreVert(e) {
+    //    // setAnchorEl(e.currentTarget);
+    // }
 
 
     return (
@@ -56,9 +88,9 @@ const UserDocumentListItem = (props) => {
                         </td>
                         <td   >
                             <div className="searchTagIcon" onClick={props.onClickTagIcon}>
-                                <span  className="icon-M-1lY">
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"  className="Icon">
-                                        <path style={{fillRule: 'evenodd'}} d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">
+                                <span className="icon-M-1lY">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor" className="Icon">
+                                        <path style={{ fillRule: 'evenodd' }} d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">
                                         </path>
                                     </svg>
                                 </span>
@@ -106,13 +138,20 @@ const UserDocumentListItem = (props) => {
                             </div>
                         </td>
                         <td style={{ width: '40px' }}>
-                            {showTag && props.selectedDocuments == 0 && <div className="documents-action-btn-right" >
-                                {/* <MenuList anchorEl={anchorEl} setAnchor={() => { setAnchorEl(false) }} items={props.options} /> */}
-                                <IconButton aria-label="MoreVert" onClick={onClickMoreVert}>
-                                    <MoreVert />
-                                </IconButton>
+                            {props.selectedDocuments == 0 &&
+                                <div className="documents-action-btn-right" onClick={props.onClickMoreVert} >
+                                    {/*  <MenuList anchorEl={anchorEl} setAnchor={() => { setAnchorEl(false) }} items={props.options} /> */}
+                                    <IconButton aria-label="MoreVert" >
+                                        <MoreVert />
+                                    </IconButton>
 
-                            </div>}
+                                </div>}
+                            {
+                                props.showRowContextMenu &&
+                                <div className="row-context-menu" onMouseLeave={props.closeContextMenu}>
+                                    {loadContextMenu(props)}
+                                </div>
+                            }
                         </td>
                     </tr>
                 </tbody>

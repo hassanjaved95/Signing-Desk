@@ -428,7 +428,7 @@
 	color:#e2e2e2;
 }
 
-.search-tag-ul{
+.search-tag-ul, .row-context-menu{
 	//border: 1px solid #e2e2e2 ! important;
 	width: 235px;
 	margin-left: -100px;
@@ -442,6 +442,7 @@
 	outline: 0;
 	padding:5px;
 	cursor: default;
+	z-index: 100;
 	
 }
 .search-tag-ul .ul{
@@ -491,4 +492,22 @@
 	cursor: default;
 	background-color: transparent;
 	font-weight: bold;
+}
+
+.row-context-menu{
+	width: 100px;
+	padding: 5px 10px 5px 10px; 
+	color:black;
+}
+.change-status{
+	padding: 0;
+	border-top: 1px solid #f5f3f3;
+}
+
+.row-context-menu ul{
+	line-height: 2rem;
+}
+
+.row-context-menu ul li:hover{
+	background-color: #e2e2e2;
 }

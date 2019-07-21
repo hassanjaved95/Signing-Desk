@@ -44,6 +44,7 @@ class UserDocumentsList extends Component {
             clickedMovedToFolderID:"0",
             showSearchTags: false,
             clickedSearchTagKey:"",
+            clickedRowContextMenuKey:"",
             showTagAddButton: false,
             writtenTags:"",
 
@@ -249,6 +250,24 @@ class UserDocumentsList extends Component {
 
     /* End search Tag Methods */
 
+    /* Start Methods row context menu */
+
+    onCloseRowContextMenu = (e) => {
+        this.setState({
+          showSearchTags: false,
+          clickedRowContextMenuKey:"0"
+        });
+    }
+
+    onClickMoreVert = (document,e) => {
+        console.log('context menu clicked ' + document.id);
+        this.setState({
+            showSearchTags: true,
+            clickedRowContextMenuKey: document.id
+          });
+      }
+    /* End methods row context menu */
+
     render() {
 
         const { documents } = this.props;
@@ -346,7 +365,9 @@ class UserDocumentsList extends Component {
                                                         showAddTagButton={this.state.showTagAddButton}
                                                         writtenTags={this.state.writtenTags}
                                                         onTagInputClick={this.onTagInputClick.bind(this)}
-                                                        
+                                                        showRowContextMenu={this.state.clickedRowContextMenuKey==doc.id}
+                                                        onClickMoreVert={this.onClickMoreVert.bind(this,doc)}
+                                                        closeContextMenu={this.onCloseRowContextMenu.bind(this)}
                                                     />
                                                 ))
                                             ))
