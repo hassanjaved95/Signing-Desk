@@ -24,7 +24,7 @@ const UserDocumentListItemHeader = (props) => (
                         Tags
                     </td>
                     <td>
-                        Grand Total
+                        Description
                     </td>
                     <td>
                         Approvers / Recipients
