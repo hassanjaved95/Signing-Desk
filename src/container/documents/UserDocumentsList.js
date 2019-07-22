@@ -20,6 +20,8 @@ import MoveToFolder from "Components/FolderItem/MoveToFolder";
 import PageActions from "Components/ListItem/PageActions";
 import { getGuid } from "Helpers/helpers";
 import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
+import FolderMenu from 'Components/FolderMenu/FolderMenu';
+
 
 
 class UserDocumentsList extends Component {
@@ -273,6 +275,7 @@ class UserDocumentsList extends Component {
         const { documents } = this.props;
         return (
             <div className="documents-page">
+               
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -292,14 +295,15 @@ class UserDocumentsList extends Component {
                         onClose={this.onCloseDlgMoveDocuments}
 
                     >
-                        <MoveToFolder
+                        {/* <MoveToFolder
                             moveDocumentsListOpen={this.state.moveDocumentsListOpen}
                             documents={documents}
                             MoveFolderItems={this.MoveFolderItems}
                             selectedFolderName={this.state.selectedFolderName}
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
-                        />
+                        /> */}
+                        <FolderMenu data={documents}  />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
