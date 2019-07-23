@@ -3,6 +3,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
 import { getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
+import API from 'Api';
 
 const response = {
   data: [
@@ -469,8 +470,12 @@ const documents = {
   ]
 }
 
-const getDocumentsRequest = () => {
+const getDocumentsRequest = async () => {
   //return documents; 
+  // return response;
+  var response = await API.get('documents/all', {id: 1});
+  console.log('Documents response:', response);
+
   return response;
 };
 const deleteDocumentsRequest = () => {
