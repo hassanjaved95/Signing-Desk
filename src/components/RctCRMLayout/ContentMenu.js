@@ -26,7 +26,14 @@ const ContentMenu = (props) => (
         </div>
         <div className="menu-content">
             <ul className="foldersList">
-                {props.documents.map(createDocumentItem.bind(this, props))}
+                {
+                    //props.selectedForlders && props.selectedForlders[0] &&
+                    // props.selectedForlders.map(createDocumentItem.bind(this, props))
+                    props.selectedForlders.map((folder,index)=>(
+                        folder.subFolders && folder.subFolders.length > 0 &&
+                        folder.subFolders.map(createDocumentItem.bind(this, props))
+                    ))
+                }
             </ul>
         </div>
     </React.Fragment>

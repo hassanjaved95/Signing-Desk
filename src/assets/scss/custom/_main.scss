@@ -169,20 +169,39 @@
 	margin-top: 17px !important;
 	// z-index: 20 !important;
 }
+.dropZonee .dz-image{
+	height:60px !important;
+	border: 1px solid #8e8787;
+	border-radius: 7px !important;
+}
 .dropZonee .dz-error-message   {
-	// display: none !important;
-	//left:35% !important;
-
+	margin-top: -50px !important;
 }
 .dropZonee .dz-success-mark{
 	// display: none !important;
-	left:35% !important;
+	left:40% !important;
+	margin-top: -38px !important;
+}
+
+.dropZonee .dz-success-mark svg{
+	height: 30px !important;
 }
 
 .dropZonee .dz-error-mark{
 	// display: none !important;
-	left:35% !important;
+	left:40% !important;
+	margin-top: -38px !important;
 
+}
+.dropZonee .dz-details{
+	padding-top: 0.5rem !important;
+}
+.dropZonee .dz-size{
+	margin-bottom: 0.5rem !important;
+}
+
+.dropZonee .dz-error-mark svg{
+	height: 30px !important;
 }
 
 .dropzone .dz-message{
@@ -288,6 +307,16 @@
 .menu-content{
 	margin-top:30px;
 	color: #fff;
+}
+
+.menu-content-move ul li div{
+	background-color: #fff !important;
+}
+
+.menu-content-move ul li {
+
+	border-bottom: 1px solid red;
+
 }
 .foldersList{
 	font-family: Graphik,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif !important;

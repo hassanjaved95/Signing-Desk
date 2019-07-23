@@ -20,6 +20,8 @@ import MoveToFolder from "Components/FolderItem/MoveToFolder";
 import PageActions from "Components/ListItem/PageActions";
 import { getGuid } from "Helpers/helpers";
 import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
+import FolderMenu from 'Components/FolderMenu/FolderMenu';
+
 
 
 class UserDocumentsList extends Component {
@@ -194,7 +196,7 @@ class UserDocumentsList extends Component {
     }
 
     onClickShowFolderDocuments = (folder) => {
-        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
+        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false }); 
     }
 
     /* End All Methods related to folders */
@@ -279,9 +281,11 @@ class UserDocumentsList extends Component {
 
     render() {
 
-        const { documents } = this.props;
+        const { documents, selectedFolder } = this.props;
+        
         return (
             <div className="documents-page">
+               
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -301,14 +305,15 @@ class UserDocumentsList extends Component {
                         onClose={this.onCloseDlgMoveDocuments}
 
                     >
-                        <MoveToFolder
+                        {/* <MoveToFolder
                             moveDocumentsListOpen={this.state.moveDocumentsListOpen}
                             documents={documents}
                             MoveFolderItems={this.MoveFolderItems}
                             selectedFolderName={this.state.selectedFolderName}
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
-
-                        />
+                            
+                        /> */}
+                        <FolderMenu data={documents}  />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
@@ -319,7 +324,7 @@ class UserDocumentsList extends Component {
                             oncloseList={this.onCloseList}
                             inEditModeFolderList={this.state.inEditModeFolderList}
                             onEditFolderList={this.onEditFolderList}
-                            documents={documents}
+                            selectedForlders={selectedFolder}
                             onCreateNewFolder={this.onCreateNewFolder}
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                         />

@@ -44,7 +44,7 @@ function setSelectedFolder(state, folderId, levelUp) {
     return {
       ...state,
       folderLevel: state.folderLevel.concat(state.selectedFolder),
-      selectedFolder: state.selectedFolder.find(sf => sf.id === folderId)
+      selectedFolder: [state.selectedFolder.find(sf => sf.id === folderId)]
     }
   } else {
     return { ...state }
