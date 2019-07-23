@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments } from "Actions";
+import { getDocuments, setSelectedFolder } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -43,12 +43,12 @@ class UserDocumentsList extends Component {
             selectedFolderName: "Documents",
             folderBarItems: [],
             folderContainerItems: [],
-            clickedMovedToFolderID:"0",
+            clickedMovedToFolderID: "0",
             showSearchTags: false,
-            clickedSearchTagKey:"",
-            clickedRowContextMenuKey:"",
+            clickedSearchTagKey: "",
+            clickedRowContextMenuKey: "",
             showTagAddButton: false,
-            writtenTags:"",
+            writtenTags: "",
 
         }
     }
@@ -92,10 +92,12 @@ class UserDocumentsList extends Component {
 
         var ids = [];
         if (checked) {
-            ids = documents.reduce((arr, currObj) => {
-                arr.push(currObj.id);
-                return arr;
-            }, []);
+            documents.forEach(folder => {
+                folder.documents.reduce((arr, currObj) => {
+                    arr.push(currObj.id);
+                    return arr;
+                }, ids);
+            })
         }
 
         this.setState({
@@ -117,8 +119,11 @@ class UserDocumentsList extends Component {
             selectedDocuments.push(document.id)
         }
 
-        var allDocumentsAreSelected = this.props.documents &&
-            this.props.documents.length == selectedDocuments.length;
+        var totalDocs = 0;
+        if (this.props.documents && this.props.documents.length > 0) {
+            this.props.documents.forEach(folder => { totalDocs += folder.documents.length });
+        }
+        var allDocumentsAreSelected = totalDocs == selectedDocuments.length;
 
         this.setState({
             selectedDocuments: selectedDocuments,
@@ -161,15 +166,15 @@ class UserDocumentsList extends Component {
         });
     }
 
-    MoveFolderItems = (documentName,documentId,obj) => {
+    MoveFolderItems = (documentName, documentId, obj) => {
         this.setState({
-            selectedFolderName : documentName
+            selectedFolderName: documentName
         });
         this.setState({
             clickedMovedToFolderID: documentId
         });
-        
-        
+
+
     }
 
     onCloseList = (e) => {
@@ -188,6 +193,10 @@ class UserDocumentsList extends Component {
         this.setState({
             moveDocumentsToFolder: false
         });
+    }
+
+    onClickShowFolderDocuments = (folder) => {
+        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false }); 
     }
 
     /* End All Methods related to folders */
@@ -218,19 +227,19 @@ class UserDocumentsList extends Component {
 
     onCloseTagIcon = (e) => {
         this.setState({
-          showSearchTags: false,
-          clickedSearchTagKey:"0"
+            showSearchTags: false,
+            clickedSearchTagKey: "0"
         });
     }
 
-    onClickTagIcon = (document,e) => {
+    onClickTagIcon = (document, e) => {
         this.setState({
             showSearchTags: true,
             clickedSearchTagKey: document.id
-          });
-      }
+        });
+    }
 
-      handleTagInputChange = (e) =>{
+    handleTagInputChange = (e) => {
         e.preventDefault();
         if (this.searchTimerId) {
             clearTimeout(this.searchTimerId);
@@ -244,11 +253,11 @@ class UserDocumentsList extends Component {
                 writtenTags: tagVal
             });
         }, 1000);
-      }
+    }
 
-      onTagInputClick = (e) =>{
+    onTagInputClick = (e) => {
         e.target.value = this.state.writtenTags;
-      }
+    }
 
     /* End search Tag Methods */
 
@@ -256,23 +265,24 @@ class UserDocumentsList extends Component {
 
     onCloseRowContextMenu = (e) => {
         this.setState({
-          showSearchTags: false,
-          clickedRowContextMenuKey:"0"
+            showSearchTags: false,
+            clickedRowContextMenuKey: "0"
         });
     }
 
-    onClickMoreVert = (document,e) => {
+    onClickMoreVert = (document, e) => {
         console.log('context menu clicked ' + document.id);
         this.setState({
             showSearchTags: true,
             clickedRowContextMenuKey: document.id
-          });
-      }
+        });
+    }
     /* End methods row context menu */
 
     render() {
 
-        const { documents } = this.props;
+        const { documents, selectedFolder } = this.props;
+        
         return (
             <div className="documents-page">
                
@@ -314,8 +324,9 @@ class UserDocumentsList extends Component {
                             oncloseList={this.onCloseList}
                             inEditModeFolderList={this.state.inEditModeFolderList}
                             onEditFolderList={this.onEditFolderList}
-                            documents={documents}
+                            selectedForlders={selectedFolder}
                             onCreateNewFolder={this.onCreateNewFolder}
+                            onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                         />
                     }
                 </div>
@@ -362,15 +373,15 @@ class UserDocumentsList extends Component {
                                                         onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
                                                         menuRelationKey={doc.id}
                                                         clickedSearchTagID={this.state.clickedSearchTagKey}
-                                                        ShowSearchTags={this.state.clickedSearchTagKey==doc.id}
-                                                        onClickTagIcon={this.onClickTagIcon.bind(this,doc)}
+                                                        ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
+                                                        onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
                                                         onCloseTagIcon={this.onCloseTagIcon.bind(this)}
                                                         onTagsInputChange={this.handleTagInputChange.bind(this)}
                                                         showAddTagButton={this.state.showTagAddButton}
                                                         writtenTags={this.state.writtenTags}
                                                         onTagInputClick={this.onTagInputClick.bind(this)}
-                                                        showRowContextMenu={this.state.clickedRowContextMenuKey==doc.id}
-                                                        onClickMoreVert={this.onClickMoreVert.bind(this,doc)}
+                                                        showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
+                                                        onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
                                                         closeContextMenu={this.onCloseRowContextMenu.bind(this)}
                                                     />
                                                 ))
@@ -394,13 +405,15 @@ class UserDocumentsList extends Component {
 
 // map state to props
 const mapStateToProps = ({ documents }) => {
+    console.log('documents store:', documents);
     return documents;
 };
 
 export default withRouter(
     connect(mapStateToProps,
         {
-            getDocuments
+            getDocuments,
+            setSelectedFolder
         }
     )(UserDocumentsList)
 );
