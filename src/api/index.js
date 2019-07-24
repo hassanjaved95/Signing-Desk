@@ -8,7 +8,7 @@ var axiosObj = axios.create({
 });
 
 var token = '';
-var user = localStorage.getItem('user');
+var user = JSON.parse(localStorage.getItem('user') || "{}");
 if (user) {
    const profile = user.profile;
    if (profile) {
@@ -17,6 +17,12 @@ if (user) {
 }
 
 axiosObj.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+axiosObj.interceptors.request.use((config) => {
+   console.log('Request config:', config);
+   return config;
+}, (error) => {
+   return Promise.reject(error);
+});
 
 var methods = {
    get: async function (endPoint, data, token) {

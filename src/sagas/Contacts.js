@@ -3,6 +3,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import { GET_CONTACTS, DELETE_CONTACTS } from "Actions/types";
 
 import { getContactsSuccess, getContactsFailure, deleteContactsSuccess } from "Actions/ContactsActions";
+import API from 'Api';
 
 const response = {
     data: [
@@ -39,8 +40,12 @@ const response = {
     ]
 };
 
-const getContactsRequest = () => {
+const getContactsRequest = async () => {
+    var response = await API.get('contacts/all', { id: 1 });
+    console.log('Contacts response:', response);
+
     return response;
+    // return response;
 };
 
 const deleteContactsRequest = (ids) => {

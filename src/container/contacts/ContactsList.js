@@ -12,7 +12,7 @@ import ContactsListItem from "Components/ListItem/ContactsListItem";
 import NewContact from "Components/ListItem/NewContact";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
 import PageActions from "Components/ListItem/PageActions";
-
+import { toBase64 } from "Helpers/helpers";
 import IntlMessages from "Util/IntlMessages";
 
 class ContactsList extends Component {
@@ -141,17 +141,28 @@ class ContactsList extends Component {
         });
     }
 
-    onSubmitForm = (obj) => {
-
-        console.log('onSubmit:', obj);
+    createContact = (reqObj) => {
+        console.log('CreateContact with Params:', reqObj);
         this.onCloseDlg();
+    }
+
+    onSubmitForm = (obj) => {
+        if (obj.file) {
+            toBase64(obj.file).then((base64) => {
+                obj.CertPEM = base64;
+                this.createContact(obj);
+            }).catch(console.log);
+        } else {
+            this.createContact(obj);
+        }
+        console.log('onSubmit:', obj);
     }
 
     onSaveDlg = () => {
         // console.log('onSaveDlg');
         console.log('onSaveDlg-Ref:', this.ref.current);
         // console.log('jQuery selector', $(this.ref.current));
-        $(this.ref.current).submit();
+        $(this.ref.current).click();
     }
 
     onDeleteContacts = () => {
