@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { Treebeard } from 'react-treebeard';
-import treestyle from 'Components/FolderMenu/treestyle'
 
 const data = {
   "id": -1,
@@ -297,6 +296,7 @@ class FolderMenu extends PureComponent {
       this.setState(() => ({ cursor, active: false }));
     }
     node.active = true;
+    node.className='Node NodeActive'
     if (node.children) {
       node.toggled = toggled;
     }
@@ -305,13 +305,14 @@ class FolderMenu extends PureComponent {
 
   render() {
     const { data } = this.state;
+    //console.log('style:', tree);
     return (
       
         <Treebeard
           data={data}
           onToggle={this.onToggle}
-          className="tree-beard"
-          style={treestyle.node}
+          className="tree"
+          
         />
       
 

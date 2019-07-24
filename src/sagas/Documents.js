@@ -8,7 +8,7 @@ const response = {
   data: [
     {
       "id": -1,
-      "name": "root",
+      "name": "Documents",
       "documents": [{
         "id": "77dd-4f59-9499-b118146279fc",
         "name": "My Upload Document Archive",
