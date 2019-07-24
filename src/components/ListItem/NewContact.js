@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -23,6 +23,7 @@ function fwdRefContact(props, ref) {
     const [isSubmitionCompleted, setSubmitionCompleted] = useState(false);
     const [isAddressVisible, setAddressVisibility] = useState(false);
     const [isCertVisible, setCertVisibility] = useState(false);
+    const certFileInput = useRef(null);
 
     const initialState = {
         FirstName: '',
@@ -58,8 +59,10 @@ function fwdRefContact(props, ref) {
         <Formik
             initialValues={initialState}
             onSubmit={(values, actions) => {
+                console.log('values', values);
                 props.onSubmit(values, actions);
             }}
+
             validate={(values) => { props.validateOnChange(values) }}
             validationSchema={validationSchema}
         >
@@ -68,16 +71,14 @@ function fwdRefContact(props, ref) {
                     values,
                     touched,
                     errors,
-                    dirty,
-                    isSubmitting,
                     handleChange,
                     handleBlur,
+                    setFieldValue,
                     handleSubmit,
-                    handleReset,
                 } = formikProps;
                 return (
 
-                    <form ref={ref} action="#">
+                    <Form onSubmit={handleSubmit}>
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
@@ -324,9 +325,10 @@ function fwdRefContact(props, ref) {
                                     <input
                                         accept=".cer"
                                         type="file"
-                                        name="CertPM"
-                                        value={values.CertPM}
-                                        onChange={handleChange}
+                                        name="CertPEM"
+                                        ref={certFileInput}
+                                        value={values.CertPEM}
+                                        onChange={(event) => { setFieldValue("file", event.currentTarget.files[0]) }}
                                         onBlur={handleBlur}
                                     />
                                 </div>
@@ -408,7 +410,10 @@ function fwdRefContact(props, ref) {
                             </React.Fragment>
                         )}
 
-                    </form>
+                        <button ref={ref} type="submit" style={{ opacity: 0 }}>
+                            Submit
+                        </button>
+                    </Form>
                 );
             }}
         </Formik>
