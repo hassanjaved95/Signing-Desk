@@ -1,7 +1,7 @@
 /**
  * Form Dialog
  */
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,41 +11,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { FileUpload, ArrowDropDown, Add, Description } from '@material-ui/icons';
 import DropzoneComponent from 'react-dropzone-component';
-import $ from 'jquery';
-
+import $ from 'jquery'
 import {
     Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import * as Yup from 'yup';
-
-const initialState = {
-    FileName: '',
-    FileDescription: ''
-
-};
-
-const validationSchema = Yup.object().shape({
-    FileName: Yup.string()
-        .required('File Name is required')
-});
-
+import { toBase64 } from "Helpers/helpers";
 
 export default class DocumentUpload extends React.Component {
-
-    state = {
-        open: false,
-    };
-
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
-
-
     constructor(props) {
         super(props);
 
@@ -59,8 +32,10 @@ export default class DocumentUpload extends React.Component {
         this.componentConfig = {
             iconFiletypes: ['.pdf'],
             showFiletypeIcon: true,
-            postUrl: '/'
+            postUrl: 'no-url'
         };
+
+        this.ref = React.createRef();
 
         // If you want to attach multiple callbacks, simply
         // create an array filled with all your callbacks.
@@ -75,6 +50,51 @@ export default class DocumentUpload extends React.Component {
 
         this.dropzone = null;
     }
+
+    initialState = {
+        FileName: '',
+        FileDescription: ''
+
+    };
+
+    validationSchema = Yup.object().shape({
+        FileName: Yup.string()
+            .required('File Name is required')
+    });
+
+
+
+    state = {
+        open: false,
+    };
+
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    onSaveDocuments = () => {
+        document.getElementById("btnSubmit").click();
+    }
+
+    onSubmit = (values) => {
+        console.log("onSubmit:", values);
+        var arr = [];
+        var filesConvertedToBase64 = [];
+        this.dropzone.files.forEach(function (item) {
+            arr.push(toBase64(item))
+        });
+        Promise.all(arr).then(values => {
+            filesConvertedToBase64 = values;
+            console.log(filesConvertedToBase64);
+        })
+    }
+
+
+
 
     render() {
         const config = this.componentConfig;
@@ -93,13 +113,14 @@ export default class DocumentUpload extends React.Component {
         return (
 
             < Formik
-                initialValues={initialState}
-                onSubmit={(values, actions) => {
-                    props.onSubmit(values, actions);
+                initialValues={this.initialState}
+                onSubmit={(values) => {
+                    console.log('onFormikSubmit called:', values);
+                    this.onSubmit(values);
                 }
                 }
-                validate={(values) => { props.validateOnChange(values) }}
-                validationSchema={validationSchema}
+            //validate={(values) => { props.validateOnChange(values) }}
+            //validationSchema={this.validationSchema}
             >
                 {(formikProps) => {
                     const {
@@ -116,10 +137,11 @@ export default class DocumentUpload extends React.Component {
 
 
                     return (
-                        <form ref="" action="#">
-
-
+                        <Form onSubmit={handleSubmit}>
                             <div>
+                                <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
+                                    Submit
+                                </button>
                                 <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
                                 {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
                                 <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
@@ -132,14 +154,14 @@ export default class DocumentUpload extends React.Component {
                                                 <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
                                                     <TextField
                                                         label="File Name"
-                                                        name="fileName"
+                                                        name="FileName"
                                                         value={values.FileName}
-                                                        className="small-dlg-txt-field"
-                                                        style={{ width: '100%', border: '1px solid #e2e2e2', borderRadius: '3px' }}
+                                                        className="dlg-txt-field"
+                                                        style={{ width: '100%' }}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.FileName && touched.FileName) && errors.FileName}
-                                                        placeholder="Enter File Name"
+                                                        placeholder="Enter file name"
                                                         margin="normal"
                                                         InputLabelProps={{
                                                             shrink: true,
@@ -150,10 +172,10 @@ export default class DocumentUpload extends React.Component {
                                                 <div className="flex-split-2-right" style={{ width: '60%' }}>
                                                     <TextField
                                                         label="File Description"
-                                                        name="fileDescription"
+                                                        name="FileDescription"
                                                         value={values.FileDescription}
-                                                        className="small-dlg-txt-field"
-                                                        style={{ width: '100%', border: '1px solid #e2e2e2', borderRadius: '3px' }}
+                                                        className="dlg-txt-field"
+                                                        style={{ width: '100%' }}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
@@ -178,7 +200,10 @@ export default class DocumentUpload extends React.Component {
                                             />
                                             <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
                                         </div>
-                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}><Description className="DocumentIcon" /><FileUpload className="DocumentIcon fileSaveIcon" /></div>
+                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}>
+
+                                            <Description className="DocumentIcon" />
+                                            <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
 
                                     </DialogContent>
                                     <DialogActions>
@@ -190,8 +215,12 @@ export default class DocumentUpload extends React.Component {
             		</Button> */}
                                     </DialogActions>
                                 </Dialog>
+
+
+
                             </div>
-                        </form>
+
+                        </Form>
                     );
                 }}
             </Formik >
