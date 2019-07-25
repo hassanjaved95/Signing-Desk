@@ -63,7 +63,6 @@ function* getContactsFromServer() {
 
 function* deleteContactsFromServer({ payload }) {
     try {
-        debugger;
         const response = yield call(deleteContactsRequest, payload);
         yield put(deleteContactsSuccess(payload));
     } catch (error) {

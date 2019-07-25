@@ -2,6 +2,8 @@
  * Form Dialog
  */
 import React, { Component, useRef } from 'react';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,8 +19,9 @@ import {
 } from 'formik';
 import * as Yup from 'yup';
 import { toBase64 } from "Helpers/helpers";
+import { createDocument } from "Actions";
 
-export default class DocumentUpload extends React.Component {
+class DocumentUpload extends React.Component {
     constructor(props) {
         super(props);
 
@@ -81,15 +84,31 @@ export default class DocumentUpload extends React.Component {
     }
 
     onSubmit = (values) => {
-        console.log("onSubmit:", values);
         var arr = [];
-        var filesConvertedToBase64 = [];
+        //var filesConvertedToBase64 = [];
         this.dropzone.files.forEach(function (item) {
             arr.push(toBase64(item))
         });
-        Promise.all(arr).then(values => {
-            filesConvertedToBase64 = values;
-            console.log(filesConvertedToBase64);
+        Promise.all(arr).then(vals => {
+            var doc = "";
+            vals.forEach(function (val) {
+                doc = doc + val;
+            });
+
+          this.props.createDocument({
+                'folderID': "3280346d-f76a-46a5-8e7e-1017fe3cba66",
+                'name': values.FileName,
+                'description': values.description,
+                'Tags': 'Test;hello',
+                'uploadedFiles': {
+                    'fileName': "Smile More.pdf",
+                    'storageMedia': 0,
+                    'base64PdfContents': doc
+                }
+
+
+
+            });
         })
     }
 
@@ -227,3 +246,15 @@ export default class DocumentUpload extends React.Component {
         );
     }
 }
+
+const mapStateToProps = ({ doc }) => {
+    console.log('documents store:', doc);
+    return doc;
+};
+export default withRouter(
+    connect(mapStateToProps,
+        {
+            createDocument
+        }
+    )(DocumentUpload)
+);
