@@ -25,7 +25,7 @@ axiosObj.interceptors.request.use((config) => {
 });
 
 var methods = {
-   get: async function (endPoint, data, token) {
+   get: async function (endPoint, data) {
       try {
          return await axiosObj.get(endPoint, {
             params: data

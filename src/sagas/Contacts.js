@@ -1,8 +1,8 @@
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 
-import { GET_CONTACTS, DELETE_CONTACTS } from "Actions/types";
+import { GET_CONTACTS, DELETE_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT } from "Actions/types";
 
-import { getContactsSuccess, getContactsFailure, deleteContactsSuccess } from "Actions/ContactsActions";
+import { getContactsSuccess, getContactsFailure, deleteContactsSuccess, createContactSuccess, updateContactSuccess } from "Actions/ContactsActions";
 import API from 'Api';
 
 const response = {
@@ -48,8 +48,22 @@ const getContactsRequest = async () => {
     // return response;
 };
 
-const deleteContactsRequest = (ids) => {
-    return true;
+const createContactRequest = async (data) => {
+    var response = await API.post('contacts/create', data)
+    console.log('createContactRequest response:', response);
+    return response;
+}
+
+const updateContactRequest = async (data) => {
+    var response = await API.post('contacts/update', data)
+    console.log('updateContactRequest response:', response);
+    return response;
+}
+
+const deleteContactsRequest = async (ids) => {
+    var response = await API.delete('contacts/delete-multiple', ids)
+    console.log('deleteContactsRequest response:', response);
+    return response;
 }
 
 function* getContactsFromServer() {
@@ -61,12 +75,37 @@ function* getContactsFromServer() {
     }
 }
 
+function* createContactOnServer({ payload }) {
+    try {
+        const response = yield call(createContactRequest, payload);
+
+        if (response.status == 200) {
+            payload.id= response.data.contactID;
+            yield put(createContactSuccess(response));
+        } else {
+            console.log('createContactOnServer api error code:', response.status);
+        }
+
+    } catch (error) {
+        console.log('createContactOnServer api error:', error);
+    }
+}
+
+function* updateContactOnServer({ payload }) {
+    try {
+        const response = yield call(updateContactOnServer, payload);
+        yield put(updateContactSuccess(response));
+    } catch (error) {
+        console.log('updateContactOnServer api error:', error);
+    }
+}
+
 function* deleteContactsFromServer({ payload }) {
     try {
-        debugger;
         const response = yield call(deleteContactsRequest, payload);
         yield put(deleteContactsSuccess(payload));
     } catch (error) {
+        console.log('deleteContactsFromServer api error:', error);
         // yield put(getContactsFailure(error));
     }
 }
@@ -76,6 +115,14 @@ export function* getContacts() {
     yield takeEvery(GET_CONTACTS, getContactsFromServer);
 }
 
+export function* createContact() {
+    yield takeLatest(CREATE_CONTACT, createContactOnServer);
+}
+
+export function* updateContact() {
+    yield takeLatest(UPDATE_CONTACT, updateContactOnServer);
+}
+
 export function* deleteContacts() {
     yield takeEvery(DELETE_CONTACTS, deleteContactsFromServer);
 }
@@ -83,6 +130,8 @@ export function* deleteContacts() {
 export default function* rootSaga() {
     yield all([
         fork(getContacts),
+        fork(createContact),
+        fork(updateContact),
         fork(deleteContacts)
     ]);
 }
