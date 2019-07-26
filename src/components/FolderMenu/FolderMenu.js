@@ -296,7 +296,7 @@ class FolderMenu extends PureComponent {
       this.setState(() => ({ cursor, active: false }));
     }
     node.active = true;
-    node.className='Node NodeActive'
+    node.className = 'Node NodeActive'
     if (node.children) {
       node.toggled = toggled;
     }
@@ -307,14 +307,30 @@ class FolderMenu extends PureComponent {
     const { data } = this.state;
     //console.log('style:', tree);
     return (
-      
-        <Treebeard
-          data={data}
-          onToggle={this.onToggle}
-          className="tree"
-          
-        />
-      
+
+      <React.Fragment>
+        <div className="content">
+          <Treebeard
+            data={data}
+            onToggle={this.onToggle}
+            className="tree"
+
+          />
+        </div>
+        <div className="flex-row move-folder-footer" style={{ marginTop: '40px' }}>
+          <div className="flex-split-2-left" style={{ width: '50%' }}>
+            <span>Selected folder:  </span> &nbsp; <span style={{ fontWeight: 'bold' }}> Documents </span>
+          </div>
+          <div className="flex-split-2-right" style={{ width: '50%' }}>
+            <div className="header-shadow">
+              <input type="submit" className="btn-save-foldername" value="move" />
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+
+
+
 
     );
   }

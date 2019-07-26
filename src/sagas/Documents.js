@@ -585,7 +585,7 @@ const getDocumentsRequest = async () => {
 };
 
 const createDocumentRequest = async doc => {
-  var response = await API.post('documents/create', doc);
+  var response = await API.post('documents/create', doc.payload);
   return response;
 }
 const deleteDocumentsRequest = () => {

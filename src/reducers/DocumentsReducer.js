@@ -60,7 +60,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
 
     case CREATE_DOCUMENT_SUCCESS:
-      NotificationManager.success("Document Create successfully");
       return { ...state, loading: false, doc: action.payload };
     case GET_DOCUMENTS:
       return { ...state, documents: null };

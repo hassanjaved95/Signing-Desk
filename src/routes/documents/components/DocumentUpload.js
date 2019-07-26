@@ -19,7 +19,7 @@ import {
 } from 'formik';
 import * as Yup from 'yup';
 import { toBase64 } from "Helpers/helpers";
-import { createDocument } from "Actions";
+import { createDocument, getDocuments } from "Actions";
 
 class DocumentUpload extends React.Component {
     constructor(props) {
@@ -84,31 +84,33 @@ class DocumentUpload extends React.Component {
     }
 
     onSubmit = (values) => {
+        debugger;
         var arr = [];
-        //var filesConvertedToBase64 = [];
+        var filesConvertedToBase64 = [];
+        var folderID = this.props.selectedFolder[0].id;
         this.dropzone.files.forEach(function (item) {
+            filesConvertedToBase64.push({
+                'fileName': item.name,
+                'storageMedia': 0,
+                'base64PdfContents': ''
+            })
             arr.push(toBase64(item))
         });
         Promise.all(arr).then(vals => {
             var doc = "";
-            vals.forEach(function (val) {
-                doc = doc + val;
+            vals.forEach(function (val, idx) {
+                filesConvertedToBase64[idx].base64PdfContents = val.replace("data:application/pdf;base64,","");
             });
-
-          this.props.createDocument({
-                'folderID': "3280346d-f76a-46a5-8e7e-1017fe3cba66",
+            
+            var doc = {
+                'folderID': folderID,
                 'name': values.FileName,
-                'description': values.description,
-                'Tags': 'Test;hello',
-                'uploadedFiles': {
-                    'fileName': "Smile More.pdf",
-                    'storageMedia': 0,
-                    'base64PdfContents': doc
-                }
-
-
-
-            });
+                'description': values.FileDescription,
+                'tags': 'Test;hello',
+                'uploadedFiles': filesConvertedToBase64
+            }
+            console.log(doc);
+            this.props.createDocument(doc);
         })
     }
 
@@ -247,13 +249,14 @@ class DocumentUpload extends React.Component {
     }
 }
 
-const mapStateToProps = ({ doc }) => {
-    console.log('documents store:', doc);
-    return doc;
+const mapStateToProps = ({ documents }) => {
+    console.log('documents store:', documents);
+    return documents;
 };
 export default withRouter(
     connect(mapStateToProps,
         {
+            getDocuments,
             createDocument
         }
     )(DocumentUpload)

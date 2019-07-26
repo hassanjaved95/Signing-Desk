@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Folder, FolderOpen } from '@material-ui/icons';
 //import FolderMenu from 'Components/FolderMenu/FolderMenu';
-import {Treebeard} from 'react-treebeard';
+import { Treebeard } from 'react-treebeard';
 import MenuList from 'Components/MenuList/MenuList'
 
 const data = {
     name: 'root',
-    id:1,
+    id: 1,
     toggled: true,
     children: [
         {
             name: 'parent',
-            id:2,
+            id: 2,
             children: [
                 { name: 'child1' },
                 { name: 'child2' }
@@ -19,17 +19,17 @@ const data = {
         },
         {
             name: 'loading parent',
-            id:3,
+            id: 3,
             loading: true,
             children: []
         },
         {
             name: 'parent',
-            id:4,
+            id: 4,
             children: [
                 {
                     name: 'nested parent',
-                    id:5, 
+                    id: 5,
                     children: [
                         { name: 'nested child 1' },
                         { name: 'nested child 2' }
@@ -43,7 +43,7 @@ const data = {
 const TreeExample = (documents) => {
     const [data, setData] = useState(data);
     const [cursor, setCursor] = useState(false);
-    
+
     const onToggle = (node, toggled) => {
         if (cursor) {
             cursor.active = false;
@@ -55,9 +55,9 @@ const TreeExample = (documents) => {
         setCursor(node);
         setData(Object.assign({}, data))
     }
-    
+
     return (
-       <Treebeard data={data} onToggle={onToggle} />
+        <Treebeard data={data} onToggle={onToggle} />
     )
 }
 //const content = document.getElementById('content');
@@ -77,11 +77,20 @@ const TreeExample = (documents) => {
 
 const MoveToFolder = (props) => (
     <React.Fragment>
-        <div id='content'>
-            
+        <div className="menu-content">
+            {TreeExample(props.documents)}
         </div>
-      {TreeExample(props.documents)}
-       
+        <div className="flex-row move-folder-footer" style={{ marginTop: '40px' }}>
+            <div className="flex-split-2-left" style={{ width: '50%' }}>
+                <span>Selected folder:  </span> &nbsp; <span style={{ fontWeight: 'bold' }}> {props.selectedFolderName} </span>
+            </div>
+            <div className="flex-split-2-right" style={{ width: '50%' }}>
+                <div className="header-shadow">
+                    <input type="submit" className="btn-save-foldername" value="move" />
+                </div>
+            </div>
+        </div>
+
         {/* <div className="menu-content">
             <ul className="foldersListMoveFolder">
                 <li data-id="0" className= {"0" === props.clickedMovedToFolderID ? "MoveFolderListItem parentListItem ActivefoldersListMoveFolder" : "MoveFolderListItem parentListItem"} onClick={props.MoveFolderItems.bind(this,"Documents","0")}>

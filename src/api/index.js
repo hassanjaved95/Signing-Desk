@@ -4,7 +4,7 @@ import config from 'Constants/AppConfig';
 var axiosObj = axios.create({
    // baseURL: 'http://reactify.theironnetwork.org/data/',
    baseURL: config.apiBaseUrl + '/',
-   timeout: 2000
+   timeout: 180000
 });
 
 var token = '';
@@ -44,8 +44,12 @@ var methods = {
    },
    post: async function (endPoint, data) {
       try {
-         return await axiosObj.post(endPoint, data);
+         var response = await axiosObj.post(endPoint, data);
+         console.log("post response: ", response);
+         return response;
       } catch (error) {
+         console.log("post Error: ", error);
+
          return error;
       }
 
