@@ -5,6 +5,10 @@ import {
     SORT_CONTACTS_BY_NAME,
     SORT_CONTACTS_BY_EMAIL,
     SEARCH_CONTACTS,
+    CREATE_CONTACT,
+    CREATE_CONTACT_SUCCESS,
+    UPDATE_CONTACT,
+    UPDATE_CONTACT_SUCCESS,
     DELETE_CONTACTS,
     DELETE_CONTACTS_SUCCESS
 } from "./types";
@@ -47,3 +51,20 @@ export const deleteContactsSuccess = (payload) => ({
     type: DELETE_CONTACTS_SUCCESS,
     payload
 });
+export const createContact = (payload) => ({
+    type: CREATE_CONTACT,
+    payload
+});
+export const createContactSuccess = (payload) => ({
+    type: CREATE_CONTACT_SUCCESS,
+    payload
+});
+export const updateContact = (payload) => ({
+    type: UPDATE_CONTACT,
+    payload
+});
+export const updateContactSuccess = (payload) => ({
+    type: UPDATE_CONTACT_SUCCESS,
+    payload
+});
+

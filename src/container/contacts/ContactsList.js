@@ -6,13 +6,14 @@ import { connect } from "react-redux";
 import $ from "jquery";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
-import { getContacts, sortContactsByEmail, sortContactsByName, searchContacts, deleteContacts } from "Actions";
+import { getContacts, sortContactsByEmail, sortContactsByName, searchContacts, deleteContacts, createContact, updateContact } from "Actions";
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
 import ContactsListItem from "Components/ListItem/ContactsListItem";
 import NewContact from "Components/ListItem/NewContact";
 import ContactsListItemHeader from "Components/ListItem/ContactsListItemsHeader";
 import PageActions from "Components/ListItem/PageActions";
 import { toBase64 } from "Helpers/helpers";
+import API from 'Api';
 import IntlMessages from "Util/IntlMessages";
 
 class ContactsList extends Component {
@@ -37,8 +38,6 @@ class ContactsList extends Component {
     componentDidMount() {
         this.props.getContacts();
     }
-
-
 
     onClickContactItem = (contact, e) => {
         console.log('onClickContact e:', e);
@@ -67,7 +66,7 @@ class ContactsList extends Component {
         var ids = [];
         if (checked) {
             ids = contacts.reduce((arr, currObj) => {
-                arr.push(currObj.corporatesID);
+                arr.push(currObj.id);
                 return arr;
             }, []);
         }
@@ -80,10 +79,10 @@ class ContactsList extends Component {
 
     onCheckSingleContact = (contact, event, checked) => {
         event.stopPropagation();
-        var selectedContacts = this.state.selectedContacts.filter(c => c != contact.corporatesID);
+        var selectedContacts = this.state.selectedContacts.filter(c => c != contact.id);
 
         if (checked) {
-            selectedContacts.push(contact.corporatesID)
+            selectedContacts.push(contact.id)
         }
 
         var allContactsAreSelected = this.props.contacts &&
@@ -142,7 +141,9 @@ class ContactsList extends Component {
     }
 
     createContact = (reqObj) => {
-        console.log('CreateContact with Params:', reqObj);
+        // console.log('CreateContact with Params:', reqObj);
+
+        this.props.createContact(reqObj);
         this.onCloseDlg();
     }
 
@@ -255,8 +256,8 @@ class ContactsList extends Component {
                                 renderContacts && renderContacts.length > 0 && renderContacts !== null ? (
                                     renderContacts.map((contact) => (
                                         <ContactsListItem
-                                            key={contact.corporatesID}
-                                            checked={this.state.selectedContacts.find(c => c == contact.corporatesID) ? true : false}
+                                            key={contact.id}
+                                            checked={this.state.selectedContacts.find(c => c == contact.id) ? true : false}
                                             contact={contact}
                                             onClickContactItem={this.onClickContactItem.bind(this, contact)}
                                             onCheckSingleContact={this.onCheckSingleContact.bind(this, contact)}
@@ -287,6 +288,8 @@ export default withRouter(connect(mapStateToProps,
         sortContactsByName,
         sortContactsByEmail,
         searchContacts,
-        deleteContacts
+        deleteContacts,
+        createContact,
+        updateContact
     }
 )(ContactsList));

@@ -6,7 +6,11 @@ import {
     SORT_CONTACTS_BY_EMAIL,
     SEARCH_CONTACTS,
     DELETE_CONTACTS,
-    DELETE_CONTACTS_SUCCESS
+    DELETE_CONTACTS_SUCCESS,
+    CREATE_CONTACT,
+    CREATE_CONTACT_SUCCESS,
+    UPDATE_CONTACT,
+    UPDATE_CONTACT_SUCCESS
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -85,6 +89,19 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 contacts: state.contacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1),
                 filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1)
+            };
+        }
+        case CREATE_CONTACT: {
+            return {
+                ...state,
+            };
+        }
+
+        case CREATE_CONTACT_SUCCESS: {
+            var newContact = action.payload;
+            return {
+                ...state,
+                contacts: [...state.contacts, newContact]
             };
         }
 

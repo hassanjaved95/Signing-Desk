@@ -16,10 +16,10 @@ const ContactsListItem = (props) => (
                     <td onClick={props.onClickContactItem}>
                         <div className="td-container">
                             <div className="bg-initials bg-initials-2 initials-margin" style={{ background: getRandomColor(props.contact.email) }}>
-                                {getNameInitials(props.contact.name)}
+                                {getNameInitials(props.contact.firstName + ' ' + props.contact.lastName)}
                             </div>
                             <div className="name-company">
-                                {props.contact.name}
+                                {props.contact.firstName + ' ' + props.contact.lastName}
                             </div>
                         </div>
                     </td>
