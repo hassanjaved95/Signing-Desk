@@ -1,4 +1,7 @@
 import {
+  CREATE_DOCUMENTS,
+  CREATE_DOCUMENT_SUCCESS,
+  CREATE_DOCUMENT_FAILURE,
   GET_DOCUMENTS,
   GET_DOCUMENTS_SUCCESS,
   GET_DOCUMENTS_FAILURE,
@@ -53,8 +56,22 @@ function setSelectedFolder(state, folderId, levelUp) {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case CREATE_DOCUMENTS:
+      return { ...state, loading: true };
+
+    case CREATE_DOCUMENT_SUCCESS:
+      NotificationManager.success("Document Create successfully");
+      return { ...state, loading: false, doc: action.payload };
     case GET_DOCUMENTS:
       return { ...state, documents: null };
+      case CREATE_DOCUMENT_FAILURE:
+      return {
+        ...state,
+        documents: null,
+        selectedFolder: null,
+        folderLevel: [],
+        searchedDocuments: null
+      };
 
     case GET_DOCUMENTS_SUCCESS:
       return {

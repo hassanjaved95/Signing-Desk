@@ -1,15 +1,15 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
+import {CREATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
-import { getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
+import {createDocumentSuccess, createDocumentFailure, getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
 import API from 'Api';
 
 const response = {
   data: [
     {
       "id": -1,
-      "name": "root",
+      "name": "Documents",
       "documents": [{
         "id": "77dd-4f59-9499-b118146279fc",
         "name": "My Upload Document Archive",
@@ -137,7 +137,7 @@ const response = {
                   ]
                 }],
                 "subFolders": [
-    
+
                 ]
               }
 
@@ -578,11 +578,16 @@ const documents = {
 const getDocumentsRequest = async () => {
   //return documents; 
   // return response;
-  var response = await API.get('documents/all', {id: 1});
+  var response = await API.get('documents/all', { id: 1 });
   console.log('Documents response:', response);
 
   return response;
 };
+
+const createDocumentRequest = async doc => {
+  var response = await API.post('documents/create', doc);
+  return response;
+}
 const deleteDocumentsRequest = () => {
   return true; // response;
 };
@@ -603,6 +608,19 @@ function* getDocumentsFromServer() {
     yield put(getDocumentsFailure(error));
   }
 }
+
+function* createDocumentOnServer(doc) {
+  try {
+    const response = yield call(createDocumentRequest,doc);
+    yield put(createDocumentSuccess(response));
+
+  } catch (error) {
+    //console.log('createDocumentOnServer error: ', error);
+    yield put(createDocumentFailure(error));
+
+  }
+}
+
 function* deleteDocumentsFromServer() {
   try {
     const response = yield call(deleteDocumentsRequest);
@@ -631,6 +649,9 @@ function* duplicateDocumentsOnServer() {
 }
 
 // watcher
+export function* createDocument(){
+  yield takeEvery(CREATE_DOCUMENT, createDocumentOnServer);
+}
 export function* getDocuments() {
   yield takeEvery(GET_DOCUMENTS, getDocumentsFromServer);
 }
@@ -647,6 +668,7 @@ export function* duplicateDocuments() {
 export default function* rootSaga() {
   yield all([
     fork(getDocuments),
+    fork(createDocument),
     fork(deleteDocuments),
     fork(moveDocuments),
     fork(duplicateDocuments)

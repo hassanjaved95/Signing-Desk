@@ -1,7 +1,9 @@
 /**
  * Form Dialog
  */
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,26 +13,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { FileUpload, ArrowDropDown, Add, Description } from '@material-ui/icons';
 import DropzoneComponent from 'react-dropzone-component';
-import $ from 'jquery';
+import $ from 'jquery'
+import {
+    Formik, Form, Field, ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
+import { toBase64 } from "Helpers/helpers";
+import { createDocument } from "Actions";
 
-
-
-
-
-export default class DocumentUpload extends React.Component {
-
-    state = {
-        open: false,
-    };
-
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
+class DocumentUpload extends React.Component {
     constructor(props) {
         super(props);
 
@@ -44,8 +35,10 @@ export default class DocumentUpload extends React.Component {
         this.componentConfig = {
             iconFiletypes: ['.pdf'],
             showFiletypeIcon: true,
-            postUrl: '/'
+            postUrl: 'no-url'
         };
+
+        this.ref = React.createRef();
 
         // If you want to attach multiple callbacks, simply
         // create an array filled with all your callbacks.
@@ -61,10 +54,71 @@ export default class DocumentUpload extends React.Component {
         this.dropzone = null;
     }
 
+    initialState = {
+        FileName: '',
+        FileDescription: ''
+
+    };
+
+    validationSchema = Yup.object().shape({
+        FileName: Yup.string()
+            .required('File Name is required')
+    });
+
+
+
+    state = {
+        open: false,
+    };
+
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    onSaveDocuments = () => {
+        document.getElementById("btnSubmit").click();
+    }
+
+    onSubmit = (values) => {
+        var arr = [];
+        //var filesConvertedToBase64 = [];
+        this.dropzone.files.forEach(function (item) {
+            arr.push(toBase64(item))
+        });
+        Promise.all(arr).then(vals => {
+            var doc = "";
+            vals.forEach(function (val) {
+                doc = doc + val;
+            });
+
+          this.props.createDocument({
+                'folderID': "3280346d-f76a-46a5-8e7e-1017fe3cba66",
+                'name': values.FileName,
+                'description': values.description,
+                'Tags': 'Test;hello',
+                'uploadedFiles': {
+                    'fileName': "Smile More.pdf",
+                    'storageMedia': 0,
+                    'base64PdfContents': doc
+                }
+
+
+
+            });
+        })
+    }
+
+
+
+
     render() {
         const config = this.componentConfig;
         const djsConfig = this.djsConfig;
-        $(".headerMenuOpener").last().find("ul").css("padding","2px 0px 2px 0px");
+        $(".headerMenuOpener").last().find("ul").css("padding", "2px 0px 2px 0px");
 
         // For a list of all possible events (there are many), see README.md!
         const eventHandlers = {
@@ -74,36 +128,133 @@ export default class DocumentUpload extends React.Component {
             success: this.success,
             removedfile: this.removedfile
         }
+
         return (
-            <div>
-                <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
-                {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
-                <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
 
-                    <DialogContent width={'900px'} height={'450px'}>
-                        <div className="dropZoner">
-                            <DropzoneComponent
-                                config={config}
-                                eventHandlers={eventHandlers}
-                                djsConfig={djsConfig}
-                                className="dropZonee"
+            < Formik
+                initialValues={this.initialState}
+                onSubmit={(values) => {
+                    console.log('onFormikSubmit called:', values);
+                    this.onSubmit(values);
+                }
+                }
+            //validate={(values) => { props.validateOnChange(values) }}
+            //validationSchema={this.validationSchema}
+            >
+                {(formikProps) => {
+                    const {
+                        values,
+                        touched,
+                        errors,
+                        dirty,
+                        isSubmitting,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        handleReset,
+                    } = formikProps;
 
-                            />
-                        <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
-                        </div>
-                        <div style={{color:'blue',marginTop:'15px',textAlign:'center'}}><Description className="DocumentIcon"/></div>
-                    </DialogContent>
-                    <DialogActions>
-                        {/* <Button variant="contained" onClick={this.handleClose} color="primary" className="text-white">
+
+                    return (
+                        <Form onSubmit={handleSubmit}>
+                            <div>
+                                <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
+                                    Submit
+                                </button>
+                                <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
+                                {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
+                                <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                                    <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
+
+                                    <DialogContent width={'900px'} height={'550px'}>
+                                        <div className="dropzoneForm">
+
+                                            <div className="flex-row">
+                                                <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
+                                                    <TextField
+                                                        label="File Name"
+                                                        name="FileName"
+                                                        value={values.FileName}
+                                                        className="dlg-txt-field"
+                                                        style={{ width: '100%' }}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={(errors.FileName && touched.FileName) && errors.FileName}
+                                                        placeholder="Enter file name"
+                                                        margin="normal"
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                    />
+
+                                                </div>
+                                                <div className="flex-split-2-right" style={{ width: '60%' }}>
+                                                    <TextField
+                                                        label="File Description"
+                                                        name="FileDescription"
+                                                        value={values.FileDescription}
+                                                        className="dlg-txt-field"
+                                                        style={{ width: '100%' }}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
+                                                        placeholder="Enter file description"
+                                                        margin="normal"
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div className="dropZoner">
+                                            <DropzoneComponent
+                                                config={config}
+                                                eventHandlers={eventHandlers}
+                                                djsConfig={djsConfig}
+                                                className="dropZonee"
+
+                                            />
+                                            <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
+                                        </div>
+                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}>
+
+                                            <Description className="DocumentIcon" />
+                                            <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+
+                                    </DialogContent>
+                                    <DialogActions>
+                                        {/* <Button variant="contained" onClick={this.handleClose} color="primary" className="text-white">
                             Cancel
             		</Button> */}
-                        {/* <Button variant="contained" onClick={this.handleClose} className="btn-info text-white">
+                                        {/* <Button variant="contained" onClick={this.handleClose} className="btn-info text-white">
                             Subscribe
             		</Button> */}
-                    </DialogActions>
-                </Dialog>
-            </div>
+                                    </DialogActions>
+                                </Dialog>
+
+
+
+                            </div>
+
+                        </Form>
+                    );
+                }}
+            </Formik >
         );
     }
 }
+
+const mapStateToProps = ({ doc }) => {
+    console.log('documents store:', doc);
+    return doc;
+};
+export default withRouter(
+    connect(mapStateToProps,
+        {
+            createDocument
+        }
+    )(DocumentUpload)
+);

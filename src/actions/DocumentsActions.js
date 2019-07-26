@@ -4,6 +4,9 @@ import {
   GET_DOCUMENTS_FAILURE,
   SEARCH_DOCUMENTS,
   SELECTED_FOLDER,
+  CREATE_DOCUMENT,
+  CREATE_DOCUMENT_SUCCESS,
+  CREATE_DOCUMENT_FAILURE,
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS,
@@ -34,6 +37,20 @@ export const searchDocuments = (payload) => ({
 export const setSelectedFolder = (payload) => ({
   type: SELECTED_FOLDER,
   payload
+});
+
+export const createDocument = (payload) => ({
+  type: CREATE_DOCUMENT,
+  payload
+});
+export const createDocumentSuccess = (payload) => ({
+  type: CREATE_DOCUMENT_SUCCESS,
+  payload
+});
+
+export const createDocumentFailure = error => ({
+  type: CREATE_DOCUMENT_FAILURE,
+  payload: error
 });
 
 export const deleteDocuments = (payload) => ({

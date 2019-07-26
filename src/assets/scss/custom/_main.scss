@@ -127,7 +127,7 @@
 .dropZoner{
 	width:880px;
 	margin-top:15px;
-	height: 375px;
+	height: 300px;
 	border: 0px dashed #e5e5e5;
 	text-align: center;
 	// padding: 15% 0;
@@ -139,8 +139,8 @@
 	border: 2px dashed !important;
 	display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: start;
+    justify-content: start;
 }
 
 .dropZonee{
@@ -153,21 +153,53 @@
 	display: inline-block;
 	// padding: 15% 0;
 }
+.dropZoner .filepicker{
+	padding:20px !important;
+
+}
 .dropZonee .filepicker-file-icon{
 	width:0px !important;
-	// margin-left: 50%;
-    // margin-top: 18%;
+	left: 48%;
+    margin-top: 8%;
+}
+.dropZoner .filepicker .dz-preview{
+	margin: 1px !important;
+	min-height: 60px !important;
+	height: 60px !important;
+}
+.dropZoner .filepicker .dz-preview .dz-remove{
+	margin-top: -20px !important;
+    margin-right: 10px !important;
+    z-index: 20 !important;
+    position: relative !important;
+    float: right !important;
 }
 
+	.dropZoner .filepicker .dz-preview .dz-details{
+		display: flex !important;
+		flex-direction: row !important;
+	}
+.dropZoner .filepicker .dz-preview .dz-details .dz-size{
+    width: 11% !important;
+}
+.dropZoner .filepicker .dz-preview .dz-details .dz-filename{
+    width: 30% !important;
+}
 .dropZonee div{
 	width:100% !important;
 }
 .dropZonee .dz-progress{
-	// position:unset !important;
-	left:0% !important;
-	margin-left: 0px !important;
-	margin-top: 17px !important;
-	// z-index: 20 !important;
+	// // position:unset !important;
+	// left:0% !important;
+	// margin-left: 0px !important;
+	// margin-top: 17px !important;
+	// // z-index: 20 !important;
+	width: 38% !important;
+    float: right !important;
+    position: fixed;
+    margin-top: 5px !important;
+    left: 42% !important;
+    top: 48% !important;
 }
 .dropZonee .dz-image{
 	height:60px !important;
@@ -176,6 +208,7 @@
 }
 .dropZonee .dz-error-message   {
 	margin-top: -50px !important;
+	display: none !important;
 }
 .dropZonee .dz-success-mark{
 	// display: none !important;
@@ -184,24 +217,26 @@
 }
 
 .dropZonee .dz-success-mark svg{
-	height: 30px !important;
+	height: 22px !important;
 }
 
 .dropZonee .dz-error-mark{
 	// display: none !important;
-	left:40% !important;
-	margin-top: -38px !important;
+	left: 88% !important;
+	top: 100% !important;
+	//margin-top: -38px !important;
 
 }
 .dropZonee .dz-details{
 	padding-top: 0.5rem !important;
+	
 }
 .dropZonee .dz-size{
 	margin-bottom: 0.5rem !important;
 }
 
 .dropZonee .dz-error-mark svg{
-	height: 30px !important;
+	height: 22px !important;
 }
 
 .dropzone .dz-message{
@@ -539,4 +574,10 @@
 
 .row-context-menu ul li:hover{
 	background-color: #e2e2e2;
+}
+.fileSaveIcon{
+	height: 30px !important;
+	
+	float: right;
+	cursor: pointer;
 }

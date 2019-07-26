@@ -58,6 +58,7 @@
     "firebase": "^5.7.0",
     "formik": "^1.5.4",
     "formik-material-ui": "0.0.16",
+    "fs": "0.0.1-security",
     "globalize": "^0.1.1",
     "google-map-react": "^1.1.2",
     "hls.js": "^0.12.3",
