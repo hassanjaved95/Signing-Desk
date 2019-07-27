@@ -1,8 +1,8 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import {CREATE_DOCUMENT,UPDATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
+import { CREATE_DOCUMENT, UPDATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
-import {createDocumentSuccess, createDocumentFailure, updateDocumentSuccess, updateDocumentFailure, getDocumentsSuccess,  getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
+import { createDocumentSuccess, createDocumentFailure, updateDocumentSuccess, updateDocumentFailure, getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
 import API from 'Api';
 
 const response = {
@@ -575,14 +575,15 @@ const documents = {
   ]
 }
 
-const getDocumentsRequest = () => {
+const getDocumentsRequest = async () => {
   //return documents; 
-  return response;
+  //return response;
   // return await Promise.resolve(response.data);
-  // var response = await API.get('documents/all', { id: 1 });
   // console.log('Documents response:', response);
 
-  // return response;
+  var response = await API.get('documents/all', { id: 1 });
+
+  return response;
 };
 
 const createDocumentRequest = async doc => {
@@ -591,7 +592,7 @@ const createDocumentRequest = async doc => {
 };
 
 const updateDocumentRequest = async doc => {
-  var response = await API.put('documents/update', doc);
+  var response = await API.put('documents/update', doc.payload);
   return response;
 };
 
@@ -618,9 +619,15 @@ function* getDocumentsFromServer() {
 
 function* createDocumentOnServer(doc) {
   try {
-    const response = yield call(createDocumentRequest,doc);
-    yield put(createDocumentSuccess(response));
+    const response = yield call(createDocumentRequest, doc);
+    if (response.status == 200) {
+      payload.id = response.data.id;
+      yield put(createDocumentSuccess(response));
+    } else {
+      console.log('createDocumentOnServer api error code:', response.status);
+      yield put(createDocumentFailure(error));
 
+    }
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);
     yield put(createDocumentFailure(error));
@@ -630,7 +637,7 @@ function* createDocumentOnServer(doc) {
 
 function* updateDocumentOnServer(doc) {
   try {
-    const response = yield call(updateDocumentRequest,doc);
+    const response = yield call(updateDocumentRequest, doc);
     yield put(updateDocumentSuccess(response));
 
   } catch (error) {
@@ -668,10 +675,10 @@ function* duplicateDocumentsOnServer() {
 }
 
 // watcher
-export function* createDocument(){
+export function* createDocument() {
   yield takeEvery(CREATE_DOCUMENT, createDocumentOnServer);
 }
-export function* updateDocument(){
+export function* updateDocument() {
   yield takeEvery(UPDATE_DOCUMENT, updateDocumentOnServer);
 }
 export function* getDocuments() {

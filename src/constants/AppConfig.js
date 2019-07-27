@@ -5,7 +5,8 @@
 const AppConfig = {
   //apiBaseUrl: 'http://03da0bbe.ngrok.io/api/v1',
   // apiBaseUrl: "http://cc3ec143.ngrok.io/api/v1",
-  apiBaseUrl: "http://core-dev.signingdesk.com/api/v1",
+  //apiBaseUrl: "http://core-dev.signingdesk.com/api/v1", //Server
+  apiBaseUrl: "http://28e45926.ngrok.io/api/v1", //Saqlain System
   appLogo: require("Assets/img/site-logo.png"), // App Logo
   brandName: "SigningDesk", // Brand Name
   navCollapsed: false, // Sidebar collapse

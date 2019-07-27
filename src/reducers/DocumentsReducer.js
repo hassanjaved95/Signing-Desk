@@ -1,3 +1,5 @@
+import { NotificationManager } from "react-notifications";
+
 import {
   CREATE_DOCUMENTS,
   CREATE_DOCUMENT_SUCCESS,
@@ -63,10 +65,16 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
 
     case CREATE_DOCUMENT_SUCCESS:
-      return { ...state, loading: false, doc: action.payload };
+        NotificationManager.success("Document created successfully");
+        var newDocument = action.payload
+      return { 
+        ...state, 
+        documents: [...state.documents, newDocument]
+      };
     case GET_DOCUMENTS:
       return { ...state, documents: null };
     case CREATE_DOCUMENT_FAILURE:
+        NotificationManager.error("Document creation failed");
       return {
         ...state,
         documents: null,
@@ -79,9 +87,13 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
 
     case UPDATE_DOCUMENT_SUCCESS:
+        NotificationManager.success("Document updated successfully");
+
       return { ...state, loading: false, doc: action.payload };
 
     case UPDATE_DOCUMENT_FAILURE:
+        NotificationManager.error("Document updated fail");
+
       return {
         ...state,
         documents: null,

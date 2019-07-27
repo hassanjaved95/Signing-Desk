@@ -86,7 +86,7 @@ class DocumentUpload extends React.Component {
     onSubmit = (values) => {
         var arr = [];
         var filesConvertedToBase64 = [];
-        var folderID = this.props.selectedFolder[0].id;
+        var folderID = this.props.selectedFolder.id;
         this.dropzone.files.forEach(function (item) {
             filesConvertedToBase64.push({
                 'fileName': item.name,
@@ -98,154 +98,156 @@ class DocumentUpload extends React.Component {
         Promise.all(arr).then(vals => {
             var doc = "";
             vals.forEach(function (val, idx) {
-                filesConvertedToBase64[idx].base64PdfContents = val.replace("data:application/pdf;base64,","");
+                filesConvertedToBase64[idx].base64PdfContents = val.replace("data:application/pdf;base64,", "");
             });
-            
+
             var doc = {
                 'folderID': folderID,
                 'name': values.FileName,
                 'description': values.FileDescription,
-                'tags': 'Test;hello',
+                'tags': "",
                 'uploadedFiles': filesConvertedToBase64
             }
-            console.log(doc);
             this.props.createDocument(doc);
-        })
+    })
+
+
+
+}
+
+
+
+
+render() {
+    const config = this.componentConfig;
+    const djsConfig = this.djsConfig;
+    $(".headerMenuOpener").last().find("ul").css("padding", "2px 0px 2px 0px");
+
+    // For a list of all possible events (there are many), see README.md!
+    const eventHandlers = {
+        init: dz => this.dropzone = dz,
+        drop: this.callbackArray,
+        addedfile: this.callback,
+        success: this.success,
+        removedfile: this.removedfile
     }
 
+    return (
+
+        < Formik
+            initialValues={this.initialState}
+            onSubmit={(values) => {
+                console.log('onFormikSubmit called:', values);
+                this.onSubmit(values);
+            }
+            }
+        //validate={(values) => { props.validateOnChange(values) }}
+        //validationSchema={this.validationSchema}
+        >
+            {(formikProps) => {
+                const {
+                    values,
+                    touched,
+                    errors,
+                    dirty,
+                    isSubmitting,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    handleReset,
+                } = formikProps;
 
 
-
-    render() {
-        const config = this.componentConfig;
-        const djsConfig = this.djsConfig;
-        $(".headerMenuOpener").last().find("ul").css("padding", "2px 0px 2px 0px");
-
-        // For a list of all possible events (there are many), see README.md!
-        const eventHandlers = {
-            init: dz => this.dropzone = dz,
-            drop: this.callbackArray,
-            addedfile: this.callback,
-            success: this.success,
-            removedfile: this.removedfile
-        }
-
-        return (
-
-            < Formik
-                initialValues={this.initialState}
-                onSubmit={(values) => {
-                    console.log('onFormikSubmit called:', values);
-                    this.onSubmit(values);
-                }
-                }
-            //validate={(values) => { props.validateOnChange(values) }}
-            //validationSchema={this.validationSchema}
-            >
-                {(formikProps) => {
-                    const {
-                        values,
-                        touched,
-                        errors,
-                        dirty,
-                        isSubmitting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        handleReset,
-                    } = formikProps;
-
-
-                    return (
-                        <Form onSubmit={handleSubmit}>
-                            <div>
-                                <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
-                                    Submit
+                return (
+                    <Form onSubmit={handleSubmit}>
+                        <div>
+                            <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
+                                Submit
                                 </button>
-                                <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
-                                {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
-                                <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                                    <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
+                            <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
+                            {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
+                            <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                                <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
 
-                                    <DialogContent width={'900px'} height={'550px'}>
-                                        <div className="dropzoneForm">
+                                <DialogContent width={'900px'} height={'550px'}>
+                                    <div className="dropzoneForm">
 
-                                            <div className="flex-row">
-                                                <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
-                                                    <TextField
-                                                        label="File Name"
-                                                        name="FileName"
-                                                        value={values.FileName}
-                                                        className="dlg-txt-field"
-                                                        style={{ width: '100%' }}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.FileName && touched.FileName) && errors.FileName}
-                                                        placeholder="Enter file name"
-                                                        margin="normal"
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                    />
+                                        <div className="flex-row">
+                                            <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
+                                                <TextField
+                                                    label="File Name"
+                                                    name="FileName"
+                                                    value={values.FileName}
+                                                    className="dlg-txt-field"
+                                                    style={{ width: '100%' }}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.FileName && touched.FileName) && errors.FileName}
+                                                    placeholder="Enter file name"
+                                                    margin="normal"
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
 
-                                                </div>
-                                                <div className="flex-split-2-right" style={{ width: '60%' }}>
-                                                    <TextField
-                                                        label="File Description"
-                                                        name="FileDescription"
-                                                        value={values.FileDescription}
-                                                        className="dlg-txt-field"
-                                                        style={{ width: '100%' }}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
-                                                        placeholder="Enter file description"
-                                                        margin="normal"
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                    />
-                                                </div>
                                             </div>
-
-
+                                            <div className="flex-split-2-right" style={{ width: '60%' }}>
+                                                <TextField
+                                                    label="File Description"
+                                                    name="FileDescription"
+                                                    value={values.FileDescription}
+                                                    className="dlg-txt-field"
+                                                    style={{ width: '100%' }}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
+                                                    placeholder="Enter file description"
+                                                    margin="normal"
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="dropZoner">
-                                            <DropzoneComponent
-                                                config={config}
-                                                eventHandlers={eventHandlers}
-                                                djsConfig={djsConfig}
-                                                className="dropZonee"
 
-                                            />
-                                            <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
-                                        </div>
-                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}>
 
-                                            <Description className="DocumentIcon" />
-                                            <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+                                    </div>
+                                    <div className="dropZoner">
+                                        <DropzoneComponent
+                                            config={config}
+                                            eventHandlers={eventHandlers}
+                                            djsConfig={djsConfig}
+                                            className="dropZonee"
 
-                                    </DialogContent>
-                                    <DialogActions>
-                                        {/* <Button variant="contained" onClick={this.handleClose} color="primary" className="text-white">
+                                        />
+                                        <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
+                                    </div>
+                                    <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}>
+
+                                        <Description className="DocumentIcon" />
+                                        <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+
+                                </DialogContent>
+                                <DialogActions>
+                                    {/* <Button variant="contained" onClick={this.handleClose} color="primary" className="text-white">
                             Cancel
             		</Button> */}
-                                        {/* <Button variant="contained" onClick={this.handleClose} className="btn-info text-white">
+                                    {/* <Button variant="contained" onClick={this.handleClose} className="btn-info text-white">
                             Subscribe
             		</Button> */}
-                                    </DialogActions>
-                                </Dialog>
+                                </DialogActions>
+                            </Dialog>
 
 
 
-                            </div>
+                        </div>
 
-                        </Form>
-                    );
-                }}
-            </Formik >
-        );
-    }
+                    </Form>
+                );
+            }}
+        </Formik >
+    );
+}
 }
 
 const mapStateToProps = ({ documents }) => {
