@@ -38,7 +38,7 @@ const response = {
           }
         ]
       }],
-      "subFolders": [{
+      "children": [{
         "id": "4640b911-33c3-a60a-6cea0244ea5f",
         "name": "Archive",
         "status": 0,
@@ -70,7 +70,7 @@ const response = {
             }
           ]
         }],
-        "subFolders": [
+        "children": [
           {
             "id": "A-33c3-a60a-6cea0244ea5f",
             "name": "Sub Folder Archive",
@@ -103,7 +103,7 @@ const response = {
                 }
               ]
             }],
-            "subFolders": [
+            "children": [
               {
                 "id": "AAA-33c3-6cea0244ea5f",
                 "name": "Sub Folder 1111",
@@ -136,7 +136,7 @@ const response = {
                     }
                   ]
                 }],
-                "subFolders": [
+                "children": [
 
                 ]
               }
@@ -175,7 +175,7 @@ const response = {
                 }
               ]
             }],
-            "subFolders": [
+            "children": [
 
             ]
           }
@@ -243,7 +243,7 @@ const response = {
             ]
           }
         ],
-        "subFolders": []
+        "children": []
       }
       ]
     }]
@@ -575,13 +575,14 @@ const documents = {
   ]
 }
 
-const getDocumentsRequest = async () => {
+const getDocumentsRequest = () => {
   //return documents; 
-  // return response;
-  var response = await API.get('documents/all', { id: 1 });
-  console.log('Documents response:', response);
-
   return response;
+  // return await Promise.resolve(response.data);
+  // var response = await API.get('documents/all', { id: 1 });
+  // console.log('Documents response:', response);
+
+  // return response;
 };
 
 const createDocumentRequest = async doc => {
