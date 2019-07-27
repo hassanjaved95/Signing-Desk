@@ -13,6 +13,11 @@ const loadAddTagButton = (props) => (
     </div>
 )
 
+const loadTagsInColumn = (props, document, tag) => (
+
+    <span className="text-span">{tag}</span>
+)
+
 const loadTagsInput = (props) => (
     <div className="tagsInput">
         <Search />
@@ -88,6 +93,13 @@ const UserDocumentListItem = (props) => {
                         </td>
                         <td   >
                             <div className="searchTagIcon" onClick={props.onClickTagIcon}>
+                                
+                                    <div className="tags-in-colums">
+                                    { props.document.tags && props.document.tags.length > 0 &&
+                                        props.document.tags.map(loadTagsInColumn.bind(this, props, props.document))
+                                    }
+                                    </div>
+                                
                                 <span className="icon-M-1lY">
                                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor" className="Icon">
                                         <path style={{ fillRule: 'evenodd' }} d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">

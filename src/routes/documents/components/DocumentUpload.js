@@ -84,7 +84,6 @@ class DocumentUpload extends React.Component {
     }
 
     onSubmit = (values) => {
-        debugger;
         var arr = [];
         var filesConvertedToBase64 = [];
         var folderID = this.props.selectedFolder[0].id;

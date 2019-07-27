@@ -258,9 +258,6 @@ class UserDocumentsList extends Component {
     }
 
     onClickAddTag = (document, e) => {
-        console.log("Add Tag");
-        debugger;
-
         document.tags.push(this.state.writtenTags);
         this.props.updateDocument({
             "id": document.id,
@@ -345,8 +342,8 @@ class UserDocumentsList extends Component {
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                             onClickBack={this.onClickBackFolder}
                             folderLevel={folderLevel.length}
-                            onEditFolderName= {this.onEditFolderName}
-                            onDeleteFolder= {this.onDeleteFolder}
+                            onEditFolderName={this.onEditFolderName}
+                            onDeleteFolder={this.onDeleteFolder}
                         />
                     }
                 </div>
@@ -401,6 +398,8 @@ class UserDocumentsList extends Component {
                                                     showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
                                                     onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
                                                     closeContextMenu={this.onCloseRowContextMenu.bind(this)}
+                                                    onAddTags={this.onClickAddTag.bind(this, doc)}
+                                                    onRemoveTags={this.onClickRemoveTag.bind(this, doc)}
                                                 />
                                             ))
                                         ) : (
