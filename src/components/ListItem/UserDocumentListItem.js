@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 
 const loadAddTagButton = (props) => (
     <div className={props.writtenTags == "" ? "add-tag-button-Inactive" : "add-tag-button"}>
-        <span className="btn-span">+ Add Tag</span> <span className="text-span">{props.writtenTags}</span>
+        <span className="btn-span" onClick={props.onAddTags}>+ Add Tag</span> <span className="text-span">{props.writtenTags}</span>
     </div>
 )
 
@@ -27,7 +27,7 @@ const loadTagsInput = (props) => (
 const loadTags = (props, document, tag) => (
     <span key={getGuid()}>
         {tag}
-        <span className="remove-tag">X</span>
+        <span className="remove-tag" tagval={tag} onClick={props.onRemoveTags}>X</span>
     </span>
 )
 

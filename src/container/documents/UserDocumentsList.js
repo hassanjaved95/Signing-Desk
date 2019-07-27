@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -196,7 +196,7 @@ class UserDocumentsList extends Component {
     }
 
     onClickShowFolderDocuments = (folder) => {
-        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false }); 
+        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
     }
 
     /* End All Methods related to folders */
@@ -259,6 +259,33 @@ class UserDocumentsList extends Component {
         e.target.value = this.state.writtenTags;
     }
 
+    onClickRemoveTag = (document, e) => {
+        console.log("remove tag");
+        var valueToSplice = e.target.attributes.tagval.nodeValue;
+        document.tags.splice(document.tags.indexOf(valueToSplice),1);
+        this.props.updateDocument({
+            "id": document.id,
+            "name": document.name,
+            "description": document.description,
+            "tags": document.tags,
+            "folderID": document.folderId
+        });
+    }
+
+    onClickAddTag = (document,e)=>{
+        console.log("Add Tag");
+        debugger;
+
+        document.tags.push(this.state.writtenTags);
+        this.props.updateDocument({
+            "id": document.id,
+            "name": document.name,
+            "description": document.description,
+            "tags": document.tags,
+            "folderID": document.folderId
+        });
+    }
+
     /* End search Tag Methods */
 
     /* Start Methods row context menu */
@@ -282,10 +309,10 @@ class UserDocumentsList extends Component {
     render() {
 
         const { documents, selectedFolder } = this.props;
-        
+
         return (
             <div className="documents-page">
-               
+
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -313,7 +340,8 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={documents}  />
+                        <FolderMenu data={documents} currentFolderID={selectedFolder[0].id}
+                            currentFolderName={selectedFolder[0].name} />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
@@ -374,6 +402,8 @@ class UserDocumentsList extends Component {
                                                         menuRelationKey={doc.id}
                                                         clickedSearchTagID={this.state.clickedSearchTagKey}
                                                         ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
+                                                        onRemoveTags={this.onClickRemoveTag.bind(this, doc)}
+                                                        onAddTags={this.onClickAddTag.bind(this,doc)}
                                                         onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
                                                         onCloseTagIcon={this.onCloseTagIcon.bind(this)}
                                                         onTagsInputChange={this.handleTagInputChange.bind(this)}
@@ -413,7 +443,8 @@ export default withRouter(
     connect(mapStateToProps,
         {
             getDocuments,
-            setSelectedFolder
+            setSelectedFolder,
+            updateDocument
         }
     )(UserDocumentsList)
 );

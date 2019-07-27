@@ -7,6 +7,9 @@ import {
   CREATE_DOCUMENT,
   CREATE_DOCUMENT_SUCCESS,
   CREATE_DOCUMENT_FAILURE,
+  UPDATE_DOCUMENT,
+  UPDATE_DOCUMENT_SUCCESS,
+  UPDATE_DOCUMENT_FAILURE,
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS,
@@ -50,6 +53,20 @@ export const createDocumentSuccess = (payload) => ({
 
 export const createDocumentFailure = error => ({
   type: CREATE_DOCUMENT_FAILURE,
+  payload: error
+});
+
+export const updateDocument = (payload) => ({
+  type: UPDATE_DOCUMENT,
+  payload
+});
+export const updateDocumentSuccess = (payload) => ({
+  type: UPDATE_DOCUMENT_SUCCESS,
+  payload
+});
+
+export const updateDocumentFailure = error => ({
+  type: UPDATE_DOCUMENT_FAILURE,
   payload: error
 });
 

@@ -2,6 +2,9 @@ import {
   CREATE_DOCUMENTS,
   CREATE_DOCUMENT_SUCCESS,
   CREATE_DOCUMENT_FAILURE,
+  UPDATE_DOCUMENTS,
+  UPDATE_DOCUMENT_SUCCESS,
+  UPDATE_DOCUMENT_FAILURE,
   GET_DOCUMENTS,
   GET_DOCUMENTS_SUCCESS,
   GET_DOCUMENTS_FAILURE,
@@ -71,6 +74,21 @@ export default (state = INITIAL_STATE, action) => {
         folderLevel: [],
         searchedDocuments: null
       };
+
+      case UPDATE_DOCUMENTS:
+      return { ...state, loading: true };
+
+    case UPDATE_DOCUMENT_SUCCESS:
+      return { ...state, loading: false, doc: action.payload };
+
+    case UPDATE_DOCUMENT_FAILURE:
+      return {
+        ...state,
+        documents: null,
+        selectedFolder: null,
+        folderLevel: [],
+        searchedDocuments: null
+      }
 
     case GET_DOCUMENTS_SUCCESS:
       return {

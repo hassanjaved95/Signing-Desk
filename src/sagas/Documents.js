@@ -1,8 +1,8 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import {CREATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
+import {CREATE_DOCUMENT,UPDATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
-import {createDocumentSuccess, createDocumentFailure, getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
+import {createDocumentSuccess, createDocumentFailure, updateDocumentSuccess, updateDocumentFailure, getDocumentsSuccess,  getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
 import API from 'Api';
 
 const response = {
@@ -587,7 +587,13 @@ const getDocumentsRequest = async () => {
 const createDocumentRequest = async doc => {
   var response = await API.post('documents/create', doc.payload);
   return response;
-}
+};
+
+const updateDocumentRequest = async doc => {
+  var response = await API.put('documents/update', doc);
+  return response;
+};
+
 const deleteDocumentsRequest = () => {
   return true; // response;
 };
@@ -617,6 +623,18 @@ function* createDocumentOnServer(doc) {
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);
     yield put(createDocumentFailure(error));
+
+  }
+}
+
+function* updateDocumentOnServer(doc) {
+  try {
+    const response = yield call(updateDocumentRequest,doc);
+    yield put(updateDocumentSuccess(response));
+
+  } catch (error) {
+    console.log('createDocumentOnServer error: ', error);
+    yield put(updateDocumentFailure(error));
 
   }
 }
@@ -652,6 +670,9 @@ function* duplicateDocumentsOnServer() {
 export function* createDocument(){
   yield takeEvery(CREATE_DOCUMENT, createDocumentOnServer);
 }
+export function* updateDocument(){
+  yield takeEvery(UPDATE_DOCUMENT, updateDocumentOnServer);
+}
 export function* getDocuments() {
   yield takeEvery(GET_DOCUMENTS, getDocumentsFromServer);
 }
@@ -669,6 +690,7 @@ export default function* rootSaga() {
   yield all([
     fork(getDocuments),
     fork(createDocument),
+    fork(updateDocument),
     fork(deleteDocuments),
     fork(moveDocuments),
     fork(duplicateDocuments)
