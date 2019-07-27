@@ -8,9 +8,7 @@ import {
   moveDocumentsSuccess,
   updateDocumentFailure,
   updateDocumentSuccess,
-  editFolderName,
   editFolderNameSuccess,
-  deleteFolder,
   deleteFolderSuccess
 } from "Actions";
 import {
