@@ -1,9 +1,34 @@
+import {
+  createDocumentFailure,
+  createDocumentSuccess,
+  deleteDocumentsSuccess,
+  duplicateDocumentsSuccess,
+  getDocumentsFailure,
+  getDocumentsSuccess,
+  moveDocumentsSuccess,
+  updateDocumentFailure,
+  updateDocumentSuccess,
+  editFolderNameSuccess,
+  deleteFolderSuccess
+} from "Actions";
+import {
+  CREATE_DOCUMENT,
+  DELETE_DOCUMENTS,
+  DUPLICATE_DOCUMENTS,
+  GET_DOCUMENTS,
+  MOVE_DOCUMENTS,
+  UPDATE_DOCUMENT,
+  EDIT_FOLDER_NAME,
+  DELETE_FOLDER,
+} from "Actions/types";
+import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 import { CREATE_DOCUMENT, UPDATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
 
 import { createDocumentSuccess, createDocumentFailure, updateDocumentSuccess, updateDocumentFailure, getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
 import API from 'Api';
+
 
 const response = {
   data: [
@@ -608,6 +633,14 @@ const duplicateDocumentsRequest = () => {
   return true; // response;
 };
 
+const editFolderNameRequest = (payload) => {
+  return true; // response;
+};
+
+const deleteFolderRequest = (payload) => {
+  return true; // response;
+};
+
 function* getDocumentsFromServer() {
   try {
     const response = yield call(getDocumentsRequest);
@@ -620,12 +653,16 @@ function* getDocumentsFromServer() {
 function* createDocumentOnServer(doc) {
   try {
     const response = yield call(createDocumentRequest, doc);
+<<<<<<< HEAD
     if (response.status == 200) {
       payload.id = response.data.id;
       yield put(createDocumentSuccess(response));
     } else {
       console.log('createDocumentOnServer api error code:', response.status);
       yield put(createDocumentFailure(error));
+=======
+    yield put(createDocumentSuccess(response));
+>>>>>>> f09b7023869cec1b5bb2eafcaa831d515e0ad50e
 
     }
   } catch (error) {
@@ -674,6 +711,32 @@ function* duplicateDocumentsOnServer() {
   }
 }
 
+function* editFolderNameOnServer(payload) {
+  try {
+    const response = yield call(editFolderNameRequest);
+    if (response.status == 200) {
+      yield put(editFolderNameSuccess(payload));
+    } else {
+      console.log('editFolderNameOnServer error:', response);
+    }
+  } catch (error) {
+    console.log('editFolderNameOnServer error:', error);
+  }
+}
+
+function* deleteFolderOnServer(payload) {
+  try {
+    const response = yield call(deleteFolderRequest);
+    if (response.status == 200) {
+      yield put(deleteFolderSuccess(payload));
+    } else {
+      console.log('deleteFolderOnServer error:', response);
+    }
+  } catch (error) {
+    console.log('deleteFolderOnServer error:', error);
+  }
+}
+
 // watcher
 export function* createDocument() {
   yield takeEvery(CREATE_DOCUMENT, createDocumentOnServer);
@@ -693,6 +756,12 @@ export function* moveDocuments() {
 export function* duplicateDocuments() {
   yield takeEvery(DUPLICATE_DOCUMENTS, duplicateDocumentsOnServer);
 }
+export function* editFolderName() {
+  yield takeEvery(EDIT_FOLDER_NAME, editFolderNameOnServer);
+}
+export function* deleteFolder() {
+  yield takeEvery(DELETE_FOLDER, deleteFolderOnServer);
+}
 
 export default function* rootSaga() {
   yield all([
@@ -701,6 +770,8 @@ export default function* rootSaga() {
     fork(updateDocument),
     fork(deleteDocuments),
     fork(moveDocuments),
-    fork(duplicateDocuments)
+    fork(duplicateDocuments),
+    fork(editFolderName),
+    fork(deleteFolder),
   ]);
 }

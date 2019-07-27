@@ -15,7 +15,11 @@ import {
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
   DUPLICATE_DOCUMENTS,
-  DUPLICATE_DOCUMENTS_SUCCESS
+  DUPLICATE_DOCUMENTS_SUCCESS,
+  EDIT_FOLDER_NAME,
+  EDIT_FOLDER_NAME_SUCCESS,
+  DELETE_FOLDER,
+  DELETE_FOLDER_SUCCESS
 } from "./types";
 
 export const getDocuments = () => ({
@@ -95,5 +99,23 @@ export const duplicateDocuments = (payload) => ({
 
 export const duplicateDocumentsSuccess = (payload) => ({
   type: DUPLICATE_DOCUMENTS_SUCCESS,
+  payload
+});
+export const editFolderName = (payload) => ({
+  type: EDIT_FOLDER_NAME,
+  payload
+});
+
+export const editFolderNameSuccess = (payload) => ({
+  type: EDIT_FOLDER_NAME_SUCCESS,
+  payload
+});
+export const deleteFolder = (payload) => ({
+  type: DELETE_FOLDER,
+  payload
+});
+
+export const deleteFolderSuccess = (payload) => ({
+  type: DELETE_FOLDER_SUCCESS,
   payload
 });

@@ -11,7 +11,11 @@ import {
   GET_DOCUMENTS_SUCCESS,
   GET_DOCUMENTS_FAILURE,
   SEARCH_DOCUMENTS,
-  SELECTED_FOLDER
+  SELECTED_FOLDER,
+  EDIT_FOLDER_NAME,
+  EDIT_FOLDER_NAME_SUCCESS,
+  DELETE_FOLDER,
+  DELETE_FOLDER_SUCCESS
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -57,6 +61,26 @@ function setSelectedFolder(state, folderId, levelUp) {
   } else {
     return { ...state }
   }
+}
+
+function renameInFolderObj(obj, folderId, name) {
+  if (obj.id != folderId) return { ...obj };
+  return {
+    ...obj,
+    name
+  }
+}
+
+function renameInFoldersList(list, folderId, name) {
+  return list.map(folder => {
+    const folderExists = folder.id == folderId;
+    if (folderExists) {
+      folder = renameInFolderObj(folder, folderId, name);
+    } else if (folder.children.length > 0) {
+      folder.children = renameInFoldersList(folder.children, folderId, name);
+    }
+    return folder;
+  });
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -129,6 +153,19 @@ export default (state = INITIAL_STATE, action) => {
     }
     case SELECTED_FOLDER: {
       return setSelectedFolder(state, action.payload.folderId, action.payload.levelUp || false);
+    }
+    case EDIT_FOLDER_NAME: {
+      return {
+        ...state
+      }
+    }
+    case EDIT_FOLDER_NAME_SUCCESS: {
+      return {
+        ...state,
+        selectedFolder: state.selectedFolder.id == action.payload.folderId ? { ...state.selectedFolder, name: action.payload.name } : selectedFolder,
+        folderLevel: renameInFoldersList(state.folderLevel, action.payload.folderId, action.payload.name),
+        documents: renameInFoldersList(state.documents, action.payload.folderId, action.payload.name)
+      }
     }
     default:
       return { ...state };

@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -248,8 +248,6 @@ class UserDocumentsList extends Component {
         });
     }
 
-    
-
     onClickAddTag = (document,folderid,e)=>{
         var tagsVal = this.state.writtenTags;//document.tags.join(";");
         if(document.tags){
@@ -348,6 +346,8 @@ class UserDocumentsList extends Component {
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                             onClickBack={this.onClickBackFolder}
                             folderLevel={folderLevel.length}
+                            onEditFolderName={this.onEditFolderName}
+                            onDeleteFolder={this.onDeleteFolder}
                         />
                     }
                 </div>
@@ -435,7 +435,9 @@ export default withRouter(
         {
             getDocuments,
             setSelectedFolder,
-            updateDocument
+            updateDocument,
+            editFolderName,
+            deleteFolder
         }
     )(UserDocumentsList)
 );
