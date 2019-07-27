@@ -653,16 +653,12 @@ function* getDocumentsFromServer() {
 function* createDocumentOnServer(doc) {
   try {
     const response = yield call(createDocumentRequest, doc);
-<<<<<<< HEAD
     if (response.status == 200) {
       payload.id = response.data.id;
       yield put(createDocumentSuccess(response));
     } else {
       console.log('createDocumentOnServer api error code:', response.status);
       yield put(createDocumentFailure(error));
-=======
-    yield put(createDocumentSuccess(response));
->>>>>>> f09b7023869cec1b5bb2eafcaa831d515e0ad50e
 
     }
   } catch (error) {
