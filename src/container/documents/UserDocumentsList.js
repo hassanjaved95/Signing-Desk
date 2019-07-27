@@ -53,29 +53,6 @@ class UserDocumentsList extends Component {
         }
     }
 
-    actions = [
-        {
-            text: 'Duplicate',
-            icon: '<i className="zmdi zmdi-copy"></i>',
-            handleClick: this.onDuplicateDocuments
-        },
-        {
-            text: 'Move',
-            icon: '<i className="zmdi zmdi-folder-star"></i>',
-            handleClick: this.onMoveDocumentsToFolder
-        },
-        {
-            text: 'Rename',
-            icon: '<i className="zmdi zmdi-edit"></i>',
-            handleClick: this.onRenameDocument
-        },
-        {
-            text: 'Delete',
-            icon: '<i className="zmdi zmdi-delete"></i>',
-            handleClick: this.onDeleteDocuments
-        }
-    ];
-
     componentDidMount() {
         this.props.getDocuments();
     }
@@ -196,7 +173,7 @@ class UserDocumentsList extends Component {
     }
 
     onClickShowFolderDocuments = (folder) => {
-        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false }); 
+        this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
     }
 
     /* End All Methods related to folders */
@@ -270,6 +247,10 @@ class UserDocumentsList extends Component {
         });
     }
 
+    onClickBackFolder = () => {
+        this.props.setSelectedFolder({ folderId: null, levelUp: true });
+    }
+
     onClickMoreVert = (document, e) => {
         console.log('context menu clicked ' + document.id);
         this.setState({
@@ -281,11 +262,11 @@ class UserDocumentsList extends Component {
 
     render() {
 
-        const { documents, selectedFolder } = this.props;
-        
+        const { selectedFolder, folderLevel } = this.props;
+
         return (
             <div className="documents-page">
-               
+
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -313,20 +294,22 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={documents}  />
+                        <FolderMenu data={selectedFolder.documents} />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
                     {
-                        documents &&
+                        selectedFolder &&
                         <ContentMenu
                             onCreateNewFolder={this.onCreateNewFolder}
                             oncloseList={this.onCloseList}
                             inEditModeFolderList={this.state.inEditModeFolderList}
                             onEditFolderList={this.onEditFolderList}
-                            selectedForlders={selectedFolder}
+                            selectedForlder={selectedFolder}
                             onCreateNewFolder={this.onCreateNewFolder}
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
+                            onClickBack={this.onClickBackFolder}
+                            folderLevel={folderLevel.length}
                         />
                     }
                 </div>
@@ -357,34 +340,31 @@ class UserDocumentsList extends Component {
                             <div className="content-detail">
                                 <ul className="list-unstyled m-0">
                                     {
-                                        documents && documents.length > 0 && documents !== null ? (
-                                            documents.map((document, index) => (
-                                                document.documents.length > 0 &&
-                                                document.documents.map((doc, index) => (
-                                                    <UserDocumentListItem
-                                                        key={getGuid()}
-                                                        document={doc}
-                                                        checked={this.getListItemCheckState(doc)}
-                                                        onClickDocumentItem={this.onClickDocumentItem.bind(this, doc)}
-                                                        onCheckSingleDocument={this.onCheckSingleDocument.bind(this, doc)}
-                                                        selectedDocuments={this.state.selectedDocuments.length}
-                                                        options={this.state.actions}
-                                                        onClickAction={this.handleRowAction}
-                                                        onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
-                                                        menuRelationKey={doc.id}
-                                                        clickedSearchTagID={this.state.clickedSearchTagKey}
-                                                        ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
-                                                        onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
-                                                        onCloseTagIcon={this.onCloseTagIcon.bind(this)}
-                                                        onTagsInputChange={this.handleTagInputChange.bind(this)}
-                                                        showAddTagButton={this.state.showTagAddButton}
-                                                        writtenTags={this.state.writtenTags}
-                                                        onTagInputClick={this.onTagInputClick.bind(this)}
-                                                        showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
-                                                        onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
-                                                        closeContextMenu={this.onCloseRowContextMenu.bind(this)}
-                                                    />
-                                                ))
+                                        selectedFolder && selectedFolder.documents ? (
+                                            selectedFolder.documents.map((doc, index) => (
+                                                <UserDocumentListItem
+                                                    key={getGuid()}
+                                                    document={doc}
+                                                    checked={this.getListItemCheckState(doc)}
+                                                    onClickDocumentItem={this.onClickDocumentItem.bind(this, doc)}
+                                                    onCheckSingleDocument={this.onCheckSingleDocument.bind(this, doc)}
+                                                    selectedDocuments={this.state.selectedDocuments.length}
+                                                    options={this.state.actions}
+                                                    onClickAction={this.handleRowAction}
+                                                    onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
+                                                    menuRelationKey={doc.id}
+                                                    clickedSearchTagID={this.state.clickedSearchTagKey}
+                                                    ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
+                                                    onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
+                                                    onCloseTagIcon={this.onCloseTagIcon.bind(this)}
+                                                    onTagsInputChange={this.handleTagInputChange.bind(this)}
+                                                    showAddTagButton={this.state.showTagAddButton}
+                                                    writtenTags={this.state.writtenTags}
+                                                    onTagInputClick={this.onTagInputClick.bind(this)}
+                                                    showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
+                                                    onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
+                                                    closeContextMenu={this.onCloseRowContextMenu.bind(this)}
+                                                />
                                             ))
                                         ) : (
                                                 <div className="d-flex justify-content-center align-items-center py-50">

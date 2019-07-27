@@ -47,7 +47,7 @@ function setSelectedFolder(state, folderId, levelUp) {
     return {
       ...state,
       folderLevel: state.folderLevel.concat(state.selectedFolder),
-      selectedFolder: [state.selectedFolder.find(sf => sf.id === folderId)]
+      selectedFolder: state.selectedFolder.children.find(sf => sf.id === folderId)
     }
   } else {
     return { ...state }
@@ -72,15 +72,16 @@ export default (state = INITIAL_STATE, action) => {
         searchedDocuments: null
       };
 
-    case GET_DOCUMENTS_SUCCESS:
+    case GET_DOCUMENTS_SUCCESS: {
+      const docs = action.payload;
       return {
         ...state,
-        documents: action.payload,
-        selectedFolder: action.payload,
+        documents: docs,
+        selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
         folderLevel: [],
         searchedDocuments: null
       };
-
+    }
     case GET_DOCUMENTS_FAILURE:
       return {
         ...state,
