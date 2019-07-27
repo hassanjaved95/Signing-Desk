@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -176,6 +176,14 @@ class UserDocumentsList extends Component {
         this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
     }
 
+    onEditFolderName = (folderId, name) => {
+        console.log('onEditFolderName', { folderId, name });
+    }
+
+    onDeleteFolder = (folderId, name) => {
+        console.log('onDeleteFolder', { folderId, name });
+    }
+
     /* End All Methods related to folders */
 
     getScrollBarStyle() {
@@ -239,7 +247,7 @@ class UserDocumentsList extends Component {
     onClickRemoveTag = (document, e) => {
         console.log("remove tag");
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-        document.tags.splice(document.tags.indexOf(valueToSplice),1);
+        document.tags.splice(document.tags.indexOf(valueToSplice), 1);
         this.props.updateDocument({
             "id": document.id,
             "name": document.name,
@@ -249,7 +257,7 @@ class UserDocumentsList extends Component {
         });
     }
 
-    onClickAddTag = (document,e)=>{
+    onClickAddTag = (document, e) => {
         console.log("Add Tag");
         debugger;
 
@@ -334,10 +342,11 @@ class UserDocumentsList extends Component {
                             inEditModeFolderList={this.state.inEditModeFolderList}
                             onEditFolderList={this.onEditFolderList}
                             selectedForlder={selectedFolder}
-                            onCreateNewFolder={this.onCreateNewFolder}
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                             onClickBack={this.onClickBackFolder}
                             folderLevel={folderLevel.length}
+                            onEditFolderName= {this.onEditFolderName}
+                            onDeleteFolder= {this.onDeleteFolder}
                         />
                     }
                 </div>
@@ -422,7 +431,9 @@ export default withRouter(
         {
             getDocuments,
             setSelectedFolder,
-            updateDocument
+            updateDocument,
+            editFolderName,
+            deleteFolder
         }
     )(UserDocumentsList)
 );
