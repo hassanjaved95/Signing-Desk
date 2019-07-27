@@ -66,7 +66,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, doc: action.payload };
     case GET_DOCUMENTS:
       return { ...state, documents: null };
-      case CREATE_DOCUMENT_FAILURE:
+    case CREATE_DOCUMENT_FAILURE:
       return {
         ...state,
         documents: null,
@@ -75,8 +75,7 @@ export default (state = INITIAL_STATE, action) => {
         searchedDocuments: null
       };
 
-<<<<<<< HEAD
-      case UPDATE_DOCUMENTS:
+    case UPDATE_DOCUMENTS:
       return { ...state, loading: true };
 
     case UPDATE_DOCUMENT_SUCCESS:
@@ -91,11 +90,8 @@ export default (state = INITIAL_STATE, action) => {
         searchedDocuments: null
       }
 
-    case GET_DOCUMENTS_SUCCESS:
-=======
     case GET_DOCUMENTS_SUCCESS: {
       const docs = action.payload;
->>>>>>> 112648f266890262c45d00266702ab4041c6e8f1
       return {
         ...state,
         documents: docs,
