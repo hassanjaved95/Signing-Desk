@@ -24,11 +24,6 @@ import {
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { CREATE_DOCUMENT, UPDATE_DOCUMENT, GET_DOCUMENTS, DELETE_DOCUMENTS, MOVE_DOCUMENTS, DUPLICATE_DOCUMENTS } from "Actions/types";
-
-import { createDocumentSuccess, createDocumentFailure, updateDocumentSuccess, updateDocumentFailure, getDocumentsSuccess, getDocumentsFailure, deleteDocumentsSuccess, moveDocumentsSuccess, duplicateDocumentsSuccess } from "Actions";
-import API from 'Api';
-
 
 const response = {
   data: [
