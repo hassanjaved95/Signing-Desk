@@ -604,3 +604,24 @@
 	
     line-height: 1rem;
 }
+.searchTagIcon{
+	display: flex;
+}
+.tags-in-colums{
+	display:flex;
+	flex-direction: row;
+	overflow: hidden;
+}
+
+.tags-in-colums span{
+	padding: 0 5px;
+    position: relative;
+    box-sizing: border-box;
+    /* line-height: 20px; */
+    background: #e2e2e2;
+    color: #8d8d8d;
+    margin-left: 5px;
+    height: 20px;
+    font-size: 12px;
+
+}
