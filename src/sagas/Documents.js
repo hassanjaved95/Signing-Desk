@@ -647,18 +647,17 @@ function* getDocumentsFromServer() {
   }
 }
 
-function* createDocumentOnServer(doc,callback) {
+function* createDocumentOnServer(doc) {
   try {
     const response = yield call(createDocumentRequest, doc);
     if (response.status == 200) {
       doc.payload.id = response.data.documentID;
       yield put(createDocumentSuccess(response));
-      
+      doc.handleClose(function () {
+        return "";
+      })
     } else {
-      
-      console.log('createDocumentOnServer api error code:', response.status);
       yield put(createDocumentFailure(error));
-      
     }
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);
