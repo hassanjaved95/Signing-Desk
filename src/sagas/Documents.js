@@ -23,6 +23,8 @@ import {
 } from "Actions/types";
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import DocumentUpload, { callBackCreateDocument } from "../routes/documents/components/DocumentUpload";
+import UserDocumentsList from "../container/documents/UserDocumentsList";
 
 
 const response = {
@@ -645,16 +647,18 @@ function* getDocumentsFromServer() {
   }
 }
 
-function* createDocumentOnServer(doc) {
+function* createDocumentOnServer(doc,callback) {
   try {
     const response = yield call(createDocumentRequest, doc);
     if (response.status == 200) {
-      payload.id = response.data.id;
+      doc.payload.id = response.data.documentID;
       yield put(createDocumentSuccess(response));
+      
     } else {
+      
       console.log('createDocumentOnServer api error code:', response.status);
       yield put(createDocumentFailure(error));
-
+      
     }
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);

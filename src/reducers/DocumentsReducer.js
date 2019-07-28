@@ -89,16 +89,19 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
 
     case CREATE_DOCUMENT_SUCCESS:
-        NotificationManager.success("Document created successfully");
-        var newDocument = action.payload
+      NotificationManager.success("Document created successfully");
+      
+      debugger;
+      var newDocument = JSON.parse(action.payload.config.data);
+      newDocument.id = action.payload.data.documentID;
       return { 
-        ...state, 
-        documents: [...state.documents, newDocument]
-      };
+        ...state,
+         documents: newDocument
+         };
     case GET_DOCUMENTS:
       return { ...state, documents: null };
     case CREATE_DOCUMENT_FAILURE:
-        NotificationManager.error("Document creation failed");
+      NotificationManager.error("Document creation failed");
       return {
         ...state,
         documents: null,
@@ -111,12 +114,11 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
 
     case UPDATE_DOCUMENT_SUCCESS:
-        NotificationManager.success("Document updated successfully");
-
+      NotificationManager.success("Document updated successfully");
       return { ...state, loading: false, doc: action.payload };
 
     case UPDATE_DOCUMENT_FAILURE:
-        NotificationManager.error("Document updated fail");
+      NotificationManager.error("Document updated fail");
 
       return {
         ...state,

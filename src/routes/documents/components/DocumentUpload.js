@@ -21,6 +21,9 @@ import * as Yup from 'yup';
 import { toBase64 } from "Helpers/helpers";
 import { createDocument, getDocuments } from "Actions";
 
+
+
+
 class DocumentUpload extends React.Component {
     constructor(props) {
         super(props);
@@ -82,11 +85,12 @@ class DocumentUpload extends React.Component {
     onSaveDocuments = () => {
         document.getElementById("btnSubmit").click();
     }
-
+   
     onSubmit = (values) => {
         var arr = [];
         var filesConvertedToBase64 = [];
         var folderID = this.props.selectedFolder.id;
+        var asd="";
         this.dropzone.files.forEach(function (item) {
             filesConvertedToBase64.push({
                 'fileName': item.name,
@@ -109,6 +113,7 @@ class DocumentUpload extends React.Component {
                 'uploadedFiles': filesConvertedToBase64
             }
             this.props.createDocument(doc);
+                           // this.handleClose();
     })
 
 
