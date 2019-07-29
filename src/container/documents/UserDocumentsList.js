@@ -151,6 +151,8 @@ class UserDocumentsList extends Component {
         });
     }
 
+
+
     MoveFolderItems = (documentName, documentId, obj) => {
         this.setState({
             selectedFolderName: documentName
@@ -182,6 +184,26 @@ class UserDocumentsList extends Component {
 
     onClickShowFolderDocuments = (folder) => {
         this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
+    }
+
+    onEditFolderName = (folderId, name) => {
+        console.log('onEditFolderName', { folderId, name });
+        this.props.editFolderName({
+            folderId,
+            name
+        });
+    }
+
+    onDeleteFolder = (folderId, name) => {
+        console.log('onDeleteFolder', { folderId, name });
+        this.props.deleteFolder({ folderId, name });
+    }
+
+    onSubmitCreateFolder = (values) => {
+        console.log('onSubmitCreateFolder:', values);
+        // this.setState({
+            
+        // });
     }
 
     /* End All Methods related to folders */
@@ -335,7 +357,7 @@ class UserDocumentsList extends Component {
                         open={this.state.folderCreationDialog}
                         onClose={this.onCloseDlg}
                     >
-                        <NewFolder />
+                        <NewFolder onSubmit={this.onSubmitCreateFolder} />
                     </SmallDialogTemplate>
                 }
 

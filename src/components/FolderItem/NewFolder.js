@@ -29,11 +29,12 @@ function NewFolder(props) {
         <Formik
             initialValues={initialState}
             onSubmit={(values) => {
-                props.onSubmit
+                console.log('onsubmit new folder:', values);
+                props.onSubmit(values);
             }}
 
             validationSchema={Yup.object().shape({
-                name: Yup.string()
+                folderName: Yup.string()
                     .required('Required')
             })}
         >
@@ -50,7 +51,7 @@ function NewFolder(props) {
                     handleReset,
                 } = formikProps;
                 return (
-                    <form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <div className="flex-row">
                             <div className="flex-split-2-left clearElements" style={{ width: '75%' }}>
                                 <TextField
@@ -71,12 +72,15 @@ function NewFolder(props) {
                             </div>
                             <div className="flex-split-2-right smallDialog-flex-split-2-right">
                                 <div className="header-shadow">
-                                    <input type="submit" className="btn-save-foldername" value="save" />
+                                    <button id="btnSubmit" type="submit" style={{ opacity: 1 }} >
+                                        Submit
+                                </button>
+                                    {/* <input type="submit" className="btn-save-foldername" value="save" /> */}
                                 </div>
                             </div>
                         </div>
 
-                    </form>
+                    </Form>
                 );
             }}
         </Formik>
