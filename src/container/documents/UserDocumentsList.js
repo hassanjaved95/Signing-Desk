@@ -191,6 +191,13 @@ class UserDocumentsList extends Component {
         this.props.deleteFolder({ folderId, name });
     }
 
+    onSubmitCreateFolder = (values) => {
+        console.log('onSubmitCreateFolder:', values);
+        // this.setState({
+            
+        // });
+    }
+
     /* End All Methods related to folders */
 
     getScrollBarStyle() {
@@ -324,7 +331,7 @@ class UserDocumentsList extends Component {
                         open={this.state.folderCreationDialog}
                         onClose={this.onCloseDlg}
                     >
-                        <NewFolder />
+                        <NewFolder onSubmit={this.onSubmitCreateFolder} />
                     </SmallDialogTemplate>
                 }
 

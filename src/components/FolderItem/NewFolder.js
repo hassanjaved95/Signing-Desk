@@ -29,7 +29,8 @@ function NewFolder(props) {
         <Formik
             initialValues={initialState}
             onSubmit={(values) => {
-                props.onSubmit
+                console.log('onsubmit new folder:', values);
+                props.onSubmit(values);
             }}
 
             validationSchema={Yup.object().shape({
