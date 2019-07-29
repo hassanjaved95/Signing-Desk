@@ -36,7 +36,8 @@ const ContentMenu = (props) => (
                 {
                     //props.selectedForlders && props.selectedForlders[0] &&
                     // props.selectedForlders.map(createDocumentItem.bind(this, props))
-                    props.selectedForlder.children && props.selectedForlder.children.length > 0 &&
+                    
+                    props.selectedForlder && props.selectedForlder.children && props.selectedForlder.children.length > 0 &&
                     props.selectedForlder.children.map(createDocumentItem.bind(this, props))
                 }
             </ul>

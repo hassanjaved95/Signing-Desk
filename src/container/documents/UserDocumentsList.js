@@ -335,14 +335,13 @@ class UserDocumentsList extends Component {
                 }
                 <div className="documents-folders">
                     {
-                        selectedFolder &&
+                        //selectedFolder &&
                         <ContentMenu
                             onCreateNewFolder={this.onCreateNewFolder}
                             oncloseList={this.onCloseList}
                             inEditModeFolderList={this.state.inEditModeFolderList}
                             onEditFolderList={this.onEditFolderList}
                             selectedForlder={selectedFolder}
-                            onCreateNewFolder={this.onCreateNewFolder}
                             onClickShowFolderDocuments={this.onClickShowFolderDocuments}
                             onClickBack={this.onClickBackFolder}
                             folderLevel={folderLevel.length}
