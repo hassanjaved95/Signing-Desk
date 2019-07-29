@@ -5,7 +5,6 @@ import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
-import { readEmail, onSelectEmail, markAsStarEmail } from "Actions";
 import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
@@ -21,6 +20,9 @@ import PageActions from "Components/ListItem/PageActions";
 import { getGuid } from "Helpers/helpers";
 import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import FolderMenu from 'Components/FolderMenu/FolderMenu';
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+
+
 
 
 
@@ -29,6 +31,7 @@ class UserDocumentsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading:true,
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
@@ -341,11 +344,15 @@ class UserDocumentsList extends Component {
 
     render() {
 
-        const { selectedFolder, folderLevel } = this.props;
-
+        const { selectedFolder, folderLevel, loading } = this.props;
+        if (loading) {
+			return (
+				<RctSectionLoader />
+			)
+		}
         return (
             <div className="documents-page">
-
+               
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -487,6 +494,7 @@ export default withRouter(
             editFolderName,
             deleteFolder,
             moveDocuments
+            
         }
     )(UserDocumentsList)
 );
