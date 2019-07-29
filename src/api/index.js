@@ -24,6 +24,13 @@ axiosObj.interceptors.request.use((config) => {
    return Promise.reject(error);
 });
 
+axiosObj.interceptors.response.use((config) => {
+   console.log('response resceived:', config);
+   return config;
+}, (error) => {
+   return Promise.reject(error);
+});
+
 var methods = {
    get: async function (endPoint, data) {
       try {

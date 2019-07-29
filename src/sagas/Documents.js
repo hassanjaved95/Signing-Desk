@@ -23,7 +23,8 @@ import {
 } from "Actions/types";
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-
+import DocumentUpload, { callBackCreateDocument } from "../routes/documents/components/DocumentUpload";
+import UserDocumentsList from "../container/documents/UserDocumentsList";
 
 
 const response = {
@@ -596,14 +597,15 @@ const documents = {
   ]
 }
 
-const getDocumentsRequest = () => {
+const getDocumentsRequest = async () => {
   //return documents; 
-  return response;
+  //return response;
   // return await Promise.resolve(response.data);
-  // var response = await API.get('documents/all', { id: 1 });
   // console.log('Documents response:', response);
 
-  // return response;
+  var response = await API.get('documents/all', { id: 1 });
+
+  return response;
 };
 
 const createDocumentRequest = async doc => {
@@ -612,7 +614,7 @@ const createDocumentRequest = async doc => {
 };
 
 const updateDocumentRequest = async doc => {
-  var response = await API.put('documents/update', doc);
+  var response = await API.put('documents/update', doc.payload);
   return response;
 };
 
@@ -648,8 +650,15 @@ function* getDocumentsFromServer() {
 function* createDocumentOnServer(doc) {
   try {
     const response = yield call(createDocumentRequest, doc);
-    yield put(createDocumentSuccess(response));
-
+    if (response.status == 200) {
+      doc.payload.id = response.data.documentID;
+      yield put(createDocumentSuccess(response));
+      doc.handleClose(function () {
+        return "";
+      })
+    } else {
+      yield put(createDocumentFailure(error));
+    }
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);
     yield put(createDocumentFailure(error));

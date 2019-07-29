@@ -188,6 +188,7 @@ class UserDocumentsList extends Component {
 
     onDeleteFolder = (folderId, name) => {
         console.log('onDeleteFolder', { folderId, name });
+        this.props.deleteFolder({ folderId, name });
     }
 
     /* End All Methods related to folders */
@@ -250,28 +251,39 @@ class UserDocumentsList extends Component {
         e.target.value = this.state.writtenTags;
     }
 
-    onClickRemoveTag = (document, e) => {
-        console.log("remove tag");
+    onClickRemoveTag = (document, folderid, e) => {
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-        document.tags.splice(document.tags.indexOf(valueToSplice), 1);
+        document.tags = document.tags.replace(valueToSplice, "").replace(";;", ";");
         this.props.updateDocument({
             "id": document.id,
             "name": document.name,
             "description": document.description,
             "tags": document.tags,
-            "folderID": document.folderId
+            "folderID": folderid
         });
     }
 
-    onClickAddTag = (document, e) => {
-        document.tags.push(this.state.writtenTags);
+    onClickAddTag = (document, folderid, e) => {
+        var tagsVal = this.state.writtenTags;//document.tags.join(";");
+        if (document.tags) {
+            document.tags = document.tags + ";" + tagsVal;
+        }
+        else {
+            document.tags = tagsVal;
+        }
         this.props.updateDocument({
             "id": document.id,
             "name": document.name,
             "description": document.description,
             "tags": document.tags,
-            "folderID": document.folderId
+            "folderID": folderid
         });
+        this.setState({ writtenTags: "" });
+    }
+
+    getTagsArray = (doc, e) => {
+        debugger;
+        return doc.tags.split(";");
     }
 
     /* End search Tag Methods */
@@ -332,13 +344,13 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={selectedFolder.documents} currentFolderID={selectedFolder.id}
+                        <FolderMenu data={[selectedFolder]} currentFolderID={selectedFolder.id}
                             currentFolderName={selectedFolder.name} />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
                     {
-                        selectedFolder &&
+                        //selectedFolder &&
                         <ContentMenu
                             onCreateNewFolder={this.onCreateNewFolder}
                             oncloseList={this.onCloseList}
@@ -404,8 +416,9 @@ class UserDocumentsList extends Component {
                                                     showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
                                                     onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
                                                     closeContextMenu={this.onCloseRowContextMenu.bind(this)}
-                                                    onAddTags={this.onClickAddTag.bind(this, doc)}
-                                                    onRemoveTags={this.onClickRemoveTag.bind(this, doc)}
+                                                    onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
+                                                    onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
+                                                    arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
                                                 />
                                             ))
                                         ) : (

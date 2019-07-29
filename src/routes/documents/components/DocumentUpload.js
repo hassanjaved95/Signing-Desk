@@ -21,6 +21,9 @@ import * as Yup from 'yup';
 import { toBase64 } from "Helpers/helpers";
 import { createDocument, getDocuments } from "Actions";
 
+
+
+
 class DocumentUpload extends React.Component {
     constructor(props) {
         super(props);
@@ -86,7 +89,7 @@ class DocumentUpload extends React.Component {
     onSubmit = (values) => {
         var arr = [];
         var filesConvertedToBase64 = [];
-        var folderID = this.props.selectedFolder[0].id;
+        var folderID = this.props.selectedFolder.id;
         this.dropzone.files.forEach(function (item) {
             filesConvertedToBase64.push({
                 'fileName': item.name,
@@ -98,19 +101,22 @@ class DocumentUpload extends React.Component {
         Promise.all(arr).then(vals => {
             var doc = "";
             vals.forEach(function (val, idx) {
-                filesConvertedToBase64[idx].base64PdfContents = val.replace("data:application/pdf;base64,","");
+                filesConvertedToBase64[idx].base64PdfContents = val.replace("data:application/pdf;base64,", "");
             });
-            
+
             var doc = {
                 'folderID': folderID,
                 'name': values.FileName,
                 'description': values.FileDescription,
-                'tags': 'Test;hello',
+                'tags': "",
                 'uploadedFiles': filesConvertedToBase64
             }
-            console.log(doc);
-            this.props.createDocument(doc);
+            this.props.createDocument(doc, this.handleClose);
+
         })
+
+
+
     }
 
 
@@ -132,7 +138,7 @@ class DocumentUpload extends React.Component {
 
         return (
 
-            < Formik
+            <Formik
                 initialValues={this.initialState}
                 onSubmit={(values) => {
                     console.log('onFormikSubmit called:', values);

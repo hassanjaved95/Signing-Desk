@@ -46,9 +46,9 @@ export const setSelectedFolder = (payload) => ({
   payload
 });
 
-export const createDocument = (payload) => ({
+export const createDocument = (payload,handleClose) => ({
   type: CREATE_DOCUMENT,
-  payload
+  payload, handleClose
 });
 export const createDocumentSuccess = (payload) => ({
   type: CREATE_DOCUMENT_SUCCESS,

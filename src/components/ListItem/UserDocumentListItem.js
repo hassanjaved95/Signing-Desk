@@ -95,9 +95,9 @@ const UserDocumentListItem = (props) => {
                             <div className="searchTagIcon" onClick={props.onClickTagIcon}>
                                 
                                     <div className="tags-in-colums">
-                                    { props.document.tags && props.document.tags.length > 0 &&
-                                        props.document.tags.map(loadTagsInColumn.bind(this, props, props.document))
-                                    }
+                                    { props.arrTags && props.arrTags.length > 0 &&
+                                        props.arrTags.map(loadTagsInColumn.bind(this, props, props.document))
+                                        }
                                     </div>
                                 
                                 <span className="icon-M-1lY">
@@ -114,7 +114,9 @@ const UserDocumentListItem = (props) => {
                                     <div className="search-tag-ul" onMouseLeave={props.onCloseTagIcon}>
                                         {loadTagsInput(props)}
                                         <div className="ul">
-                                            {props.document.tags.map(loadTags.bind(this, props, props.document))}
+                                            {
+                                                props.arrTags && props.arrTags.length > 0 &&
+                                                props.arrTags.map(loadTags.bind(this, props, props.document))}
                                         </div>
                                         {
                                             loadAddTagButton(props)
