@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -49,6 +49,8 @@ class UserDocumentsList extends Component {
             clickedRowContextMenuKey: "",
             showTagAddButton: false,
             writtenTags: "",
+            newFolderIDToMoveDocuments: "",
+            selectedDocumentsToMove: []
 
         }
     }
@@ -68,16 +70,19 @@ class UserDocumentsList extends Component {
         if (!documents) return;
 
         var ids = [];
+        var docs = [];
         if (checked) {
             documents.forEach(folder => {
                 folder.documents.reduce((arr, currObj) => {
                     arr.push(currObj.id);
+                    docs.push(currObj);
                     return arr;
                 }, ids);
             })
         }
 
         this.setState({
+            selectedDocumentsToMove: docs,
             selectedDocuments: ids,
             allDocumentsAreSelected: checked
         })
@@ -91,9 +96,11 @@ class UserDocumentsList extends Component {
     onCheckSingleDocument = (document, event, checked) => {
         event.stopPropagation();
         var selectedDocuments = this.state.selectedDocuments.filter(c => c != document.id);
+        var selectedDocs = this.state.selectedDocumentsToMove.filter(c => c.id != document.id);
 
         if (checked) {
             selectedDocuments.push(document.id)
+            selectedDocs.push(document);
         }
 
         var totalDocs = 0;
@@ -103,6 +110,7 @@ class UserDocumentsList extends Component {
         var allDocumentsAreSelected = totalDocs == selectedDocuments.length;
 
         this.setState({
+            selectedDocumentsToMove: selectedDocs,
             selectedDocuments: selectedDocuments,
             allDocumentsAreSelected
         });
@@ -190,6 +198,7 @@ class UserDocumentsList extends Component {
 
     onMoveDocuments = (doc) => {
         console.log('onMoveDocuments');
+        // this.props.moveDocuments(selectedDocuments,);
     }
 
     onDeleteDocuments = (doc) => {
@@ -236,9 +245,9 @@ class UserDocumentsList extends Component {
         e.target.value = this.state.writtenTags;
     }
 
-    onClickRemoveTag = (document,folderid,e) => {
+    onClickRemoveTag = (document, folderid, e) => {
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-        document.tags = document.tags.replace(valueToSplice,"").replace(";;",";");
+        document.tags = document.tags.replace(valueToSplice, "").replace(";;", ";");
         this.props.updateDocument({
             "id": document.id,
             "name": document.name,
@@ -248,12 +257,12 @@ class UserDocumentsList extends Component {
         });
     }
 
-    onClickAddTag = (document,folderid,e)=>{
+    onClickAddTag = (document, folderid, e) => {
         var tagsVal = this.state.writtenTags;//document.tags.join(";");
-        if(document.tags){
+        if (document.tags) {
             document.tags = document.tags + ";" + tagsVal;
         }
-        else{
+        else {
             document.tags = tagsVal;
         }
         this.props.updateDocument({
@@ -263,11 +272,10 @@ class UserDocumentsList extends Component {
             "tags": document.tags,
             "folderID": folderid
         });
-        this.setState({writtenTags:""});
+        this.setState({ writtenTags: "" });
     }
 
-    getTagsArray =(doc,e)=>{
-        debugger;
+    getTagsArray = (doc, e) => {
         return doc.tags.split(";");
     }
 
@@ -294,6 +302,24 @@ class UserDocumentsList extends Component {
         });
     }
     /* End methods row context menu */
+
+    onSelectNewFolderToMoveDocuments = (obj,val) => {
+        debugger;
+        if(obj.clickedFolderId!=""){
+            for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
+                this.props.updateDocument({
+                    "id": this.state.selectedDocumentsToMove[i].id,
+                    "name": this.state.selectedDocumentsToMove[i].name,
+                    "description": this.state.selectedDocumentsToMove[i].description,
+                    "tags": this.state.selectedDocumentsToMove[i].tags,
+                    "folderID": obj.clickedFolderId
+                }, this.onCloseDlg);
+            }
+        }
+        
+
+
+    }
 
     render() {
 
@@ -329,8 +355,13 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={[selectedFolder]} currentFolderID={selectedFolder.id}
-                            currentFolderName={selectedFolder.name} />
+                        <FolderMenu data={[selectedFolder]}
+                            currentFolderID={selectedFolder.id}
+                            currentFolderName={selectedFolder.name}
+                            selectedDocuments={this.state.selectedDocuments}
+                           // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
+                           selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                        />
                     </SmallDialogTemplate>
                 }
                 <div className="documents-folders">
@@ -401,9 +432,9 @@ class UserDocumentsList extends Component {
                                                     showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
                                                     onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
                                                     closeContextMenu={this.onCloseRowContextMenu.bind(this)}
-                                                    onAddTags={this.onClickAddTag.bind(this,doc,selectedFolder.id)}
-                                                    onRemoveTags={this.onClickRemoveTag.bind(this,doc,selectedFolder.id)}
-                                                    arrTags={doc.tags &&  typeof(doc.tags) === 'string' && doc.tags.split(';')}
+                                                    onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
+                                                    onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
+                                                    arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
                                                 />
                                             ))
                                         ) : (
@@ -436,7 +467,8 @@ export default withRouter(
             setSelectedFolder,
             updateDocument,
             editFolderName,
-            deleteFolder
+            deleteFolder,
+            moveDocuments
         }
     )(UserDocumentsList)
 );

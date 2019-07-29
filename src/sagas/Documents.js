@@ -670,7 +670,11 @@ function* updateDocumentOnServer(doc) {
   try {
     const response = yield call(updateDocumentRequest, doc);
     yield put(updateDocumentSuccess(response));
-
+    if(doc.onCloseDlg){
+      doc.onCloseDlg(function(){
+        return "";
+      });
+    }
   } catch (error) {
     console.log('createDocumentOnServer error: ', error);
     yield put(updateDocumentFailure(error));

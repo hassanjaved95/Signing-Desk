@@ -435,7 +435,7 @@
     border-radius: 3px;
     white-space: nowrap;
     transition: .1s;
-    cursor: pointer;
+    cursor: pointer !important;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -592,7 +592,7 @@
 	background-color: #fff;
 }
 .content ul li div {
-	background-color: #fff !important;
+	//background-color: #fff !important;
 	
 }
 .content ul{
@@ -600,7 +600,7 @@
 }
 
 .content ul li {
-	background-color: #fff !important;
+	// background-color: #fff !important;
 	
     line-height: 1rem;
 }
@@ -625,4 +625,26 @@
     height: 24px;
     font-size: 12px;
 
+}
+
+.treebeard-node{
+	border-bottom: 1px solid #979696;
+	line-height: 2rem;
+}
+
+.treebeard-node svg{
+	height: 1.2rem !important;
+	color: black !important;
+}
+
+.treebeard-node-active ul li{
+	background-color: #e6e6e6 !important;
+	
+	
+}
+
+.treebeard-node-active{
+	background-color: #e6e6e6 !important;
+	color: #59b671 !important;
+	
 }

@@ -80,6 +80,7 @@ class DocumentUpload extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+        this.props.getDocuments();
     };
 
     onSaveDocuments = () => {

@@ -60,9 +60,9 @@ export const createDocumentFailure = error => ({
   payload: error
 });
 
-export const updateDocument = (payload) => ({
+export const updateDocument = (payload,onCloseDlg) => ({
   type: UPDATE_DOCUMENT,
-  payload
+  payload, onCloseDlg
 });
 export const updateDocumentSuccess = (payload) => ({
   type: UPDATE_DOCUMENT_SUCCESS,

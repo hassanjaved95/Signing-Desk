@@ -15,7 +15,10 @@ import {
   EDIT_FOLDER_NAME,
   EDIT_FOLDER_NAME_SUCCESS,
   DELETE_FOLDER,
-  DELETE_FOLDER_SUCCESS
+  DELETE_FOLDER_SUCCESS,
+  MOVE_DOCUMENTS,
+  MOVE_DOCUMENTS_SUCCESS,
+  MOVE_DOCUMENTS_FAILURE
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -90,14 +93,12 @@ export default (state = INITIAL_STATE, action) => {
 
     case CREATE_DOCUMENT_SUCCESS:
       NotificationManager.success("Document created successfully");
-      
-      debugger;
       var newDocument = JSON.parse(action.payload.config.data);
       newDocument.id = action.payload.data.documentID;
-      return { 
+      return {
         ...state,
-         documents: newDocument
-         };
+        documents: newDocument
+      };
     case GET_DOCUMENTS:
       return { ...state, documents: null };
     case CREATE_DOCUMENT_FAILURE:
@@ -168,6 +169,15 @@ export default (state = INITIAL_STATE, action) => {
         folderLevel: renameInFoldersList(state.folderLevel, action.payload.folderId, action.payload.name),
         documents: renameInFoldersList(state.documents, action.payload.folderId, action.payload.name)
       }
+    }
+    case MOVE_DOCUMENTS: {
+      return { ...state }
+    }
+    case CREATE_DOCUMENT_SUCCESS:{
+      NotificationManager.success("Documents Moved successfully");
+    }
+    case CREATE_DOCUMENT_FAILURE:{
+      NotificationManager.error("Documents Not Moved successfully");
     }
     default:
       return { ...state };
