@@ -696,20 +696,20 @@ function* duplicateDocumentsOnServer() {
   }
 }
 
-function* editFolderNameOnServer(payload) {
+function* editFolderNameOnServer({ payload }) {
   try {
     const response = yield call(editFolderNameRequest);
-    if (response.status == 200) {
-      yield put(editFolderNameSuccess(payload));
-    } else {
-      console.log('editFolderNameOnServer error:', response);
-    }
+    //if (response.status == 200) {
+    yield put(editFolderNameSuccess(payload));
+    //} else {
+    //  console.log('editFolderNameOnServer error:', response);
+    //}
   } catch (error) {
     console.log('editFolderNameOnServer error:', error);
   }
 }
 
-function* deleteFolderOnServer(payload) {
+function* deleteFolderOnServer({ payload }) {
   try {
     const response = yield call(deleteFolderRequest);
     if (response.status == 200) {

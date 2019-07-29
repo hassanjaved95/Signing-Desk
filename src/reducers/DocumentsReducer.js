@@ -61,6 +61,15 @@ function setSelectedFolder(state, folderId, levelUp) {
   }
 }
 
+function deleteFolder(list, folderId) {
+  return list.map(folder => {
+    if (folder.children && folder.children.length > 0) {
+      folder.children = deleteFolder(folder.children, folderId);
+    }
+    return folder.id != folderId;
+  });
+}
+
 function renameInFolderObj(obj, folderId, name) {
   if (obj.id != folderId) return { ...obj };
   return {
@@ -150,9 +159,21 @@ export default (state = INITIAL_STATE, action) => {
     case EDIT_FOLDER_NAME_SUCCESS: {
       return {
         ...state,
-        selectedFolder: state.selectedFolder.id == action.payload.folderId ? { ...state.selectedFolder, name: action.payload.name } : selectedFolder,
+        selectedFolder: state.selectedFolder.id == action.payload.folderId ? { ...state.selectedFolder, name: action.payload.name } : state.selectedFolder,
         folderLevel: renameInFoldersList(state.folderLevel, action.payload.folderId, action.payload.name),
         documents: renameInFoldersList(state.documents, action.payload.folderId, action.payload.name)
+      }
+    }
+    case DELETE_FOLDER: {
+      return {
+        ...state
+      }
+    }
+    case DELETE_FOLDER_SUCCESS: {
+      return {
+        ...state,
+        selectedFolder: deleteFolder(state.selectedFolder, payload.folderId),
+        documents: deleteFolder(state.documents, payload.folderId)
       }
     }
     default:

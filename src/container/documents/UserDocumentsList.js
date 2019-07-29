@@ -143,6 +143,8 @@ class UserDocumentsList extends Component {
         });
     }
 
+
+
     MoveFolderItems = (documentName, documentId, obj) => {
         this.setState({
             selectedFolderName: documentName
@@ -178,6 +180,10 @@ class UserDocumentsList extends Component {
 
     onEditFolderName = (folderId, name) => {
         console.log('onEditFolderName', { folderId, name });
+        this.props.editFolderName({
+            folderId,
+            name
+        });
     }
 
     onDeleteFolder = (folderId, name) => {
