@@ -326,7 +326,6 @@ class UserDocumentsList extends Component {
     /* End methods row context menu */
 
     onSelectNewFolderToMoveDocuments = (obj,val) => {
-        debugger;
         if(obj.clickedFolderId!=""){
             for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
                 this.props.updateDocument({
@@ -335,12 +334,9 @@ class UserDocumentsList extends Component {
                     "description": this.state.selectedDocumentsToMove[i].description,
                     "tags": this.state.selectedDocumentsToMove[i].tags,
                     "folderID": obj.clickedFolderId
-                }, this.onCloseDlg);
+                }, this.onCloseDlgMoveDocuments);
             }
         }
-        
-
-
     }
 
     render() {
@@ -381,8 +377,8 @@ class UserDocumentsList extends Component {
                             currentFolderID={selectedFolder.id}
                             currentFolderName={selectedFolder.name}
                             selectedDocuments={this.state.selectedDocuments}
-                           // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                           selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                            onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
+                           //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                         />
                     </SmallDialogTemplate>
                 }
