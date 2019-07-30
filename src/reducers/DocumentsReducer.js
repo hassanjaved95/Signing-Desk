@@ -162,10 +162,11 @@ export default (state = INITIAL_STATE, action) => {
       NotificationManager.success("Document deleted successfully");
       return {
         ...state,
-        selectedFolder: state.selectedFolder.documents.filter(doc => {
-          return action.payload.documentIds != doc.id;
-        }),
-        documents: deleteDocuments(state.documents, action.payload.documentIds)
+        selectedFolder: {
+          ...state.selectedFolder, documents: state.selectedFolder.documents.filter(doc => {
+            return action.payload.documentIds != doc.id;
+          })
+        }
       }
     }
 

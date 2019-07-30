@@ -135,6 +135,9 @@ function* deleteDocumentsFromServer({ payload }) {
   try {
     const response = yield call(deleteDocumentsRequest, payload.documentIds);
     if (response.status == 200) {
+      if (payload.callback && typeof payload.callback === "function") {
+        payload.callback();
+      }
       yield put(deleteDocumentsSuccess(payload));
     }
   } catch (error) {

@@ -23,9 +23,6 @@ import FolderMenu from 'Components/FolderMenu/FolderMenu';
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 
-
-
-
 class UserDocumentsList extends Component {
     searchTimerId = null;
     selectedFolder = null;
@@ -238,8 +235,12 @@ class UserDocumentsList extends Component {
         this.props.deleteDocuments({
             documentIds: this.state.selectedDocuments && this.state.selectedDocuments.length > 0 ?
                 this.state.selectedDocuments[0] :
-                []
+                [],
+            callback: () => {
+                this.setState({ selectedDocuments: [] });
+            }
         });
+
         // console.log('onDeleteDocuments', this.state.selectedDocuments);
     }
 
