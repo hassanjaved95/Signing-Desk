@@ -9,7 +9,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -32,7 +32,7 @@ class UserDocumentsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading:true,
+            loading: true,
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
@@ -213,8 +213,8 @@ class UserDocumentsList extends Component {
             "Name": values.folderName
         }
 
-       this.props.addNewFolder(payload);
-        
+        this.props.addNewFolder(payload);
+
     }
 
     /* End All Methods related to folders */
@@ -235,7 +235,12 @@ class UserDocumentsList extends Component {
     }
 
     onDeleteDocuments = (doc) => {
-        console.log('onDeleteDocuments');
+        this.props.deleteDocuments({
+            documentIds: this.state.selectedDocuments && this.state.selectedDocuments.length > 0 ?
+                this.state.selectedDocuments[0] :
+                []
+        });
+        // console.log('onDeleteDocuments', this.state.selectedDocuments);
     }
 
     onRenameDocument = (doc) => {
@@ -336,8 +341,8 @@ class UserDocumentsList extends Component {
     }
     /* End methods row context menu */
 
-    onSelectNewFolderToMoveDocuments = (obj,val) => {
-        if(obj.clickedFolderId!=""){
+    onSelectNewFolderToMoveDocuments = (obj, val) => {
+        if (obj.clickedFolderId != "") {
             for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
                 this.props.updateDocument({
                     "id": this.state.selectedDocumentsToMove[i].id,
@@ -354,15 +359,15 @@ class UserDocumentsList extends Component {
 
         const { selectedFolder, folderLevel, loading } = this.props;
         this.selectedFolder = selectedFolder;
-        
+
         if (loading) {
-			return (
-				<RctSectionLoader />
-			)
-		}
+            return (
+                <RctSectionLoader />
+            )
+        }
         return (
             <div className="documents-page">
-               
+
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -397,7 +402,7 @@ class UserDocumentsList extends Component {
                             // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
                             selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                             onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                           //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                        //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                         />
                     </SmallDialogTemplate>
                 }
@@ -507,7 +512,7 @@ export default withRouter(
             deleteFolder,
             moveDocuments,
             addNewFolder,
-            moveDocuments
+            deleteDocuments
         }
     )(UserDocumentsList)
 );

@@ -20,7 +20,9 @@ import {
   MOVE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS_FAILURE,
   ADD_NEW_FOLDER,
-  ADD_NEW_FOLDER_SUCCESS
+  ADD_NEW_FOLDER_SUCCESS,
+  DELETE_DOCUMENTS,
+  DELETE_DOCUMENTS_SUCCESS
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -95,6 +97,15 @@ function deleteFolder(list, folderId) {
   });
 }
 
+function deleteDocuments(list, folderIds) {
+  return list.filter(folder => {
+    if (folder.children && folder.children.length > 0) {
+      folder.children = deleteDocuments(folder.children, folderIds);
+    }
+    return folderIds != folder.id;
+  });
+}
+
 function renameInFolderObj(obj, folderId, name) {
   if (obj.id != folderId) return { ...obj };
   return {
@@ -142,6 +153,22 @@ export default (state = INITIAL_STATE, action) => {
         loading: false
       };
 
+    case DELETE_DOCUMENTS: {
+      return {
+        ...state
+      }
+    }
+    case DELETE_DOCUMENTS_SUCCESS: {
+      NotificationManager.success("Document deleted successfully");
+      return {
+        ...state,
+        selectedFolder: state.selectedFolder.documents.filter(doc => {
+          return action.payload.documentIds != doc.id;
+        }),
+        documents: deleteDocuments(state.documents, action.payload.documentIds)
+      }
+    }
+
     case UPDATE_DOCUMENTS:
       return { ...state, loading: true };
 
@@ -151,7 +178,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_DOCUMENT_FAILURE:
       NotificationManager.error("Document updated fail");
-      
+
       return {
         ...state,
         documents: null,
@@ -169,7 +196,7 @@ export default (state = INITIAL_STATE, action) => {
         selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
         folderLevel: [],
         searchedDocuments: null,
-        loading:false
+        loading: false
       };
     }
     case GET_DOCUMENTS_FAILURE:
@@ -205,29 +232,29 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
     case MOVE_DOCUMENTS: {
-      return { ...state, loading:true }
+      return { ...state, loading: true }
     }
     case CREATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Documents Moved successfully");
-      return { ...state, loading:false }
+      return { ...state, loading: false }
 
     }
     case CREATE_DOCUMENT_FAILURE: {
       NotificationManager.error("Documents Not Moved successfully");
-      return { ...state, loading:false }
+      return { ...state, loading: false }
 
 
     }
     case DELETE_FOLDER: {
       return {
         ...state,
-        loading:true
+        loading: true
       }
     }
     case DELETE_FOLDER_SUCCESS: {
       return {
         ...state,
-        loading:false,
+        loading: false,
         selectedFolder: deleteFolder([state.selectedFolder], action.payload.folderId)[0],
         documents: deleteFolder(state.documents, action.payload.folderId)
       }
