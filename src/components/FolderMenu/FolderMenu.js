@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { getDocuments, updateDocument } from "Actions";
+
 import { Treebeard, decorators } from 'react-treebeard';
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 
@@ -38,10 +42,6 @@ const deco = {
   }
 };
 
-const onMoveSelectedDocuments = (props, clickedFolderId) => {
-  console.log(props.selectedDocumentsToMove, clickedFolderId);
-}
-
 class FolderMenu extends PureComponent {
 
   constructor(props) {
@@ -57,7 +57,7 @@ class FolderMenu extends PureComponent {
 
   }
 
-  clickedFolderId = "";
+  clickedFolderId = this.props.data[0].id;
 
   //: props.data
   onToggle(node, toggled) {
@@ -97,7 +97,7 @@ class FolderMenu extends PureComponent {
           </div>
           <div className="flex-split-2-right" style={{ width: '50%' }}>
             <div className="header-shadow">
-              <input type="button" className="btn-save-foldername" value="move" onClick={onMoveSelectedDocuments(this.props, this.clickedFolderId)} />
+              <input type="button" className="btn-save-foldername" value="move" onClick={() => {this.props.onSelectNewFolder(this, this.clickedFolderId)}}  />
             </div>
           </div>
         </div>
@@ -110,4 +110,16 @@ class FolderMenu extends PureComponent {
   }
 }
 
-export default FolderMenu;
+const mapStateToProps = ({ documents }) => {
+  console.log('documents store:', documents);
+  return documents;
+};
+
+export default withRouter(
+  connect(mapStateToProps,
+    {
+      getDocuments,
+      updateDocument,
+    }
+  )(FolderMenu)
+);

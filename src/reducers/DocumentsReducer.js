@@ -126,10 +126,11 @@ export default (state = INITIAL_STATE, action) => {
       newDocument.id = action.payload.data.documentID;
       return {
         ...state,
-        documents: newDocument
+        documents: newDocument,
+        loading: false
       };
     case GET_DOCUMENTS:
-      return { ...state, documents: null };
+      return { ...state, documents: null, loading: true };
     case CREATE_DOCUMENT_FAILURE:
       NotificationManager.error("Document creation failed");
       return {
@@ -137,7 +138,8 @@ export default (state = INITIAL_STATE, action) => {
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null
+        searchedDocuments: null,
+        loading: false
       };
 
     case UPDATE_DOCUMENTS:
@@ -149,13 +151,14 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_DOCUMENT_FAILURE:
       NotificationManager.error("Document updated fail");
-
+      
       return {
         ...state,
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null
+        searchedDocuments: null,
+        loading: false
       }
 
     case GET_DOCUMENTS_SUCCESS: {
@@ -165,7 +168,8 @@ export default (state = INITIAL_STATE, action) => {
         documents: docs,
         selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
         folderLevel: [],
-        searchedDocuments: null
+        searchedDocuments: null,
+        loading:false
       };
     }
     case GET_DOCUMENTS_FAILURE:
@@ -174,7 +178,8 @@ export default (state = INITIAL_STATE, action) => {
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null
+        searchedDocuments: null,
+        loading: false
       };
 
     case SEARCH_DOCUMENTS: {
@@ -200,18 +205,23 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
     case MOVE_DOCUMENTS: {
-      return { ...state }
+      return { ...state, loading:true }
     }
     case CREATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Documents Moved successfully");
+      return { ...state, loading:false }
+
     }
     case CREATE_DOCUMENT_FAILURE: {
       NotificationManager.error("Documents Not Moved successfully");
+      return { ...state, loading:false }
+
 
     }
     case DELETE_FOLDER: {
       return {
-        ...state
+        ...state,
+        loading:true
       }
     }
     case DELETE_FOLDER_SUCCESS: {

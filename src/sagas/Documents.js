@@ -688,8 +688,9 @@ function* updateDocumentOnServer(doc) {
   try {
     const response = yield call(updateDocumentRequest, doc);
     yield put(updateDocumentSuccess(response));
-    if (doc.onCloseDlg) {
-      doc.onCloseDlg(function () {
+
+    if(doc.onCloseDlg){
+      doc.onCloseDlg(function(){
         return "";
       });
     }
