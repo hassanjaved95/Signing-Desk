@@ -33,7 +33,7 @@ class UserDocumentsList extends Component {
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
-            actions: ["Duplicate", "Move", "Rename", "Delete"],
+            actions: ["Move", "Delete"],
             folderListControl: true,
             folderCreationDialog: false,
             folderListPath: "",
@@ -242,11 +242,15 @@ class UserDocumentsList extends Component {
         // this.props.moveDocuments(selectedDocuments,);
     }
 
+    onDeleteSingleDocument = (doc) => {
+        this.onDeleteDocuments(doc);
+    }
+
     onDeleteDocuments = (doc) => {
         this.props.deleteDocuments({
             documentIds: this.state.selectedDocuments && this.state.selectedDocuments.length > 0 ?
                 this.state.selectedDocuments[0] :
-                [],
+                doc ? doc.id : "",
             callback: () => {
                 this.setState({ selectedDocuments: [], allDocumentsAreSelected: false });
             }
@@ -489,6 +493,7 @@ class UserDocumentsList extends Component {
                                                     onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
                                                     onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
                                                     arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
+                                                    onDeleteDocument={this.onDeleteSingleDocument}
                                                 />
                                             ))
                                         ) : (

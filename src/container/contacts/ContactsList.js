@@ -170,7 +170,7 @@ class ContactsList extends Component {
     }
 
     onDeleteContacts = () => {
-        this.props.deleteContacts(this.state.selectedContacts);
+        this.props.deleteContacts({ "ContactIDs": this.state.selectedContacts });
         this.setState({
             selectedContacts: [],
             allContactsAreSelected: false

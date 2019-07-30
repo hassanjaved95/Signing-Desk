@@ -63,9 +63,7 @@ var methods = {
    },
    delete: async function (endPoint, data) {
       try {
-         return await axiosObj.delete(endPoint, {
-            params: data
-         });
+         return await axiosObj.delete(endPoint, { data });
       } catch (error) {
          return error;
       }

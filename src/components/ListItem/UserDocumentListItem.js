@@ -39,25 +39,25 @@ const loadTags = (props, document, tag) => (
 const loadContextMenu = (props) => (
     <div className="row-context-menu-content">
         <ul>
-            <li>
+            {/* <li>
                 <div className="flex-row flex-vertical-center">
                     <div className="flex-row-left"> <i className="zmdi zmdi-copy icon-size"></i></div>
                     <div style={{ marginLeft: '5px' }}>Duplicate</div>
                 </div>
-            </li>
+            </li> */}
             <li>
                 <div className="flex-row flex-vertical-center">
                     <div className="flex-row-left"> <i className="zmdi zmdi-folder-star icon-size"></i></div>
                     <div style={{ marginLeft: '5px' }}>Move</div>
                 </div>
             </li>
-            <li>
+            {/* <li>
                 <div className="flex-row flex-vertical-center">
                     <div className="flex-row-left"> <i className="zmdi zmdi-edit icon-size"></i></div>
                     <div style={{ marginLeft: '5px' }}>Rename</div>
                 </div>
-            </li>
-            <li>
+            </li> */}
+            <li onClick={props.onDeleteDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
                     <div className="flex-row-left"> <i className="zmdi zmdi-delete icon-size"></i></div>
                     <div style={{ marginLeft: '5px' }}>Delete</div>
@@ -93,13 +93,13 @@ const UserDocumentListItem = (props) => {
                         </td>
                         <td   >
                             <div className="searchTagIcon" onClick={props.onClickTagIcon}>
-                                
-                                    <div className="tags-in-colums">
-                                    { props.arrTags && props.arrTags.length > 0 &&
+
+                                <div className="tags-in-colums">
+                                    {props.arrTags && props.arrTags.length > 0 &&
                                         props.arrTags.map(loadTagsInColumn.bind(this, props, props.document))
-                                        }
-                                    </div>
-                                
+                                    }
+                                </div>
+
                                 <span className="icon-M-1lY">
                                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor" className="Icon">
                                         <path style={{ fillRule: 'evenodd' }} d="M19.976 11.421l-1.074-6.322-6.323-1.075a1.69 1.69 0 0 0-1.482.474l-6.599 6.61a1.694 1.694 0 0 0-.004 2.396l6.002 6.003c.66.66 1.735.656 2.397-.005l6.609-6.6c.403-.4.563-.96.474-1.481zM17 9.499a2.501 2.501 0 0 1-5 0 2.5 2.5 0 0 1 5 0z">
@@ -145,7 +145,7 @@ const UserDocumentListItem = (props) => {
                             <div className="flex-column">
                                 <div>
                                     {props.document.createdBy}
-                                    </div>
+                                </div>
                                 <div>
                                     {props.document.createdOn}
                                 </div>

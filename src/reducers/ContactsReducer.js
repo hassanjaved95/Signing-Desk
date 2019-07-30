@@ -73,8 +73,8 @@ export default (state = INITIAL_STATE, action) => {
             var searchVal = action.payload;
             return {
                 ...state,
-                filterdContacts: state.contacts.filter(c => (c.firstName + c.lastName).toLowerCase().indexOf(searchVal) != -1
-                    || c.email.toLowerCase().indexOf(searchVal) != -1)
+                filterdContacts: state.contacts.filter(c => (c.firstName || c.FirstName + c.lastName || c.LastName).toLowerCase().indexOf(searchVal) != -1
+                    || (c.email || CertEmail).toLowerCase().indexOf(searchVal) != -1)
             };
         }
 
@@ -87,12 +87,12 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case DELETE_CONTACTS_SUCCESS: {
-            var deleteIds = action.payload;
+            var deleteIds = action.payload.ContactIDs;
             return {
                 ...state,
                 loading: false,
-                contacts: state.contacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1),
-                filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1)
+                contacts: state.contacts.filter(c => deleteIds.indexOf(c.id) == -1),
+                filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.id) == -1)
             };
         }
         case CREATE_CONTACT: {
