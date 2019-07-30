@@ -55,7 +55,7 @@ function findSelectedFolderObj(arr, folderId) {
 
 function setSelectedFolder(state, folderId, levelUp) {
   if (levelUp && state.folderLevel.length) {
-    const selectedFolder = tate.folderLevel.pop();
+    const selectedFolder = state.folderLevel.pop();
     return {
       ...state,
       selectedFolder,
@@ -259,6 +259,7 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
     case DELETE_FOLDER_SUCCESS: {
+      NotificationManager.success("Folder has been deleted successfully");
       return {
         ...state,
         loading: false,
@@ -272,6 +273,7 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
     case ADD_NEW_FOLDER_SUCCESS: {
+      NotificationManager.success("New folder has been added successfully");
       return {
         ...state,
         documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.Name)

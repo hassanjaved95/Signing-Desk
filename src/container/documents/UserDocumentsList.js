@@ -221,6 +221,8 @@ class UserDocumentsList extends Component {
 
         this.props.addNewFolder(payload);
 
+        this.setState({ folderCreationDialog: false });
+
     }
 
     /* End All Methods related to folders */

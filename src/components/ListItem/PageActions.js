@@ -93,12 +93,12 @@ const DocumentsActions = (props) => (
                 }
                 {props.selectedDocuments > 0 && (
                     <React.Fragment>
-                        <div className="action-btns-left">
+                        {/* <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onDuplicateDocuments} >
                                 <i className="zmdi zmdi-copy"></i>
                                 <span style={{ marginLeft: '5px' }}> Duplicate </span>
                             </Button>
-                        </div>
+                        </div> */}
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onMoveDocuments} >
