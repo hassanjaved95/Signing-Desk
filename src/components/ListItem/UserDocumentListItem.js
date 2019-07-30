@@ -136,7 +136,7 @@ const UserDocumentListItem = (props) => {
                                 </div> */}
                         </td>
                         <td /* onClick={props.onClickDocumentItem} */>
-                            {props.document.grandTotal}
+                            {props.document.description}
                         </td>
                         <td /* onClick={props.onClickDocumentItem} */>
                             {props.document.approversRecipients}
@@ -144,10 +144,10 @@ const UserDocumentListItem = (props) => {
                         <td /* onClick={props.onClickDocumentItem} */>
                             <div className="flex-column">
                                 <div>
-                                    [CREATOR NAME]
+                                    {props.document.createdBy}
                                     </div>
                                 <div>
-                                    {props.document.created}
+                                    {props.document.createdOn}
                                 </div>
                             </div>
                         </td>

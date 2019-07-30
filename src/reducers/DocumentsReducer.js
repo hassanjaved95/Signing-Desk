@@ -29,7 +29,7 @@ const INITIAL_STATE = {
   documents: null,
   selectedFolder: null,
   folderLevel: [],
-  searchedDocuments: null
+  selectedFolderDocs: null
 };
 
 function searchFolders(folder, searchVal) {
@@ -55,15 +55,19 @@ function findSelectedFolderObj(arr, folderId) {
 
 function setSelectedFolder(state, folderId, levelUp) {
   if (levelUp && state.folderLevel.length) {
+    const selectedFolder = tate.folderLevel.pop();
     return {
       ...state,
-      selectedFolder: state.folderLevel.pop()
+      selectedFolder,
+      selectedFolderDocs: JSON.parse(JSON.stringify(selectedFolder.documents))
     }
   } else if (levelUp == false) {
+    const selectedFolder = state.selectedFolder.children.find(sf => sf.id === folderId);
     return {
       ...state,
       folderLevel: state.folderLevel.concat(state.selectedFolder),
-      selectedFolder: state.selectedFolder.children.find(sf => sf.id === folderId)
+      selectedFolder,
+      selectedFolderDocs: JSON.parse(JSON.stringify(selectedFolder.documents))
     }
   } else {
     return { ...state }
@@ -149,7 +153,7 @@ export default (state = INITIAL_STATE, action) => {
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null,
+        selectedFolderDocs: null,
         loading: false
       };
 
@@ -185,18 +189,19 @@ export default (state = INITIAL_STATE, action) => {
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null,
+        selectedFolderDocs: null,
         loading: false
       }
 
     case GET_DOCUMENTS_SUCCESS: {
       const docs = action.payload;
+      const selectedFolder = docs && docs.length > 0 ? docs[0] : docs;
       return {
         ...state,
         documents: docs,
-        selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
+        selectedFolder,
         folderLevel: [],
-        searchedDocuments: null,
+        selectedFolderDocs: JSON.parse(JSON.stringify(selectedFolder.documents)),
         loading: false
       };
     }
@@ -206,15 +211,16 @@ export default (state = INITIAL_STATE, action) => {
         documents: null,
         selectedFolder: null,
         folderLevel: [],
-        searchedDocuments: null,
+        selectedFolderDocs: null,
         loading: false
       };
 
     case SEARCH_DOCUMENTS: {
+      var searchVal = action.payload;
       return {
         ...state,
-        searchedDocuments: state.documents
-      }
+        selectedFolder: { ...state.selectedFolder, documents: state.selectedFolderDocs.filter(c => (c.name + ' ' + c.description + '' + c.tags).toLowerCase().indexOf(searchVal) != -1) }
+      };
     }
     case SELECTED_FOLDER: {
       return setSelectedFolder(state, action.payload.folderId, action.payload.levelUp || false);

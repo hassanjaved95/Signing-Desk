@@ -42,7 +42,6 @@ export default (state = INITIAL_STATE, action) => {
         case SORT_CONTACTS_BY_NAME: {
             return {
                 ...state,
-                loading: true,
                 contacts: [...state.contacts.sort((a, b) => {
                     if (action.payload)
                         return a.name.localeCompare(b.name);
@@ -58,7 +57,6 @@ export default (state = INITIAL_STATE, action) => {
         case SORT_CONTACTS_BY_EMAIL:
             return {
                 ...state,
-                loading: true,
                 contacts: [...state.contacts.sort((a, b) => {
                     if (action.payload)
                         return a.email.localeCompare(b.email);
@@ -75,8 +73,7 @@ export default (state = INITIAL_STATE, action) => {
             var searchVal = action.payload;
             return {
                 ...state,
-                loading: true,
-                filterdContacts: state.contacts.filter(c => c.name.toLowerCase().indexOf(searchVal) != -1
+                filterdContacts: state.contacts.filter(c => (c.firstName + c.lastName).toLowerCase().indexOf(searchVal) != -1
                     || c.email.toLowerCase().indexOf(searchVal) != -1)
             };
         }

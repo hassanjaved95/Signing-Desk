@@ -9,7 +9,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments, searchDocuments } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -60,8 +60,16 @@ class UserDocumentsList extends Component {
         this.props.getDocuments();
     }
 
-    onChangeSearchValue = (searchVal) => {
-        console.log('Search By:', searchVal);
+    onChangeSearchValue = (event) => {
+        if (this.searchTimerId) {
+            clearTimeout(this.searchTimerId);
+        }
+
+        var searchVal = event.target.value;
+        this.searchTimerId = setTimeout(() => {
+            console.log('onChangeSearchValue:', searchVal);
+            this.props.searchDocuments(searchVal);
+        }, 250);
     }
 
     selectAllDocuments = (event, checked) => {
@@ -186,6 +194,7 @@ class UserDocumentsList extends Component {
 
     onClickShowFolderDocuments = (folder) => {
         this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
+        this.setState({ selectedDocuments: [], allDocumentsAreSelected: false });
     }
 
     onEditFolderName = (folderId, name) => {
@@ -237,7 +246,7 @@ class UserDocumentsList extends Component {
                 this.state.selectedDocuments[0] :
                 [],
             callback: () => {
-                this.setState({ selectedDocuments: [] });
+                this.setState({ selectedDocuments: [], allDocumentsAreSelected: false });
             }
         });
 
@@ -513,7 +522,8 @@ export default withRouter(
             deleteFolder,
             moveDocuments,
             addNewFolder,
-            deleteDocuments
+            deleteDocuments,
+            searchDocuments
         }
     )(UserDocumentsList)
 );
