@@ -10,7 +10,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -26,6 +26,7 @@ import FolderMenu from 'Components/FolderMenu/FolderMenu';
 
 class UserDocumentsList extends Component {
     searchTimerId = null;
+    selectedFolder = null;
     constructor(props) {
         super(props);
         this.state = {
@@ -133,7 +134,8 @@ class UserDocumentsList extends Component {
         });
     }
 
-    onCreateNewFolder = () => {
+    onCreateNewFolder = (e, folderId) => {
+        e.stopPropagation();
         this.setState({
             folderCreationDialog: true
         });
@@ -194,16 +196,22 @@ class UserDocumentsList extends Component {
         });
     }
 
-    onDeleteFolder = (folderId, name) => {
+    onDeleteFolder = (e, folderId, name) => {
+        e.stopPropagation();
+        console.log('delete folder callback:', arguments);
         console.log('onDeleteFolder', { folderId, name });
         this.props.deleteFolder({ folderId, name });
     }
 
     onSubmitCreateFolder = (values) => {
         console.log('onSubmitCreateFolder:', values);
-        // this.setState({
-            
-        // });
+        const payload = {
+            "parentFoldersID": this.selectedFolder ? this.selectedFolder.id : null,
+            "Name": values.folderName
+        }
+
+       this.props.addNewFolder(payload);
+        
     }
 
     /* End All Methods related to folders */
@@ -325,9 +333,9 @@ class UserDocumentsList extends Component {
     }
     /* End methods row context menu */
 
-    onSelectNewFolderToMoveDocuments = (obj,val) => {
+    onSelectNewFolderToMoveDocuments = (obj, val) => {
         debugger;
-        if(obj.clickedFolderId!=""){
+        if (obj.clickedFolderId != "") {
             for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
                 this.props.updateDocument({
                     "id": this.state.selectedDocumentsToMove[i].id,
@@ -338,7 +346,7 @@ class UserDocumentsList extends Component {
                 }, this.onCloseDlg);
             }
         }
-        
+
 
 
     }
@@ -346,6 +354,7 @@ class UserDocumentsList extends Component {
     render() {
 
         const { selectedFolder, folderLevel } = this.props;
+        this.selectedFolder = selectedFolder;
 
         return (
             <div className="documents-page">
@@ -381,8 +390,8 @@ class UserDocumentsList extends Component {
                             currentFolderID={selectedFolder.id}
                             currentFolderName={selectedFolder.name}
                             selectedDocuments={this.state.selectedDocuments}
-                           // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                           selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                            // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
+                            selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                         />
                     </SmallDialogTemplate>
                 }
@@ -490,7 +499,8 @@ export default withRouter(
             updateDocument,
             editFolderName,
             deleteFolder,
-            moveDocuments
+            moveDocuments,
+            addNewFolder
         }
     )(UserDocumentsList)
 );

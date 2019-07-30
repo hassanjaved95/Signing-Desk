@@ -19,7 +19,9 @@ import {
   EDIT_FOLDER_NAME,
   EDIT_FOLDER_NAME_SUCCESS,
   DELETE_FOLDER,
-  DELETE_FOLDER_SUCCESS
+  DELETE_FOLDER_SUCCESS,
+  ADD_NEW_FOLDER,
+  ADD_NEW_FOLDER_SUCCESS
 } from "./types";
 
 export const getDocuments = () => ({
@@ -117,5 +119,14 @@ export const deleteFolder = (payload) => ({
 
 export const deleteFolderSuccess = (payload) => ({
   type: DELETE_FOLDER_SUCCESS,
+  payload
+});
+
+export const addNewFolder = (payload) => ({
+  type: ADD_NEW_FOLDER,
+  payload
+});
+export const addNewFolderSuccess = (payload) => ({
+  type: ADD_NEW_FOLDER_SUCCESS,
   payload
 });

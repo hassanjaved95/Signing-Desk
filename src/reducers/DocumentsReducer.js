@@ -18,7 +18,9 @@ import {
   DELETE_FOLDER_SUCCESS,
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
-  MOVE_DOCUMENTS_FAILURE
+  MOVE_DOCUMENTS_FAILURE,
+  ADD_NEW_FOLDER,
+  ADD_NEW_FOLDER_SUCCESS
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -66,8 +68,26 @@ function setSelectedFolder(state, folderId, levelUp) {
   }
 }
 
-function deleteFolder(list, folderId) {
+function addNewFolder(list, parentFolderId, newFolderId, newFolderName) {
   return list.map(folder => {
+    if (folder.id === parentFolderId) {
+      folder.children = [...folder.children, {
+        id: newFolderId,
+        name: newFolderName,
+        status: 0,
+        documents: [],
+        children: []
+      }]
+    } else if (folder.children && folder.children.length > 0) {
+      folder.children = addNewFolder(folder.children, parentFolderId, newFolderId, newFolderName)
+    }
+
+    return folder;
+  });
+}
+
+function deleteFolder(list, folderId) {
+  return list.filter(folder => {
     if (folder.children && folder.children.length > 0) {
       folder.children = deleteFolder(folder.children, folderId);
     }
@@ -197,8 +217,19 @@ export default (state = INITIAL_STATE, action) => {
     case DELETE_FOLDER_SUCCESS: {
       return {
         ...state,
-        selectedFolder: deleteFolder(state.selectedFolder, payload.folderId),
-        documents: deleteFolder(state.documents, payload.folderId)
+        selectedFolder: deleteFolder([state.selectedFolder], action.payload.folderId)[0],
+        documents: deleteFolder(state.documents, action.payload.folderId)
+      }
+    }
+    case ADD_NEW_FOLDER: {
+      return {
+        ...state
+      }
+    }
+    case ADD_NEW_FOLDER_SUCCESS: {
+      return {
+        ...state,
+        documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.Name)
       }
     }
     default:

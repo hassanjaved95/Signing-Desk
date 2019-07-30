@@ -9,7 +9,8 @@ import {
   updateDocumentFailure,
   updateDocumentSuccess,
   editFolderNameSuccess,
-  deleteFolderSuccess
+  deleteFolderSuccess,
+  addNewFolderSuccess
 } from "Actions";
 import {
   CREATE_DOCUMENT,
@@ -20,6 +21,7 @@ import {
   UPDATE_DOCUMENT,
   EDIT_FOLDER_NAME,
   DELETE_FOLDER,
+  ADD_NEW_FOLDER
 } from "Actions/types";
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
@@ -618,6 +620,10 @@ const updateDocumentRequest = async doc => {
   return response;
 };
 
+const addNewFolderRequest = async folderInfo => {
+  return await API.post('folders/create', folderInfo);
+}
+
 const deleteDocumentsRequest = () => {
   return true; // response;
 };
@@ -634,9 +640,21 @@ const editFolderNameRequest = (payload) => {
   return true; // response;
 };
 
-const deleteFolderRequest = (payload) => {
-  return true; // response;
+const deleteFolderRequest = async (payload) => {
+  return await API.delete(`folders/${payload.folderId}`)
 };
+
+function* addNewFolderOnServer({ payload }) {
+  try {
+    const response = yield call(addNewFolderRequest, payload);
+    if (response.status == 200) {
+      const obj = { ...payload, id: response.data.folderID };
+      yield put(addNewFolderSuccess(obj));
+    }
+  } catch (error) {
+    console.log('addNewFolderOnServer error: ', error);
+  }
+}
 
 function* getDocumentsFromServer() {
   try {
@@ -670,8 +688,8 @@ function* updateDocumentOnServer(doc) {
   try {
     const response = yield call(updateDocumentRequest, doc);
     yield put(updateDocumentSuccess(response));
-    if(doc.onCloseDlg){
-      doc.onCloseDlg(function(){
+    if (doc.onCloseDlg) {
+      doc.onCloseDlg(function () {
         return "";
       });
     }
@@ -724,7 +742,7 @@ function* editFolderNameOnServer({ payload }) {
 
 function* deleteFolderOnServer({ payload }) {
   try {
-    const response = yield call(deleteFolderRequest);
+    const response = yield call(deleteFolderRequest, payload);
     if (response.status == 200) {
       yield put(deleteFolderSuccess(payload));
     } else {
@@ -760,6 +778,9 @@ export function* editFolderName() {
 export function* deleteFolder() {
   yield takeEvery(DELETE_FOLDER, deleteFolderOnServer);
 }
+export function* addNewFolder() {
+  yield takeEvery(ADD_NEW_FOLDER, addNewFolderOnServer);
+}
 
 export default function* rootSaga() {
   yield all([
@@ -771,5 +792,6 @@ export default function* rootSaga() {
     fork(duplicateDocuments),
     fork(editFolderName),
     fork(deleteFolder),
+    fork(addNewFolder)
   ]);
 }

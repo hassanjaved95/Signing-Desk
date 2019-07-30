@@ -72,10 +72,10 @@ function NewFolder(props) {
                             </div>
                             <div className="flex-split-2-right smallDialog-flex-split-2-right">
                                 <div className="header-shadow">
-                                    <button id="btnSubmit" type="submit" style={{ opacity: 1 }} >
+                                    {/* <button id="btnSubmit"  type="submit"  lassName="btn-save-foldername" >
                                         Submit
-                                </button>
-                                    {/* <input type="submit" className="btn-save-foldername" value="save" /> */}
+                                </button> */}
+                                    <input type="submit" className="btn-save-foldername" value="save" />
                                 </div>
                             </div>
                         </div>

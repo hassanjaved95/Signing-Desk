@@ -6,10 +6,10 @@ const createDocumentItem = (props, folder) => {
     return (<li className="foldersList" key={folder.id} onClick={props.onClickShowFolderDocuments.bind(this, folder)} style={{ cursor: 'pointer' }}>
         <div className="liContainer">
             {props.inEditModeFolderList ?
-                (<Edit className="listItemIconsLeft editicon" onClick={props.onCreateNewFolder} />) :
+                (<Edit className="listItemIconsLeft editicon" onClick={(e) => { props.onCreateNewFolder(e, folder.id) }} />) :
                 (<Folder className="listItemIconsLeft hild-featured" />)}
             <div className="child-featured">{folder.name}</div>
-            {props.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" />}
+            {props.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" onClick={(e) => { props.onDeleteFolder(e, folder.id, folder.name) }} />}
         </div>
     </li>);
 }
@@ -28,7 +28,7 @@ const ContentMenu = (props) => (
                     (<div className="folder-bar-edit-button" onClick={props.onEditFolderList}> Done </div>) :
                     (<Edit className="editicon" onClick={props.onEditFolderList} />)
                 }
-                <CreateNewFolder className="createnewfoldericon" onClick={props.onCreateNewFolder} />
+                <CreateNewFolder className="createnewfoldericon" onClick={(e) => { props.onCreateNewFolder(e, null) }} />
             </div>
         </div>
         <div className="menu-content">
@@ -36,9 +36,9 @@ const ContentMenu = (props) => (
                 {
                     //props.selectedForlders && props.selectedForlders[0] &&
                     // props.selectedForlders.map(createDocumentItem.bind(this, props))
-                    
-                    props.selectedForlder && 
-                    props.selectedForlder.children && 
+
+                    props.selectedForlder &&
+                    props.selectedForlder.children &&
                     props.selectedForlder.children.length > 0 &&
                     props.selectedForlder.children.map(createDocumentItem.bind(this, props))
                 }
