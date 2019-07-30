@@ -3,9 +3,17 @@
  **/
 import React, { Component } from "react";
 import Slider from "react-slick";
+import axios from 'axios';
+
 
 // api
 import api from "Api";
+
+var axiosObj = axios.create({
+   baseURL: 'http://reactify.theironnetwork.org/data/',
+  //baseURL: config.apiBaseUrl + '/',
+  timeout: 2000
+});
 
 export default class SessionSlider extends Component {
   state = {
@@ -20,8 +28,8 @@ export default class SessionSlider extends Component {
 
   // session users data
   getSessionUsersData() {
-    api
-      .get("testimonials.js")
+    
+    axiosObj.get("testimonials.js")
       .then(response => {
         console.log(response);
         this.setState({ sessionUsersData: response.data });

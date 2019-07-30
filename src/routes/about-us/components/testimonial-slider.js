@@ -19,7 +19,7 @@ export default class TestimonialSlider extends Component {
 
 	// get testimonials
 	getTestimonials() {
-		api.get('testimonials.js')
+		api.get("http://reactify.theironnetwork.org/data/",'testimonials.js')
 			.then((response) => {
 				this.setState({ testimonials: response.data });
 			})
