@@ -227,6 +227,7 @@ export default (state = INITIAL_STATE, action) => {
     case DELETE_FOLDER_SUCCESS: {
       return {
         ...state,
+        loading:false,
         selectedFolder: deleteFolder([state.selectedFolder], action.payload.folderId)[0],
         documents: deleteFolder(state.documents, action.payload.folderId)
       }
