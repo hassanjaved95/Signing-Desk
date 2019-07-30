@@ -142,14 +142,19 @@ export default (state = INITIAL_STATE, action) => {
         loading: false
       };
 
-    case UPDATE_DOCUMENTS:
+    case UPDATE_DOCUMENTS:{
       return { ...state, loading: true };
+    }
 
-    case UPDATE_DOCUMENT_SUCCESS:
+    case UPDATE_DOCUMENT_SUCCESS:{
       NotificationManager.success("Document updated successfully");
-      return { ...state, loading: false, doc: action.payload };
+      const pointedRec = state.documents.find(c => c.isMoved);
+      debugger;
+      return { ...state, loading: false };
+    }
+     
 
-    case UPDATE_DOCUMENT_FAILURE:
+    case UPDATE_DOCUMENT_FAILURE:{
       NotificationManager.error("Document updated fail");
       
       return {
@@ -160,12 +165,14 @@ export default (state = INITIAL_STATE, action) => {
         searchedDocuments: null,
         loading: false
       }
+    }
+      
 
     case GET_DOCUMENTS_SUCCESS: {
       const docs = action.payload;
       return {
         ...state,
-        documents: docs,
+        documents: docs && docs.length > 0 ? docs[0] : docs,
         selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
         folderLevel: [],
         searchedDocuments: null,
@@ -207,8 +214,17 @@ export default (state = INITIAL_STATE, action) => {
     case MOVE_DOCUMENTS: {
       return { ...state, loading:true }
     }
-    case CREATE_DOCUMENT_SUCCESS: {
+    case MOVE_DOCUMENTS_SUCCESS:{
       NotificationManager.success("Documents Moved successfully");
+      return { ...state, loading:false }
+    }
+
+    case MOVE_DOCUMENTS_FAILURE:{
+      NotificationManager.error("Documents Moved Failure");
+      return { ...state, loading:false }
+    }
+    case CREATE_DOCUMENT_SUCCESS: {
+      NotificationManager.success("Documents Created successfully");
       return { ...state, loading:false }
 
     }

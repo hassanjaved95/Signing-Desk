@@ -26,13 +26,14 @@ import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 
 
+
 class UserDocumentsList extends Component {
     searchTimerId = null;
     selectedFolder = null;
     constructor(props) {
         super(props);
         this.state = {
-            loading:true,
+            loading: true,
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
@@ -213,8 +214,8 @@ class UserDocumentsList extends Component {
             "Name": values.folderName
         }
 
-       this.props.addNewFolder(payload);
-        
+        this.props.addNewFolder(payload);
+
     }
 
     /* End All Methods related to folders */
@@ -336,9 +337,10 @@ class UserDocumentsList extends Component {
     }
     /* End methods row context menu */
 
-    onSelectNewFolderToMoveDocuments = (obj,val) => {
-        if(obj.clickedFolderId!=""){
+    onSelectNewFolderToMoveDocuments = (obj, val) => {
+        if (obj.clickedFolderId != "") {
             for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
+                this.state.selectedDocumentsToMove[i].isMoved = true;
                 this.props.updateDocument({
                     "id": this.state.selectedDocumentsToMove[i].id,
                     "name": this.state.selectedDocumentsToMove[i].name,
@@ -352,17 +354,18 @@ class UserDocumentsList extends Component {
 
     render() {
 
-        const { selectedFolder, folderLevel, loading } = this.props;
+        const { documents, selectedFolder, folderLevel, loading } = this.props;
         this.selectedFolder = selectedFolder;
-        
+
         if (loading) {
-			return (
-				<RctSectionLoader />
-			)
-		}
+            return (
+                <RctSectionLoader />
+            )
+        }
         return (
             <div className="documents-page">
-               
+
+
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -390,14 +393,14 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={[selectedFolder]}
+                        <FolderMenu data={[documents]}
                             currentFolderID={selectedFolder.id}
                             currentFolderName={selectedFolder.name}
                             selectedDocuments={this.state.selectedDocuments}
                             // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
                             selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                             onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                           //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                        //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                         />
                     </SmallDialogTemplate>
                 }
@@ -425,12 +428,13 @@ class UserDocumentsList extends Component {
                                 onMoveDocuments={this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
                                 onDuplicateDocuments={this.onDuplicateDocuments}
-                                onDeleteDocuments={this.onDeleteDocuments}
+                                onDeleteDocuments={() => this.onDeleteDocuments}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
                                 onClickSearch={() => { this.setState({ search: true }) }}
                                 onSearchClose={() => { this.setState({ search: false }) }}
                             />
+                            
                         </div>
                         <div className="content-area">
                             <div className="content-head header-shadow head-container">

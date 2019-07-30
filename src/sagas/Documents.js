@@ -6,6 +6,7 @@ import {
   getDocumentsFailure,
   getDocumentsSuccess,
   moveDocumentsSuccess,
+  moveDocumentsFailure,
   updateDocumentFailure,
   updateDocumentSuccess,
   editFolderNameSuccess,
@@ -616,6 +617,7 @@ const createDocumentRequest = async doc => {
 };
 
 const updateDocumentRequest = async doc => {
+  debugger;
   var response = await API.put('documents/update', doc.payload);
   return response;
 };
@@ -716,9 +718,10 @@ function* moveDocumentsOnServer() {
     yield put(moveDocumentsSuccess(response));
   } catch (error) {
     console.log('moveDocumentsOnServer error:', error);
-    // yield put(getDocumentsFailure(error));
+     yield put(moveDocumentsFailure(error));
   }
 }
+
 function* duplicateDocumentsOnServer() {
   try {
     const response = yield call(duplicateDocumentsRequest);

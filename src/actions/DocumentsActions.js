@@ -14,6 +14,7 @@ import {
   DELETE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
+  MOVE_DOCUMENTS_FAILURE,
   DUPLICATE_DOCUMENTS,
   DUPLICATE_DOCUMENTS_SUCCESS,
   EDIT_FOLDER_NAME,
@@ -92,6 +93,11 @@ export const moveDocuments = (payload) => ({
 
 export const moveDocumentsSuccess = (payload) => ({
   type: MOVE_DOCUMENTS_SUCCESS,
+  payload
+});
+
+export const moveDocumentsFailure = (payload) => ({
+  type: MOVE_DOCUMENTS_FAILURE,
   payload
 });
 export const duplicateDocuments = (payload) => ({
