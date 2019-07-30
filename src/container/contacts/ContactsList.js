@@ -15,12 +15,15 @@ import PageActions from "Components/ListItem/PageActions";
 import { toBase64 } from "Helpers/helpers";
 import API from 'Api';
 import IntlMessages from "Util/IntlMessages";
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+
 
 class ContactsList extends Component {
     constructor(props) {
         super(props);
         this.ref = React.createRef();
         this.state = {
+            loading: true,
             newContact: false,
             search: false,
             address: false,
@@ -203,10 +206,14 @@ class ContactsList extends Component {
     }
 
     render() {
-        const { contacts, filterdContacts } = this.props;
+        const { contacts, filterdContacts, loading } = this.props;
         const renderContacts = this.state.search ? filterdContacts : contacts;
 
-
+        if (loading) {
+            return (
+                <RctSectionLoader />
+            )
+        }
         return (
             <div className="page-content">
                 {this.state.newContact &&

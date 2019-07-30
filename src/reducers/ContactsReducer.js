@@ -21,25 +21,28 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case GET_CONTACTS:
-            return { ...state, contacts: null };
+            return { ...state, contacts: null, loading: true };
 
         case GET_CONTACTS_SUCCESS:
             return {
                 ...state,
                 contacts: action.payload,
-                filterdContacts: action.payload
+                filterdContacts: action.payload,
+                loading: false
             };
 
         case GET_CONTACTS_FAILURE:
             return {
                 ...state,
                 contacts: null,
-                filterdContacts: null
+                filterdContacts: null,
+                loading: false
             };
 
         case SORT_CONTACTS_BY_NAME: {
             return {
                 ...state,
+                loading: true,
                 contacts: [...state.contacts.sort((a, b) => {
                     if (action.payload)
                         return a.name.localeCompare(b.name);
@@ -55,6 +58,7 @@ export default (state = INITIAL_STATE, action) => {
         case SORT_CONTACTS_BY_EMAIL:
             return {
                 ...state,
+                loading: true,
                 contacts: [...state.contacts.sort((a, b) => {
                     if (action.payload)
                         return a.email.localeCompare(b.email);
@@ -71,6 +75,7 @@ export default (state = INITIAL_STATE, action) => {
             var searchVal = action.payload;
             return {
                 ...state,
+                loading: true,
                 filterdContacts: state.contacts.filter(c => c.name.toLowerCase().indexOf(searchVal) != -1
                     || c.email.toLowerCase().indexOf(searchVal) != -1)
             };
@@ -79,7 +84,8 @@ export default (state = INITIAL_STATE, action) => {
         case DELETE_CONTACTS: {
             var deleteIds = action.payload;
             return {
-                ...state
+                ...state,
+                loading: true
             };
         }
 
@@ -87,6 +93,7 @@ export default (state = INITIAL_STATE, action) => {
             var deleteIds = action.payload;
             return {
                 ...state,
+                loading: false,
                 contacts: state.contacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1),
                 filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.corporatesID) == -1)
             };
@@ -94,6 +101,7 @@ export default (state = INITIAL_STATE, action) => {
         case CREATE_CONTACT: {
             return {
                 ...state,
+                loading: true
             };
         }
 
@@ -101,7 +109,8 @@ export default (state = INITIAL_STATE, action) => {
             var newContact = action.payload;
             return {
                 ...state,
-                contacts: [...state.contacts, newContact]
+                contacts: [...state.contacts, newContact],
+                loading: false
             };
         }
 
