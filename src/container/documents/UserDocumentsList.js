@@ -318,7 +318,11 @@ class UserDocumentsList extends Component {
 
     onClickRemoveTag = (document, folderid, e) => {
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-        document.tags = document.tags.replace(valueToSplice, "").replace(";;", ";");
+        $(e.target).css("display","none");
+        document.tags = document.tags.replace(valueToSplice, '').replace(";;", ";");
+        if(document.tags == ";"){
+            document.tags = "";
+        }
         this.props.updateDocument({
             "id": document.id,
             "name": document.name,
