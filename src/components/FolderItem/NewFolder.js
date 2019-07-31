@@ -13,6 +13,8 @@ import {
 } from 'formik';
 import * as Yup from 'yup';
 import $ from 'jquery';
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+
 
 
 
@@ -29,6 +31,7 @@ function NewFolder(props) {
         <Formik
             initialValues={initialState}
             onSubmit={(values) => {
+                <RctSectionLoader />
                 console.log('onsubmit new folder:', values);
                 props.onSubmit(values);
             }}

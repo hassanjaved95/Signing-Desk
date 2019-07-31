@@ -1,16 +1,17 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import DeleteConfirmationDialog from 'Components/DeleteConfirmationDialog/DeleteConfirmationDialog';
 
-const confirmDeletion =(props)=>(
-    <DeleteConfirmationDialog
-            ref="deleteConfirmationDialog"
-            title="Are You Sure Want To Delete?"
-            message="Are You Sure Want To Delete Permanently This document."
-            onConfirm={() => props.onDeleteDocuments()}
-        />
-)
+// const confirmDeletion =(props)=>(
+    
+
+//     <DeleteConfirmationDialog
+//             ref="deleteConfirmationDialog"
+//             title="Are You Sure Want To Delete?"
+//             message="Are You Sure Want To Delete Permanently This document."
+//             onConfirm={() => props.onDeleteDocuments()}
+//         />
+// )
 
 const ContactsActions = (props) => (
     <React.Fragment>
@@ -55,7 +56,7 @@ const ContactsActions = (props) => (
                 }
                 {props.selectedContacts > 0 && (
                     <div>
-                        <Button variant="contained" color="secondary" onClick={() => confirmDeletion(props)} >
+                        <Button variant="contained" color="secondary" onClick={props.onDeleteDocuments} >
                             <i className="zmdi zmdi-delete"></i>
                             <span style={{ marginLeft: '5px' }}> DELETE </span>
                         </Button>
@@ -104,12 +105,12 @@ const DocumentsActions = (props) => (
                 }
                 {props.selectedDocuments > 0 && (
                     <React.Fragment>
-                        <div className="action-btns-left">
+                        {/* <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onDuplicateDocuments} >
                                 <i className="zmdi zmdi-copy"></i>
                                 <span style={{ marginLeft: '5px' }}> Duplicate </span>
                             </Button>
-                        </div>
+                        </div> */}
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onMoveDocuments} >

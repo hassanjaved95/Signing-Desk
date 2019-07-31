@@ -81,7 +81,7 @@ function* createContactOnServer({ payload }) {
 
         if (response.status == 200) {
             payload.id= response.data.contactID;
-            yield put(createContactSuccess(response));
+            yield put(createContactSuccess(payload));
         } else {
             console.log('createContactOnServer api error code:', response.status);
         }

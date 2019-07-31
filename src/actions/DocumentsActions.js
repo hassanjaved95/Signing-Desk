@@ -63,9 +63,9 @@ export const createDocumentFailure = error => ({
   payload: error
 });
 
-export const updateDocument = (payload,onCloseDlg) => ({
+export const updateDocument = (payload,onCloseDlg,movedDocument,nextFolderID) => ({
   type: UPDATE_DOCUMENT,
-  payload, onCloseDlg
+  payload, onCloseDlg,movedDocument,nextFolderID
 });
 export const updateDocumentSuccess = (payload) => ({
   type: UPDATE_DOCUMENT_SUCCESS,

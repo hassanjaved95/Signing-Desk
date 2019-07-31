@@ -9,7 +9,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments, searchDocuments } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -21,10 +21,7 @@ import { getGuid } from "Helpers/helpers";
 import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import FolderMenu from 'Components/FolderMenu/FolderMenu';
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
-
-
-
-
+import DeleteConfirmationDialog from 'Components/DeleteConfirmationDialog/DeleteConfirmationDialog';
 
 
 class UserDocumentsList extends Component {
@@ -37,7 +34,7 @@ class UserDocumentsList extends Component {
             search: false,
             selectedDocuments: [],
             allDocumentsAreSelected: false,
-            actions: ["Duplicate", "Move", "Rename", "Delete"],
+            actions: ["Move", "Delete"],
             folderListControl: true,
             folderCreationDialog: false,
             folderListPath: "",
@@ -64,8 +61,16 @@ class UserDocumentsList extends Component {
         this.props.getDocuments();
     }
 
-    onChangeSearchValue = (searchVal) => {
-        console.log('Search By:', searchVal);
+    onChangeSearchValue = (event) => {
+        if (this.searchTimerId) {
+            clearTimeout(this.searchTimerId);
+        }
+
+        var searchVal = event.target.value;
+        this.searchTimerId = setTimeout(() => {
+            console.log('onChangeSearchValue:', searchVal);
+            this.props.searchDocuments(searchVal);
+        }, 250);
     }
 
     selectAllDocuments = (event, checked) => {
@@ -186,10 +191,12 @@ class UserDocumentsList extends Component {
         this.setState({
             moveDocumentsToFolder: false
         });
+        this.props.getDocuments();
     }
 
     onClickShowFolderDocuments = (folder) => {
         this.props.setSelectedFolder({ folderId: folder.id, levelUp: false });
+        this.setState({ selectedDocuments: [], allDocumentsAreSelected: false });
     }
 
     onEditFolderName = (folderId, name) => {
@@ -204,7 +211,10 @@ class UserDocumentsList extends Component {
         e.stopPropagation();
         console.log('delete folder callback:', arguments);
         console.log('onDeleteFolder', { folderId, name });
-        this.props.deleteFolder({ folderId, name });
+        var result = window.confirm("Are you sure you want to delete the Folder?");
+        if(result){
+            this.props.deleteFolder({ folderId, name });
+        }
     }
 
     onSubmitCreateFolder = (values) => {
@@ -215,6 +225,8 @@ class UserDocumentsList extends Component {
         }
 
         this.props.addNewFolder(payload);
+
+        this.setState({ folderCreationDialog: false });
 
     }
 
@@ -235,8 +247,33 @@ class UserDocumentsList extends Component {
         // this.props.moveDocuments(selectedDocuments,);
     }
 
+    onDeleteSingleDocument = (doc) => {
+        this.onDeleteDocuments(doc);
+    }
+
+    onMoveSingleDocument = (doc) => {
+        var temp = [];
+        temp.push(doc);
+        this.setState({selectedDocumentsToMove: temp, moveDocumentsToFolder: true})
+    }
+
+    
+
     onDeleteDocuments = (doc) => {
-        console.log('onDeleteDocuments');
+        var result = window.confirm("Are you sure you want to delete selected document(s)?");
+        if(result){
+            this.props.deleteDocuments({
+                documentIds: this.state.selectedDocuments && this.state.selectedDocuments.length > 0 ?
+                    this.state.selectedDocuments[0] :
+                    doc ? doc.id : "",
+                callback: () => {
+                    this.setState({ selectedDocuments: [], allDocumentsAreSelected: false });
+                }
+            });
+        }
+        
+
+        // console.log('onDeleteDocuments', this.state.selectedDocuments);
     }
 
     onRenameDocument = (doc) => {
@@ -338,16 +375,21 @@ class UserDocumentsList extends Component {
     /* End methods row context menu */
 
     onSelectNewFolderToMoveDocuments = (obj, val) => {
-        if (obj.clickedFolderId != "") {
-            for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
-                this.state.selectedDocumentsToMove[i].isMoved = true;
-                this.props.updateDocument({
-                    "id": this.state.selectedDocumentsToMove[i].id,
-                    "name": this.state.selectedDocumentsToMove[i].name,
-                    "description": this.state.selectedDocumentsToMove[i].description,
-                    "tags": this.state.selectedDocumentsToMove[i].tags,
-                    "folderID": obj.clickedFolderId
-                }, this.onCloseDlgMoveDocuments);
+        var result = window.confirm("Are you sure you want to move the document(s)?");
+        if(result)
+        {
+            if (obj.clickedFolderId != "") {
+                for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
+                    var movedDocument = this.state.selectedDocumentsToMove[i]
+                    var nextFolderID = obj.clickedFolderId;
+                    this.props.updateDocument({
+                        "id": this.state.selectedDocumentsToMove[i].id,
+                        "name": this.state.selectedDocumentsToMove[i].name,
+                        "description": this.state.selectedDocumentsToMove[i].description,
+                        "tags": this.state.selectedDocumentsToMove[i].tags,
+                        "folderID": obj.clickedFolderId
+                    }, this.onCloseDlgMoveDocuments, movedDocument, nextFolderID);
+                }
             }
         }
     }
@@ -364,8 +406,12 @@ class UserDocumentsList extends Component {
         }
         return (
             <div className="documents-page">
-
-
+                {/* <DeleteConfirmationDialog
+                    ref="deleteConfirmationDialog"
+                    title="Are You Sure Want To Delete?"
+                    message="Are You Sure Want To Delete Permanently This document."
+                    onConfirm={() => this.onDeleteDocuments(doc)}
+                /> */}
                 {
                     this.state.folderCreationDialog &&
                     <SmallDialogTemplate
@@ -393,7 +439,7 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={[documents]}
+                        <FolderMenu data={documents}
                             currentFolderID={selectedFolder.id}
                             currentFolderName={selectedFolder.name}
                             selectedDocuments={this.state.selectedDocuments}
@@ -428,13 +474,13 @@ class UserDocumentsList extends Component {
                                 onMoveDocuments={this.onMoveDocumentsToFolder}
                                 onChangeSearchValue={this.onChangeSearchValue}
                                 onDuplicateDocuments={this.onDuplicateDocuments}
-                                onDeleteDocuments={() => this.onDeleteDocuments}
+                                onDeleteDocuments={this.onDeleteDocuments}
                                 search={this.state.search}
                                 selectedDocuments={this.state.selectedDocuments.length}
                                 onClickSearch={() => { this.setState({ search: true }) }}
                                 onSearchClose={() => { this.setState({ search: false }) }}
                             />
-                            
+
                         </div>
                         <div className="content-area">
                             <div className="content-head header-shadow head-container">
@@ -476,6 +522,8 @@ class UserDocumentsList extends Component {
                                                     onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
                                                     onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
                                                     arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
+                                                    onDeleteDocument={this.onDeleteSingleDocument}
+                                                    onSingleMoveDocument={this.onMoveSingleDocument}
                                                 />
                                             ))
                                         ) : (
@@ -511,7 +559,8 @@ export default withRouter(
             deleteFolder,
             moveDocuments,
             addNewFolder,
-            moveDocuments
+            deleteDocuments,
+            searchDocuments
         }
     )(UserDocumentsList)
 );
