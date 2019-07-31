@@ -174,14 +174,37 @@ export default (state = INITIAL_STATE, action) => {
       }
     }
 
-    case UPDATE_DOCUMENTS:
+    case UPDATE_DOCUMENTS: {
       return { ...state, loading: true };
+    }
 
-    case UPDATE_DOCUMENT_SUCCESS:
+    case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
-      return { ...state, loading: false, doc: action.payload };
+      debugger;
+      var result = state.documents
+        .map(item => ({
+          ...item,
+          children: item.children
+            .filter(child => child.id === action.payload.nextFolderID)
+        }))
+        .filter(item => item.children.length > 0)
 
-    case UPDATE_DOCUMENT_FAILURE:
+      result.push(action.payload.movedDocument);
+
+      return {
+        ...state,
+        loading: false,
+        documents: result,
+        selectedFolder: {
+          ...state.selectedFolder, documents: state.selectedFolder.documents.filter(doc => {
+            return action.payload.movedDocument.id != doc.id;
+          })
+        }
+      };
+    }
+
+
+    case UPDATE_DOCUMENT_FAILURE: {
       NotificationManager.error("Document updated fail");
 
       return {
@@ -192,17 +215,22 @@ export default (state = INITIAL_STATE, action) => {
         selectedFolderDocs: null,
         loading: false
       }
+    }
+
 
     case GET_DOCUMENTS_SUCCESS: {
       const docs = action.payload;
       const selectedFolder = docs && docs.length > 0 ? docs[0] : docs;
       return {
         ...state,
+        loading: false,
+        documents: docs && docs.length > 0 ? docs[0] : docs,
+        selectedFolder: docs && docs.length > 0 ? docs[0] : docs,
         documents: docs,
         selectedFolder,
         folderLevel: [],
-        selectedFolderDocs: JSON.parse(JSON.stringify(selectedFolder.documents)),
-        loading: false
+        selectedFolderDocs: JSON.parse(JSON.stringify(selectedFolder.documents))
+
       };
     }
     case GET_DOCUMENTS_FAILURE:
@@ -241,7 +269,7 @@ export default (state = INITIAL_STATE, action) => {
     case MOVE_DOCUMENTS: {
       return { ...state, loading: true }
     }
-    case CREATE_DOCUMENT_SUCCESS: {
+    case MOVE_DOCUMENTS_SUCCESS: {
       NotificationManager.success("Documents Moved successfully");
       return { ...state, loading: false }
 
@@ -269,13 +297,13 @@ export default (state = INITIAL_STATE, action) => {
     }
     case ADD_NEW_FOLDER: {
       return {
-        ...state
+        ...state, loading: true
       }
     }
     case ADD_NEW_FOLDER_SUCCESS: {
       NotificationManager.success("New folder has been added successfully");
       return {
-        ...state,
+        ...state, loading: false,
         documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.Name)
       }
     }

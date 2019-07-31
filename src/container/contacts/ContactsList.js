@@ -170,13 +170,15 @@ class ContactsList extends Component {
     }
 
     onDeleteContacts = () => {
-        this.props.deleteContacts({ "ContactIDs": this.state.selectedContacts });
-        this.setState({
-            selectedContacts: [],
-            allContactsAreSelected: false
-        });
-        // console.log('Delete these contacts:', this.state.selectedContacts);
-
+        var result = window.confirm("Are you sure you want to delete the contact(s)?");
+        if(result){
+            this.props.deleteContacts({ "ContactIDs": this.state.selectedContacts });
+            this.setState({
+                selectedContacts: [],
+                allContactsAreSelected: false
+            });
+            // console.log('Delete these contacts:', this.state.selectedContacts);
+        }
     }
 
     dlgButtons = {

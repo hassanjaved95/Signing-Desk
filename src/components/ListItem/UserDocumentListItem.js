@@ -45,7 +45,7 @@ const loadContextMenu = (props) => (
                     <div style={{ marginLeft: '5px' }}>Duplicate</div>
                 </div>
             </li> */}
-            <li>
+            <li onClick={props.onSingleMoveDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
                     <div className="flex-row-left"> <i className="zmdi zmdi-folder-star icon-size"></i></div>
                     <div style={{ marginLeft: '5px' }}>Move</div>

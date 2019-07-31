@@ -14,6 +14,7 @@ import {
   DELETE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
+  MOVE_DOCUMENTS_FAILURE,
   DUPLICATE_DOCUMENTS,
   DUPLICATE_DOCUMENTS_SUCCESS,
   EDIT_FOLDER_NAME,
@@ -62,9 +63,9 @@ export const createDocumentFailure = error => ({
   payload: error
 });
 
-export const updateDocument = (payload,onCloseDlg) => ({
+export const updateDocument = (payload,onCloseDlg,movedDocument,nextFolderID) => ({
   type: UPDATE_DOCUMENT,
-  payload, onCloseDlg
+  payload, onCloseDlg,movedDocument,nextFolderID
 });
 export const updateDocumentSuccess = (payload) => ({
   type: UPDATE_DOCUMENT_SUCCESS,
@@ -92,6 +93,11 @@ export const moveDocuments = (payload) => ({
 
 export const moveDocumentsSuccess = (payload) => ({
   type: MOVE_DOCUMENTS_SUCCESS,
+  payload
+});
+
+export const moveDocumentsFailure = (payload) => ({
+  type: MOVE_DOCUMENTS_FAILURE,
   payload
 });
 export const duplicateDocuments = (payload) => ({
