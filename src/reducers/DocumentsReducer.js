@@ -16,6 +16,7 @@ import {
   EDIT_FOLDER_NAME_SUCCESS,
   DELETE_FOLDER,
   DELETE_FOLDER_SUCCESS,
+  DELETE_FOLDER_FAILURE,
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS_FAILURE,
@@ -24,6 +25,8 @@ import {
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS
 } from "Actions/types";
+
+
 
 const INITIAL_STATE = {
   documents: null,
@@ -180,7 +183,6 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
-      debugger;
       var result = state.documents
         .map(item => ({
           ...item,
@@ -293,6 +295,13 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
         selectedFolder: deleteFolder([state.selectedFolder], action.payload.folderId)[0],
         documents: deleteFolder(state.documents, action.payload.folderId)
+      }
+    }
+
+    case DELETE_FOLDER_FAILURE: {
+      NotificationManager.error("Make sure your folder is empty.");
+      return{
+        ...state, loading:false
       }
     }
     case ADD_NEW_FOLDER: {

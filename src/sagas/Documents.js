@@ -11,6 +11,7 @@ import {
   updateDocumentSuccess,
   editFolderNameSuccess,
   deleteFolderSuccess,
+  deleteFolderFailure,
   addNewFolderSuccess
 } from "Actions";
 import {
@@ -47,7 +48,6 @@ const createDocumentRequest = async doc => {
 };
 
 const updateDocumentRequest = async doc => {
-  debugger;
   var response = await API.put('documents/update', doc.payload);
   if(doc.movedDocument){
     response.movedDocument = doc.movedDocument;
@@ -190,9 +190,11 @@ function* deleteFolderOnServer({ payload }) {
       yield put(deleteFolderSuccess(payload));
     } else {
       console.log('deleteFolderOnServer error:', response);
+      yield put(deleteFolderFailure(response));
     }
   } catch (error) {
     console.log('deleteFolderOnServer error:', error);
+    
   }
 }
 

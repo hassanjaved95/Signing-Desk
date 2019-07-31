@@ -21,6 +21,7 @@ import {
   EDIT_FOLDER_NAME_SUCCESS,
   DELETE_FOLDER,
   DELETE_FOLDER_SUCCESS,
+  DELETE_FOLDER_FAILURE,
   ADD_NEW_FOLDER,
   ADD_NEW_FOLDER_SUCCESS
 } from "./types";
@@ -125,6 +126,11 @@ export const deleteFolder = (payload) => ({
 
 export const deleteFolderSuccess = (payload) => ({
   type: DELETE_FOLDER_SUCCESS,
+  payload
+});
+
+export const deleteFolderFailure = (payload) => ({
+  type: DELETE_FOLDER_FAILURE,
   payload
 });
 
