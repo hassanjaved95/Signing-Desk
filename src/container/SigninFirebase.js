@@ -44,9 +44,23 @@ class Signin extends Component {
   };
 
   componentDidMount() {
+    console.log('signin called');
     this.onChangeValue();
+    this.attachBlurEvents();
   }
 
+  attachBlurEvents = () => {
+    $('#email, #password').focusout(() => {
+      console.log('blur called');
+      this.setSlickSliderHeight();
+    });
+  }
+
+  setSlickSliderHeight = () => {
+    var loginPageHeight = $('.row.row-eq-height .col-sm-5.col-md-5.col-lg-4').height();
+    console.log('loginPageHeight (login page):', loginPageHeight);
+    $('.slick-track').height(loginPageHeight);
+  }
 
   handleSubmit = (values, actions) => {
     actions.setSubmitting(false);
@@ -73,12 +87,8 @@ class Signin extends Component {
 
 
   onChangeValue(value) {
-    // $(document).ready(() => {
-    //   this.slickTrack = $('.slick-track');
-    //   this.container = $('.row.row-eq-height');
-
-    //   this.alignItems();
-    // });
+    this.setSlickSliderHeight();
+    return true;
   }
 
   alignItems() {
@@ -199,7 +209,6 @@ class Signin extends Component {
                               className="has-input input-lg"
                               placeholder="Password"
                               component={FormikInput}
-                              validate={this.onChangeValue}
                             />
                             <span className="has-icon">
                               <i className="ti-lock" />

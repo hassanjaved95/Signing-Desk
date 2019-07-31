@@ -17,6 +17,7 @@ import { Fab } from "@material-ui/core";
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import $ from 'jquery';
 
 // components
 import { SessionSlider } from "Components/Widgets";
@@ -50,7 +51,8 @@ class SignupFirebase extends Component {
   }
 
   componentDidMount() {
-    console.log('Pakra gya hai.');
+    console.log('signup called');
+    this.attachBlurEvents();
     axios
       .get(AppConfig.apiBaseUrl + "/industries/all")
       .then(response => {
@@ -68,6 +70,24 @@ class SignupFirebase extends Component {
         });
       })
       .catch(error => error);
+  }
+
+  componentDidUpdate() {
+    this.setSlickSliderHeight();
+  }
+
+  attachBlurEvents = () => {
+    $('#email, #password').focusout(() => {
+      console.log('blur called');
+      this.setSlickSliderHeight();
+    });
+  }
+
+  setSlickSliderHeight = () => {
+
+    var loginPageHeight = $('.row.row-eq-height .col-sm-5.col-md-5.col-lg-4').height();
+    console.log('loginPageHeight (login page):', loginPageHeight);
+    $('.slick-track').height(loginPageHeight);
   }
 
   firstStepSchema = Yup.object().shape({
@@ -124,7 +144,7 @@ class SignupFirebase extends Component {
 
   render() {
     const { value } = this.state;
-
+    console.log('renderd');
     const FormikSelect = ({
       field,
       form: { isSubmitting, touched, errors },
@@ -133,6 +153,7 @@ class SignupFirebase extends Component {
     }) => {
       let error = errors[field.name];
       let touch = touched[field.name];
+
       return (
         <FormGroup>
           <Input
@@ -162,20 +183,25 @@ class SignupFirebase extends Component {
       );
     };
 
-    const FormikInput = ({ field, form: { touched, errors }, ...props }) => (
-      <div>
-        <Input
-          invalid={!!(touched[field.name] && errors[field.name])}
-          {...field}
-          {...props}
-        />
-        {touched[field.name] && errors[field.name] && (
-          <FormFeedback className="text-left">
-            {errors[field.name]}
-          </FormFeedback>
-        )}
-      </div>
-    );
+    const FormikInput = ({ field, form: { touched, errors }, ...props }) => {
+      
+      return (
+
+        <div>
+          <Input
+            invalid={!!(touched[field.name] && errors[field.name])}
+            {...field}
+            {...props}
+            onBlur={this.setSlickSliderHeight}
+          />
+          {touched[field.name] && errors[field.name] && (
+            <FormFeedback className="text-left">
+              {errors[field.name]}
+            </FormFeedback>
+          )}
+        </div>
+      )
+    };
 
     const { loading } = this.props;
     return (
@@ -228,6 +254,7 @@ class SignupFirebase extends Component {
                                   id="email"
                                   className="has-input input-lg"
                                   placeholder="Email"
+                                  onBlur={this.setSlickSliderHeight}
                                   component={FormikInput}
                                 />
                                 <span className="has-icon">
@@ -241,6 +268,7 @@ class SignupFirebase extends Component {
                                   id="password"
                                   className="has-input input-lg"
                                   placeholder="Password"
+                                  onBlur={this.setSlickSliderHeight}
                                   component={FormikInput}
                                 />
                                 <span className="has-icon">

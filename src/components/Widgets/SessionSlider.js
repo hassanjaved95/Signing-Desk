@@ -4,13 +4,13 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
 import axios from 'axios';
-
+import $ from 'jquery';
 
 // api
 import api from "Api";
 
 var axiosObj = axios.create({
-   baseURL: 'http://reactify.theironnetwork.org/data/',
+  baseURL: 'http://reactify.theironnetwork.org/data/',
   //baseURL: config.apiBaseUrl + '/',
   timeout: 2000
 });
@@ -24,11 +24,18 @@ export default class SessionSlider extends Component {
     console.log('Pakra gya hai.');
 
     this.getSessionUsersData();
+    this.setSlickSliderHeight();
   }
 
+  setSlickSliderHeight = () => {
+
+    var loginPageHeight = $('.row.row-eq-height').height();
+    console.log('loginPageHeight:', loginPageHeight);
+    $('.slick-track').height(loginPageHeight);
+  }
   // session users data
   getSessionUsersData() {
-    
+
     axiosObj.get("testimonials.js")
       .then(response => {
         console.log(response);
