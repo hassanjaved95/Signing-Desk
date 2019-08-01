@@ -14,7 +14,7 @@ const loadAddTagButton = (props) => (
 )
 
 const loadTagsInColumn = (props, document, tag) => (
-
+    tag != "" &&
     <span className="text-span">{tag}</span>
 )
 
@@ -30,6 +30,7 @@ const loadTagsInput = (props) => (
     </div>
 )
 const loadTags = (props, document, tag) => (
+    tag != "" &&
     <span key={getGuid()}>
         {tag}
         <span className="remove-tag" tagval={tag} onClick={props.onRemoveTags}>X</span>
@@ -115,7 +116,7 @@ const UserDocumentListItem = (props) => {
                                         {loadTagsInput(props)}
                                         <div className="ul">
                                             {
-                                                props.arrTags && props.arrTags.length > 0 &&
+                                                props.arrTags && props.arrTags.length > 1 &&
                                                 props.arrTags.map(loadTags.bind(this, props, props.document))}
                                         </div>
                                         {

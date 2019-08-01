@@ -183,26 +183,28 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
-      var result = state.documents
-        .map(item => ({
-          ...item,
-          children: item.children
-            .filter(child => child.id === action.payload.nextFolderID)
-        }))
-        .filter(item => item.children.length > 0)
+      // var result = state.documents
+      //   .map(item => ({
+      //     ...item,
+      //     children: item.children
+      //       .filter(child => child.id === action.payload.nextFolderID)
+      //   }))
+      //   .filter(item => item.children.length > 0)
 
-      result.push(action.payload.movedDocument);
+      // result.push(action.payload.movedDocument);
 
       return {
         ...state,
-        loading: false,
-        documents: result,
-        selectedFolder: {
-          ...state.selectedFolder, documents: state.selectedFolder.documents.filter(doc => {
-            return action.payload.movedDocument.id != doc.id;
-          })
-        }
+        loading: false
+        
       };
+
+      // documents: result,
+      //   selectedFolder: {
+      //     ...state.selectedFolder, documents: state.selectedFolder.documents.filter(doc => {
+      //       return action.payload.movedDocument.id != doc.id;
+      //     })
+      //   }
     }
 
 
