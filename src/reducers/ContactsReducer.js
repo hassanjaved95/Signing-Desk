@@ -73,8 +73,8 @@ export default (state = INITIAL_STATE, action) => {
             var searchVal = action.payload;
             return {
                 ...state,
-                filterdContacts: state.contacts.filter(c => (c.firstName || c.FirstName + c.lastName || c.LastName).toLowerCase().indexOf(searchVal) != -1
-                    || (c.email || CertEmail).toLowerCase().indexOf(searchVal) != -1)
+                filterdContacts: state.contacts.filter(c => (c.firstName + c.lastName).toLowerCase().indexOf(searchVal) != -1
+                    || (c.email).toLowerCase().indexOf(searchVal) != -1)
             };
         }
 

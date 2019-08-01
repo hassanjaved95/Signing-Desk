@@ -26,23 +26,23 @@ function fwdRefContact(props, ref) {
     const certFileInput = useRef(null);
 
     const initialState = {
-        FirstName: '',
-        LastName: '',
+        firstName: '',
+        lastName: '',
         email: '',
-        PhoneNumber: '',
-        Company: '',
+        phoneNumber: '',
+        company: '',
         jobTitle: '',
-        Notes: '',
-        StreetAddress: '',
-        City: '',
-        PostalCode: '',
+        notes: '',
+        streetAddress: '',
+        city: '',
+        postalCode: '',
         country: '',
-        StateOrRegion: '',
-        CertEmail: '',
-        CertPassword: '',
-        CertAlias: '',
-        CertFriendlyName: '',
-        CertPEM: ''
+        stateOrRegion: '',
+        certEmail: '',
+        certPassword: '',
+        certAlias: '',
+        certFriendlyName: '',
+        certPEM: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -83,13 +83,13 @@ function fwdRefContact(props, ref) {
                             <div className="flex-split-2-left">
                                 <TextField
                                     label="FIRST NAME"
-                                    name="FirstName"
-                                    value={values.FirstName}
+                                    name="firstName"
+                                    value={values.firstName}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.FirstName && touched.FirstName) && errors.FirstName}
+                                    helperText={(errors.firstName && touched.firstName) && errors.firstName}
                                     placeholder="Enter first name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -100,13 +100,13 @@ function fwdRefContact(props, ref) {
                             <div className="flex-split-2-right">
                                 <TextField
                                     label="LAST NAME"
-                                    name="LastName"
-                                    value={values.LastName}
+                                    name="lastName"
+                                    value={values.lastName}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.LastName && touched.LastName) && errors.LastName}
+                                    helperText={(errors.lastName && touched.lastName) && errors.lastName}
                                     placeholder="Enter last name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -138,13 +138,13 @@ function fwdRefContact(props, ref) {
                             <div className="flex-split-2-right">
                                 <TextField
                                     label="PHONE"
-                                    name="PhoneNumber"
-                                    value={values.PhoneNumber}
+                                    name="phoneNumber"
+                                    value={values.phoneNumber}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.PhoneNumber && touched.PhoneNumber) && errors.PhoneNumber}
+                                    helperText={(errors.phoneNumber && touched.phoneNumber) && errors.phoneNumber}
                                     placeholder="Enter a phone number"
                                     margin="normal"
                                     InputLabelProps={{
@@ -157,14 +157,14 @@ function fwdRefContact(props, ref) {
                         <div className="flex-row">
                             <div className="flex-split-2-left">
                                 <TextField
-                                    label="COMPANY"
-                                    name="Company"
-                                    value={values.Company}
+                                    label="company"
+                                    name="company"
+                                    value={values.company}
                                     className="dlg-txt-field"
                                     style={{ width: '95%' }}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    helperText={(errors.Company && touched.Company) && errors.Company}
+                                    helperText={(errors.company && touched.company) && errors.company}
                                     placeholder="Enter a company name"
                                     margin="normal"
                                     InputLabelProps={{
@@ -193,14 +193,14 @@ function fwdRefContact(props, ref) {
 
                         <div className="flex-row">
                             <TextField
-                                label="NOTES"
-                                name="Notes"
-                                value={values.Notes}
+                                label="notes"
+                                name="notes"
+                                value={values.notes}
                                 className="dlg-txt-field"
                                 style={{ width: '100%' }}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                helperText={(errors.Notes && touched.Notes) && errors.Notes}
+                                helperText={(errors.notes && touched.notes) && errors.notes}
                                 placeholder="Enter any notes"
                                 margin="normal"
                                 InputLabelProps={{
@@ -221,13 +221,13 @@ function fwdRefContact(props, ref) {
                                 <div className="flex-row">
                                     <TextField
                                         label="STREET ADDRESS"
-                                        name="StreetAddress"
-                                        value={values.StreetAddress}
+                                        name="streetAddress"
+                                        value={values.streetAddress}
                                         className="dlg-txt-field"
                                         style={{ width: '100%' }}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        helperText={(errors.StreetAddress && touched.StreetAddress) && errors.StreetAddress}
+                                        helperText={(errors.streetAddress && touched.streetAddress) && errors.streetAddress}
                                         placeholder="Street, apt, suite, bldg"
                                         margin="normal"
                                         InputLabelProps={{
@@ -239,14 +239,14 @@ function fwdRefContact(props, ref) {
                                 <div className="flex-row">
                                     <div className="flex-split-2-left">
                                         <TextField
-                                            label="CITY"
-                                            name="City"
-                                            value={values.City}
+                                            label="city"
+                                            name="city"
+                                            value={values.city}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.City && touched.City) && errors.City}
+                                            helperText={(errors.city && touched.city) && errors.city}
                                             placeholder="Enter a city"
                                             margin="normal"
                                             InputLabelProps={{
@@ -257,13 +257,13 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="POSTAL CODE"
-                                            name="PostalCode"
-                                            value={values.PostalCode}
+                                            name="postalCode"
+                                            value={values.postalCode}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.PostalCode && touched.PostalCode) && errors.PostalCode}
+                                            helperText={(errors.postalCode && touched.postalCode) && errors.postalCode}
                                             placeholder="Enter a postal code"
                                             margin="normal"
                                             InputLabelProps={{
@@ -294,13 +294,13 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="STATE/REGION"
-                                            name="StateOrRegion"
-                                            value={values.StateOrRegion}
+                                            name="stateOrRegion"
+                                            value={values.stateOrRegion}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.StateOrRegion && touched.StateOrRegion) && errors.StateOrRegion}
+                                            helperText={(errors.stateOrRegion && touched.stateOrRegion) && errors.stateOrRegion}
                                             placeholder="Enter a state or region"
                                             margin="normal"
                                             InputLabelProps={{
@@ -325,9 +325,9 @@ function fwdRefContact(props, ref) {
                                     <input
                                         accept=".cer"
                                         type="file"
-                                        name="CertPEM"
+                                        name="certPEM"
                                         ref={certFileInput}
-                                        value={values.CertPEM}
+                                        value={values.certPEM}
                                         onChange={(event) => { setFieldValue("file", event.currentTarget.files[0]) }}
                                         onBlur={handleBlur}
                                     />
@@ -337,13 +337,13 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-left">
                                         <TextField
                                             label="CERTIFICATE EMAIL"
-                                            name="CertEmail"
-                                            value={values.CertEmail}
+                                            name="certEmail"
+                                            value={values.certEmail}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.CertEmail && touched.CertEmail) && errors.CertEmail}
+                                            helperText={(errors.certEmail && touched.certEmail) && errors.certEmail}
                                             placeholder="Enter certificate email"
                                             margin="normal"
                                             InputLabelProps={{
@@ -354,14 +354,14 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="CERTIFICATE PASSWORD"
-                                            name="CertPassword"
+                                            name="certPassword"
                                             type="password"
-                                            value={values.CertPassword}
+                                            value={values.certPassword}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.CertPassword && touched.CertPassword) && errors.CertPassword}
+                                            helperText={(errors.certPassword && touched.certPassword) && errors.certPassword}
                                             placeholder="Enter certificate password"
                                             margin="normal"
                                             InputLabelProps={{
@@ -375,13 +375,13 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-left">
                                         <TextField
                                             label="CERTIFICATE ALIAS"
-                                            name="CertAlias"
-                                            value={values.CertAlias}
+                                            name="certAlias"
+                                            value={values.certAlias}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.CertAlias && touched.CertAlias) && errors.CertAlias}
+                                            helperText={(errors.certAlias && touched.certAlias) && errors.certAlias}
                                             placeholder="Enter certificate alias"
                                             margin="normal"
                                             InputLabelProps={{
@@ -392,13 +392,13 @@ function fwdRefContact(props, ref) {
                                     <div className="flex-split-2-right">
                                         <TextField
                                             label="CERTIFICATE FRIENDLY NAME"
-                                            name="CertFriendlyName"
-                                            value={values.CertFriendlyName}
+                                            name="certFriendlyName"
+                                            value={values.certFriendlyName}
                                             className="dlg-txt-field"
                                             style={{ width: '95%' }}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            helperText={(errors.CertFriendlyName && touched.CertFriendlyName) && errors.CertFriendlyName}
+                                            helperText={(errors.certFriendlyName && touched.certFriendlyName) && errors.certFriendlyName}
                                             placeholder="Enter certificate friendly name"
                                             margin="normal"
                                             InputLabelProps={{
