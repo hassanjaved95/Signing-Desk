@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getDocuments, updateDocument } from "Actions";
-
+import $ from 'jquery'
 import { Treebeard, decorators } from 'react-treebeard';
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
 
@@ -34,7 +34,7 @@ const deco = {
   },
   Container: (props) => {
     return (
-      <div data-id={props.node.id} className={props.node.toggled ? "treebeard-node treebeard-node-active" : "treebeard-node"} style={{ cursor: 'pointer' }} onClick={props.onClick}>
+      <div id={props.node.id} data-id={props.node.id} className={"treebeard-node"} style={{ cursor: 'pointer' }} onClick={props.onClick}>
         {props.node.toggled ? <FolderOpen /> : <Folder />}
         {props.node.name}
       </div>
@@ -57,10 +57,17 @@ class FolderMenu extends PureComponent {
 
   }
 
+  componentDidMount = () =>{
+    $("#"+ this.props.currentFolderID).addClass("treebeard-node-active");
+
+  }
+
   clickedFolderId = this.props.data[0].id;
 
   //: props.data
   onToggle(node, toggled) {
+    $(".treebeard-node").removeClass("treebeard-node-active");
+    
     const { cursor, data } = this.state;
     if (cursor) {
       this.setState(() => ({ cursor, active: false }));
@@ -71,6 +78,7 @@ class FolderMenu extends PureComponent {
     if (node.children) {
       node.toggled = toggled;
     }
+    $("#"+node.id).addClass("treebeard-node-active");
     // if(node.id == this.currentFolderID){
     //   node.name = node.name + " (current folder)";
     // }
