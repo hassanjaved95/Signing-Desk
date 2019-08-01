@@ -6,10 +6,10 @@ const createDocumentItem = (props, folder) => {
     return (<li className="foldersList" key={folder.id} onClick={props.onClickShowFolderDocuments.bind(this, folder)} style={{ cursor: 'pointer' }}>
         <div className="liContainer">
             {props.inEditModeFolderList ?
-                (<Edit className="listItemIconsLeft editicon" onClick={(e) => { props.onCreateNewFolder(e, folder.id) }} />) :
-                (<Folder className="listItemIconsLeft hild-featured" />)}
-            <div className="child-featured">{folder.name}</div>
-            {props.inEditModeFolderList && <Delete className="listItemIconsRight hild-featured" onClick={(e) => { props.onDeleteFolder(e, folder.id, folder.name) }} />}
+                (<div className="flex-row"> <Edit className="listItemIconsLeft editicon" onClick={(e) => { props.onCreateNewFolder(e, folder.id) }} /> </div>) :
+                (<div className="flex-row"><Folder className="listItemIconsLeft hild-featured" /> </div>)}
+            <div className="flex-row child-featured">{folder.name}</div>
+            {props.inEditModeFolderList && (<div className="flex-row"> <Delete className="listItemIconsRight hild-featured" onClick={(e) => { props.onDeleteFolder(e, folder.id, folder.name) }} /> </div>)}
         </div>
     </li>);
 }

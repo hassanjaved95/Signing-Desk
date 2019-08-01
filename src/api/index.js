@@ -8,32 +8,38 @@ var axiosObj = axios.create({
 });
 
 var token = '';
-var user = JSON.parse(localStorage.getItem('user') || "{}");
-if (user) {
-   const profile = user.profile;
-   if (profile) {
-      token = profile.user.token;
+
+var setAuthorizationToken = () => {
+   if (token) return;
+
+   var user = JSON.parse(localStorage.getItem('user') || "{}");
+   if (user) {
+      const profile = user.profile;
+      if (profile) {
+         token = profile.user.token;
+      }
    }
+
+   axiosObj.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+   axiosObj.interceptors.request.use((config) => {
+      console.log('Request config:', config);
+      return config;
+   }, (error) => {
+      return Promise.reject(error);
+   });
+
+   axiosObj.interceptors.response.use((config) => {
+      console.log('response resceived:', config);
+      return config;
+   }, (error) => {
+      return Promise.reject(error);
+   });
 }
-
-axiosObj.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-axiosObj.interceptors.request.use((config) => {
-   console.log('Request config:', config);
-   return config;
-}, (error) => {
-   return Promise.reject(error);
-});
-
-axiosObj.interceptors.response.use((config) => {
-   console.log('response resceived:', config);
-   return config;
-}, (error) => {
-   return Promise.reject(error);
-});
 
 var methods = {
    get: async function (endPoint, data) {
       try {
+         setAuthorizationToken();
          return await axiosObj.get(endPoint, {
             params: data
          });
@@ -43,6 +49,7 @@ var methods = {
    },
    put: async function (endPoint, data) {
       try {
+         setAuthorizationToken();
          return await axiosObj.put(endPoint, data);
       } catch (error) {
          return error;
@@ -51,6 +58,7 @@ var methods = {
    },
    post: async function (endPoint, data) {
       try {
+         setAuthorizationToken();
          var response = await axiosObj.post(endPoint, data);
          console.log("post response: ", response);
          return response;
@@ -63,6 +71,7 @@ var methods = {
    },
    delete: async function (endPoint, data) {
       try {
+         setAuthorizationToken();
          return await axiosObj.delete(endPoint, { data });
       } catch (error) {
          return error;

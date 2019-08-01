@@ -27,6 +27,8 @@ import DeleteConfirmationDialog from 'Components/DeleteConfirmationDialog/Delete
 class UserDocumentsList extends Component {
     searchTimerId = null;
     selectedFolder = null;
+    updateFolderId = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -145,6 +147,9 @@ class UserDocumentsList extends Component {
 
     onCreateNewFolder = (e, folderId) => {
         e.stopPropagation();
+
+        this.updateFolderId = folderId;
+
         this.setState({
             folderCreationDialog: true
         });
@@ -212,7 +217,7 @@ class UserDocumentsList extends Component {
         console.log('delete folder callback:', arguments);
         console.log('onDeleteFolder', { folderId, name });
         var result = window.confirm("Are you sure you want to delete the Folder?");
-        if(result){
+        if (result) {
             this.props.deleteFolder({ folderId, name });
         }
     }
@@ -221,12 +226,18 @@ class UserDocumentsList extends Component {
         console.log('onSubmitCreateFolder:', values);
         const payload = {
             "parentFoldersID": this.selectedFolder ? this.selectedFolder.id : null,
-            "Name": values.folderName
+            "name": values.folderName.trim(),
         }
 
-        this.props.addNewFolder(payload);
-
-        this.setState({ folderCreationDialog: false });
+        if (this.updateFolderId) {
+            payload.folderId = this.updateFolderId;
+            this.props.editFolderName(payload);
+            this.setState({ folderCreationDialog: false });
+            this.updateFolderId = null;
+        } else {
+            this.props.addNewFolder(payload);
+            this.setState({ folderCreationDialog: false });
+        }
 
     }
 
@@ -254,14 +265,14 @@ class UserDocumentsList extends Component {
     onMoveSingleDocument = (doc) => {
         var temp = [];
         temp.push(doc);
-        this.setState({selectedDocumentsToMove: temp, moveDocumentsToFolder: true})
+        this.setState({ selectedDocumentsToMove: temp, moveDocumentsToFolder: true })
     }
 
-    
+
 
     onDeleteDocuments = (doc) => {
         var result = window.confirm("Are you sure you want to delete selected document(s)?");
-        if(result){
+        if (result) {
             this.props.deleteDocuments({
                 documentIds: this.state.selectedDocuments && this.state.selectedDocuments.length > 0 ?
                     this.state.selectedDocuments[0] :
@@ -271,7 +282,7 @@ class UserDocumentsList extends Component {
                 }
             });
         }
-        
+
 
         // console.log('onDeleteDocuments', this.state.selectedDocuments);
     }
@@ -318,9 +329,9 @@ class UserDocumentsList extends Component {
 
     onClickRemoveTag = (document, folderid, e) => {
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-        $(e.target).css("display","none");
+        $(e.target).css("display", "none");
         document.tags = document.tags.replace(valueToSplice, '').replace(";;", ";");
-        if(document.tags == ";"){
+        if (document.tags == ";") {
             document.tags = "";
         }
         this.props.updateDocument({
@@ -380,8 +391,7 @@ class UserDocumentsList extends Component {
 
     onSelectNewFolderToMoveDocuments = (obj, val) => {
         var result = window.confirm("Are you sure you want to move the document(s)?");
-        if(result)
-        {
+        if (result) {
             if (obj.clickedFolderId != "") {
                 for (var i = 0; i < this.state.selectedDocumentsToMove.length; i++) {
                     var movedDocument = this.state.selectedDocumentsToMove[i]
