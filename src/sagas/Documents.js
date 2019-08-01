@@ -49,7 +49,7 @@ const createDocumentRequest = async doc => {
 
 const updateDocumentRequest = async doc => {
   var response = await API.put('documents/update', doc.payload);
-  if(doc.movedDocument){
+  if (doc.movedDocument) {
     response.movedDocument = doc.movedDocument;
     response.nextFolderID = doc.nextFolderID;
   }
@@ -72,8 +72,8 @@ const duplicateDocumentsRequest = () => {
   return true; // response;
 };
 
-const editFolderNameRequest = (payload) => {
-  return true; // response;
+const editFolderNameRequest = async (payload) => {
+  return await API.put('folders/update', payload);
 };
 
 const deleteFolderRequest = async (payload) => {
@@ -157,7 +157,7 @@ function* moveDocumentsOnServer() {
     yield put(moveDocumentsSuccess(response));
   } catch (error) {
     console.log('moveDocumentsOnServer error:', error);
-     yield put(moveDocumentsFailure(error));
+    yield put(moveDocumentsFailure(error));
   }
 }
 
@@ -172,12 +172,12 @@ function* duplicateDocumentsOnServer() {
 
 function* editFolderNameOnServer({ payload }) {
   try {
-    const response = yield call(editFolderNameRequest);
-    //if (response.status == 200) {
-    yield put(editFolderNameSuccess(payload));
-    //} else {
-    //  console.log('editFolderNameOnServer error:', response);
-    //}
+    const response = yield call(editFolderNameRequest, payload);
+    if (response.status == 200) {
+      yield put(editFolderNameSuccess(payload));
+    } else {
+      console.log('editFolderNameOnServer error:', response);
+    }
   } catch (error) {
     console.log('editFolderNameOnServer error:', error);
   }
@@ -194,7 +194,7 @@ function* deleteFolderOnServer({ payload }) {
     }
   } catch (error) {
     console.log('deleteFolderOnServer error:', error);
-    
+
   }
 }
 

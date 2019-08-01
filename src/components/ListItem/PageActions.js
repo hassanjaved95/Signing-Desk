@@ -56,7 +56,7 @@ const ContactsActions = (props) => (
                 }
                 {props.selectedContacts > 0 && (
                     <div>
-                        <Button variant="contained" color="secondary" onClick={props.onDeleteDocuments} >
+                        <Button variant="contained" color="secondary" onClick={props.onDeleteContacts} >
                             <i className="zmdi zmdi-delete"></i>
                             <span style={{ marginLeft: '5px' }}> DELETE </span>
                         </Button>
