@@ -48,7 +48,11 @@ class DocumentUpload extends React.Component {
         // this.callbackArray = [() => console.log('Hi!'), () => console.log('Ho!')];
 
         // // Simple callbacks work too, of course
-        // this.callback = () => console.log('Hello!');
+        //  this.callback = () => {
+        //     this.element.children[2].children[6].innerText = "X";
+        //     return;
+        //  }
+        //console.log('Hello!');
 
         // this.success = file => console.log('uploaded', file);
 
@@ -183,8 +187,8 @@ class DocumentUpload extends React.Component {
                                                         label="File Name"
                                                         name="FileName"
                                                         value={values.FileName}
-                                                        className="dlg-txt-field"
-                                                        style={{ width: '100%' }}
+                                                        className="dlg-txt-field dlg-txt-field-FileUpload"
+                                                        style={{ width: '100%', fontSize: '3rem' }}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.FileName && touched.FileName) && errors.FileName}
@@ -201,7 +205,7 @@ class DocumentUpload extends React.Component {
                                                         label="File Description"
                                                         name="FileDescription"
                                                         value={values.FileDescription}
-                                                        className="dlg-txt-field"
+                                                        className="dlg-txt-field dlg-txt-field-FileUpload"
                                                         style={{ width: '100%' }}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
@@ -227,10 +231,15 @@ class DocumentUpload extends React.Component {
                                             />
                                             <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
                                         </div>
-                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center' }}>
+                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center', opacity: '0.5' }}>
 
-                                            <Description className="DocumentIcon" />
-                                            <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+                                            <div style={{ float: 'left', width:'53%' }}>
+                                                <Description className="DocumentIcon" style={{float:'right'}} />
+                                            </div>
+                                            <div style={{ float: 'right' }}>
+                                                <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+
+                                        </div>
 
                                     </DialogContent>
                                     <DialogActions>
