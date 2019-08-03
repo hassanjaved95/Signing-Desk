@@ -1455,7 +1455,7 @@ figure.img-wrapper {
 
   i {
     font-size: 22px;
-    color:#464D69;
+    color: #464d69;
   }
 }
 
@@ -1545,7 +1545,6 @@ figure.img-wrapper {
 
   label {
     letter-spacing: 1.2px;
-
   }
 
   input {
@@ -1642,4 +1641,11 @@ figure.img-wrapper {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.file-upload-footer {
+  color:rgba($primary, 1);
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
 }

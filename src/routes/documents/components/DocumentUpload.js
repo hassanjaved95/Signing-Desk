@@ -173,7 +173,7 @@ class DocumentUpload extends React.Component {
                                 <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
                                     Submit
                                 </button>
-                                <div onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
+                                <div className="flex-row" onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
                                 {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
                                 <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                                     <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
@@ -184,7 +184,7 @@ class DocumentUpload extends React.Component {
                                             <div className="flex-row">
                                                 <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
                                                     <TextField
-                                                        label="File Name"
+                                                        label="Document Name"
                                                         name="FileName"
                                                         value={values.FileName}
                                                         className="dlg-txt-field dlg-txt-field-FileUpload"
@@ -192,7 +192,7 @@ class DocumentUpload extends React.Component {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.FileName && touched.FileName) && errors.FileName}
-                                                        placeholder="Enter file name"
+                                                        placeholder="Enter document name"
                                                         margin="normal"
                                                         InputLabelProps={{
                                                             shrink: true,
@@ -202,7 +202,7 @@ class DocumentUpload extends React.Component {
                                                 </div>
                                                 <div className="flex-split-2-right" style={{ width: '60%' }}>
                                                     <TextField
-                                                        label="File Description"
+                                                        label="Document Description"
                                                         name="FileDescription"
                                                         value={values.FileDescription}
                                                         className="dlg-txt-field dlg-txt-field-FileUpload"
@@ -210,7 +210,7 @@ class DocumentUpload extends React.Component {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
                                                         helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
-                                                        placeholder="Enter file description"
+                                                        placeholder="Enter document description"
                                                         margin="normal"
                                                         InputLabelProps={{
                                                             shrink: true,
@@ -231,13 +231,19 @@ class DocumentUpload extends React.Component {
                                             />
                                             <div className="footerNote">You can only upload PDF documents, content would'nt be editable</div>
                                         </div>
-                                        <div style={{ color: 'blue', marginTop: '15px', textAlign: 'center', opacity: '0.5' }}>
+                                        <div className="file-upload-footer">
 
-                                            <div style={{ float: 'left', width:'53%' }}>
-                                                <Description className="DocumentIcon" style={{float:'right'}} />
+                                            <div style={{ flexGrow: 1 }}>
+                                                {/* <Description className="DocumentIcon" style={{ float: 'right' }} /> */}
                                             </div>
-                                            <div style={{ float: 'right' }}>
-                                                <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /></div>
+                                            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row-reverse' }}>
+                                                <Button variant="contained" color="primary" onClick={this.onSaveDocuments} >
+                                                    <FileUpload />
+                                                    <span style={{ marginLeft: '5px' }}> UPLOAD </span>
+                                                </Button>
+
+                                                {/* <FileUpload onClick={this.onSaveDocuments} className="DocumentIcon fileSaveIcon" /> */}
+                                            </div>
 
                                         </div>
 
