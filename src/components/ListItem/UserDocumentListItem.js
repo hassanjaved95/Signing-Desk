@@ -48,8 +48,8 @@ const loadContextMenu = (props) => (
             </li> */}
             <li onClick={props.onSingleMoveDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
-                    <div className="flex-row-left"> <i className="zmdi zmdi-folder-star icon-size"></i></div>
-                    <div style={{ marginLeft: '5px' }}>Move</div>
+                    <div className="documents-inline-actions-icons"> <i className="zmdi zmdi-folder-star"></i></div>
+                    <div>Move</div>
                 </div>
             </li>
             {/* <li>
@@ -60,8 +60,8 @@ const loadContextMenu = (props) => (
             </li> */}
             <li onClick={props.onDeleteDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
-                    <div className="flex-row-left"> <i className="zmdi zmdi-delete icon-size"></i></div>
-                    <div style={{ marginLeft: '5px' }}>Delete</div>
+                    <div className="documents-inline-actions-icons">   <i className="zmdi zmdi-delete"></i></div>
+                    <div>Delete</div>
                 </div>
             </li>
         </ul>

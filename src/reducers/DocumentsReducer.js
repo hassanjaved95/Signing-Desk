@@ -133,6 +133,8 @@ function renameInFoldersList(list, folderId, name) {
   });
 }
 
+
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CREATE_DOCUMENTS:
@@ -144,7 +146,7 @@ export default (state = INITIAL_STATE, action) => {
       newDocument.id = action.payload.data.documentID;
       return {
         ...state,
-        documents: newDocument,
+        selectedFolder: {...state.selectedFolder, documents: [...state.documents, newDocument]},
         loading: false
       };
     case GET_DOCUMENTS:
@@ -196,7 +198,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: false
-        
+
       };
 
       // documents: result,
@@ -302,8 +304,8 @@ export default (state = INITIAL_STATE, action) => {
 
     case DELETE_FOLDER_FAILURE: {
       NotificationManager.error("Make sure your folder is empty.");
-      return{
-        ...state, loading:false
+      return {
+        ...state, loading: false
       }
     }
     case ADD_NEW_FOLDER: {

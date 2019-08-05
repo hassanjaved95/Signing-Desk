@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 // const confirmDeletion =(props)=>(
-    
+
 
 //     <DeleteConfirmationDialog
 //             ref="deleteConfirmationDialog"
@@ -15,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 
 const ContactsActions = (props) => (
     <React.Fragment>
-        
+
         <div className="page-text">
             {props.selectedContacts > 0 && (props.selectedContacts == 1 ? "1 item is selected" : `${props.selectedContacts} items are selected`)}
             {props.selectedContacts == 0 && !props.search && (props.page || "")}
@@ -114,14 +114,14 @@ const DocumentsActions = (props) => (
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="default" onClick={props.onMoveDocuments} >
-                                <i className="zmdi zmdi-folder-star"></i>
+                                <i className="zmdi zmdi-folder-star" style={{ fontSize: '20px' }}></i>
                                 <span style={{ marginLeft: '5px' }}> Move </span>
                             </Button>
                         </div>
 
                         <div className="action-btns-left">
                             <Button variant="contained" color="secondary" onClick={props.onDeleteDocuments} >
-                                <i className="zmdi zmdi-delete"></i>
+                                <i className="zmdi zmdi-delete" style={{ fontSize: '20px' }}></i>
                                 <span style={{ marginLeft: '5px' }}> DELETE </span>
                             </Button>
                         </div>

@@ -1644,8 +1644,14 @@ figure.img-wrapper {
 }
 
 .file-upload-footer {
-  color:rgba($primary, 1);
+  color: rgba($primary, 1);
   margin-top: 15px;
   display: flex;
   align-items: center;
+}
+
+.documents-inline-actions-icons {
+  width: 30px;
+  display: "flex";
+  font-size: 20px;
 }
