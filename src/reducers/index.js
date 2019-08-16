@@ -12,6 +12,7 @@ import feedbacksReducer from "./FeedbacksReducer";
 import ecommerceReducer from "./EcommerceReducer";
 import CrmReducer from "./CrmReducer";
 import DocumentsReducer from "./DocumentsReducer";
+import DocumentViewerReducer from "./DocumentViewerReducer";
 import ContactsReducer from "./ContactsReducer";
 
 const reducers = combineReducers({
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   chatAppReducer,
   emailApp: emailAppReducer,
   documents: DocumentsReducer,
+  documentViewer: DocumentViewerReducer,
   contacts: ContactsReducer,
   sidebar: sidebarReducer,
   todoApp: todoAppReducer,
