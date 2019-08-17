@@ -115,9 +115,10 @@ export default (state = INITIAL_STATE, action) => {
       NotificationManager.success("Document created successfully");
       var newDocument = JSON.parse(action.payload.config.data);
       newDocument.id = action.payload.data.documentID;
+      newDocument.status = 0;
       return {
         ...state,
-        selectedFolder: {...state.selectedFolder, documents: [...state.documents, newDocument]},
+        selectedFolder: {...state.selectedFolder, documents: [...state.selectedFolder.documents, newDocument]},
         loading: false
       };
     case GET_DOCUMENTS:
@@ -288,7 +289,7 @@ export default (state = INITIAL_STATE, action) => {
       NotificationManager.success("New folder has been added successfully");
       return {
         ...state, loading: false,
-        documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.Name)
+        documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.name)
       }
     }
     default:

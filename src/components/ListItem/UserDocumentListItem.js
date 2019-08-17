@@ -6,6 +6,7 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import { getGuid } from "Helpers/helpers";
 import { Search } from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
+import { DocumentStatus } from "Constants/app-enums";
 
 const loadAddTagButton = (props) => (
     <div className={props.writtenTags == "" ? "add-tag-button-Inactive" : "add-tag-button"}>
@@ -90,7 +91,7 @@ const UserDocumentListItem = (props) => {
                         </td>
                         <td /* onClick={props.onClickDocumentItem} */>
                             <i className="zmdi zmdi-circle" style={{ color: '#607d8b', fontSize: '10px', marginRight: '5px' }}></i>
-                            {props.document.status}
+                            {DocumentStatus[props.document.status]}
                         </td>
                         <td   >
                             <div className="searchTagIcon" onClick={props.onClickTagIcon}>
