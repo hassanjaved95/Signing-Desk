@@ -32,29 +32,9 @@ const INITIAL_STATE = {
   documents: null,
   selectedFolder: null,
   folderLevel: [],
-  selectedFolderDocs: null
+  selectedFolderDocs: null,
+  viewingDocument: null
 };
-
-function searchFolders(folder, searchVal) {
-  if (!folder || folder.length == 0) return;
-
-  var filteredObjs = folder.filter((obj) => {
-    return obj.documents.some(doc => {
-      return (
-        doc.name.toLowerCase().indexOf(searchVal) != -1 ||
-        doc.description.toLowerCase().indexOf(searchVal) != -1
-      );
-    }).length != 0;
-  });
-}
-
-function findSelectedFolderObj(arr, folderId) {
-  var folder;
-  for (var i = 0; i < arr.length; i++) {
-    folder = arr[i].subFolders.find(sf => sf.id === folderId);
-    if (folder) return folder;
-  }
-}
 
 function setSelectedFolder(state, folderId, levelUp) {
   if (levelUp && state.folderLevel.length) {
@@ -101,15 +81,6 @@ function deleteFolder(list, folderId) {
       folder.children = deleteFolder(folder.children, folderId);
     }
     return folder.id != folderId;
-  });
-}
-
-function deleteDocuments(list, folderIds) {
-  return list.filter(folder => {
-    if (folder.children && folder.children.length > 0) {
-      folder.children = deleteDocuments(folder.children, folderIds);
-    }
-    return folderIds != folder.id;
   });
 }
 
