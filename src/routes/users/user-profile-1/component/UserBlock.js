@@ -9,6 +9,11 @@ import Avatar from "@material-ui/core/Avatar";
 import { updateProfile } from "Actions";
 
 class UserBlock extends Component {
+  state = {
+    avatar: this.props.user.profile.info.avatar,
+    saving: false,
+    dirty: false
+  };
   constructor(props) {
     super(props);
     this.fileUpload = React.createRef();
@@ -23,9 +28,20 @@ class UserBlock extends Component {
     }
     const reader = new FileReader();
     reader.onload = () => {
-      const newUser = { ...this.props.user.profile.info };
-      newUser.avatar = reader.result;
-      this.props.updateProfile(newUser);
+      this.setState({
+        dirty: true,
+        avatar: reader.result
+      });
+      const info = {
+        ...this.props.user.profile.info,
+        avatar: reader.result
+      };
+      
+      const profile = {
+        ...this.props.user.profile,
+       info
+      }
+     // this.props.updateProfile(profile);
     };
     reader.readAsDataURL(files[0]);
   };
@@ -77,6 +93,7 @@ class UserBlock extends Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
+  debugger;
   const { user, loading } = authUser;
   return { user, loading };
 };

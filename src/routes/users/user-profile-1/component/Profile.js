@@ -154,7 +154,7 @@ class Profile extends Component {
 
     const { loading } = this.props;
     return (
-      <div className="profile-wrapper w-50">
+      <div className="profile-wrapper w-50" >
         <h2 className="heading">
           <IntlMessages id="widgets.personalDetails" />
         </h2>

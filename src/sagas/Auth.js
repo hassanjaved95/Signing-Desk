@@ -38,10 +38,12 @@ import axios from "axios";
 
 const updateUserProfileRequest = async user => {
   try {
+    debugger;
     await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
       headers: { Authorization: `Bearer ${user.token}` }
     });
-
+    
+    debugger;
     return user;
   } catch (error) {
     if (error.response) {
@@ -286,6 +288,7 @@ function* createUserWithEmailPassword({ payload }) {
 
 function* updateUserProfile({ payload }) {
   try {
+    debugger;
     const user = yield call(updateUserProfileRequest, payload);
     if (user.message) {
       yield put(updateProfileFailure(user.message));

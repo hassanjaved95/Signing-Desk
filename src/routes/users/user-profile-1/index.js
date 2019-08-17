@@ -32,7 +32,7 @@ import EditIcon from "@material-ui/icons/Edit";
 // For Tab Content
 function TabContainer(props) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography component="div" style={{ padding: 8 * 3, height:'300px', overflowY:'scroll' }}>
       {props.children}
     </Typography>
   );

@@ -116,7 +116,7 @@ const UserDocumentListItem = (props) => {
                                         {loadTagsInput(props)}
                                         <div className="ul">
                                             {
-                                                props.arrTags && props.arrTags.length > 1 &&
+                                                props.arrTags && props.arrTags.length > 0 &&
                                                 props.arrTags.map(loadTags.bind(this, props, props.document))}
                                         </div>
                                         {
