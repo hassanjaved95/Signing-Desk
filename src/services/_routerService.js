@@ -27,6 +27,7 @@ import {
   AsyncMailComponent,
   AsyncTodoComponent,
   AsyncDocumentsComponent,
+  AsyncDocumentViewerComponent,
   AsyncContactsComponent
 } from "Components/AsyncComponent/AsyncComponent";
 
@@ -126,6 +127,10 @@ export default [
   {
     path: "documents",
     component: AsyncDocumentsComponent
+  },
+  {
+    path: "document-viewer",
+    component: AsyncDocumentViewerComponent
   },
   {
     path: "contacts",
