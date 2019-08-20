@@ -10,7 +10,7 @@ import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
 import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments, searchDocuments } from "Actions";
-import { CreateNewFolder, Edit, Folder, Delete, FolderOpen } from '@material-ui/icons';
+import { CreateNewFolder, Edit, Folder, Delete, FolderOpen, ChevronRight } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
@@ -329,9 +329,9 @@ class UserDocumentsList extends Component {
 
     onClickRemoveTag = (document, folderid, e) => {
         var valueToSplice = e.target.attributes.tagval.nodeValue;
-       // $(e.target).css("display", "none");
-       // $(e.target.parentElement).css("display", "none");
-       $(e.target.parentElement.parentElement).hide();
+        // $(e.target).css("display", "none");
+        // $(e.target.parentElement).css("display", "none");
+        $(e.target.parentElement.parentElement).hide();
 
         document.tags = document.tags.replace(valueToSplice, '').replace(";;", ";");
         if (document.tags == ";") {
@@ -411,6 +411,22 @@ class UserDocumentsList extends Component {
         }
     }
 
+    updateBreadCrumbs = () => {
+        var html = ""; //"<div> Documents </div>";    
+        if (this.props.folderLevel.length > 0) {
+            html = "";
+            for (var i = 0; i < this.props.folderLevel.length; i++) {
+                html += "<div>" + this.props.folderLevel[i].name + "</div> <i class='material-icons'>chevron_right</i>";
+            }
+        }
+        if (this.props.selectedFolder != null) {
+            html += "<div class='selected'>" + this.props.selectedFolder.name + "</div>";
+        }
+        return (
+            <div className="bread-crumbs" dangerouslySetInnerHTML={{ __html: html }}></div>
+        )
+    }
+
     render() {
 
         const { documents, selectedFolder, folderLevel, loading } = this.props;
@@ -422,33 +438,38 @@ class UserDocumentsList extends Component {
             )
         }
         return (
-            <div className="documents-page">
-                {/* <DeleteConfirmationDialog
+            <React.Fragment>
+                <div>
+                    {this.updateBreadCrumbs()}
+                </div>
+
+                <div className="documents-page">
+                    {/* <DeleteConfirmationDialog
                     ref="deleteConfirmationDialog"
                     title="Are You Sure Want To Delete?"
                     message="Are You Sure Want To Delete Permanently This document."
                     onConfirm={() => this.onDeleteDocuments(doc)}
                 /> */}
-                {
-                    this.state.folderCreationDialog &&
-                    <SmallDialogTemplate
-                        title="New Folder"
-                        open={this.state.folderCreationDialog}
-                        onClose={this.onCloseDlg}
-                    >
-                        <NewFolder onSubmit={this.onSubmitCreateFolder} />
-                    </SmallDialogTemplate>
-                }
+                    {
+                        this.state.folderCreationDialog &&
+                        <SmallDialogTemplate
+                            title="New Folder"
+                            open={this.state.folderCreationDialog}
+                            onClose={this.onCloseDlg}
+                        >
+                            <NewFolder onSubmit={this.onSubmitCreateFolder} />
+                        </SmallDialogTemplate>
+                    }
 
-                {
-                    this.state.moveDocumentsToFolder &&
-                    <SmallDialogTemplate
-                        title="Move documents to folder"
-                        open={this.state.moveDocumentsToFolder}
-                        onClose={this.onCloseDlgMoveDocuments}
+                    {
+                        this.state.moveDocumentsToFolder &&
+                        <SmallDialogTemplate
+                            title="Move documents to folder"
+                            open={this.state.moveDocumentsToFolder}
+                            onClose={this.onCloseDlgMoveDocuments}
 
-                    >
-                        {/* <MoveToFolder
+                        >
+                            {/* <MoveToFolder
                             moveDocumentsListOpen={this.state.moveDocumentsListOpen}
                             documents={documents}
                             MoveFolderItems={this.MoveFolderItems}
@@ -456,106 +477,109 @@ class UserDocumentsList extends Component {
                             clickedMovedToFolderID={this.state.clickedMovedToFolderID}
                             
                         /> */}
-                        <FolderMenu data={documents}
-                            currentFolderID={selectedFolder.id}
-                            currentFolderName={selectedFolder.name}
-                            selectedDocuments={this.state.selectedDocuments}
-                            // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                            selectedDocumentsToMove={this.state.selectedDocumentsToMove}
-                            onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
-                        //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
-                        />
-                    </SmallDialogTemplate>
-                }
-                <div className="documents-folders">
-                    {
-                        //selectedFolder &&
-                        <ContentMenu
-                            onCreateNewFolder={this.onCreateNewFolder}
-                            oncloseList={this.onCloseList}
-                            inEditModeFolderList={this.state.inEditModeFolderList}
-                            onEditFolderList={this.onEditFolderList}
-                            selectedForlder={selectedFolder}
-                            onClickShowFolderDocuments={this.onClickShowFolderDocuments}
-                            onClickBack={this.onClickBackFolder}
-                            folderLevel={folderLevel.length}
-                            onEditFolderName={this.onEditFolderName}
-                            onDeleteFolder={this.onDeleteFolder}
-                        />
-                    }
-                </div>
-                <div className="documents-area">
-                    <div className="page-content">
-                        <div className="page-actions">
-                            <PageActions page="Documents"
-                                onMoveDocuments={this.onMoveDocumentsToFolder}
-                                onChangeSearchValue={this.onChangeSearchValue}
-                                onDuplicateDocuments={this.onDuplicateDocuments}
-                                onDeleteDocuments={this.onDeleteDocuments}
-                                search={this.state.search}
-                                selectedDocuments={this.state.selectedDocuments.length}
-                                onClickSearch={() => { this.setState({ search: true }) }}
-                                onSearchClose={() => { this.setState({ search: false }) }}
+                            <FolderMenu data={documents}
+                                currentFolderID={selectedFolder.id}
+                                currentFolderName={selectedFolder.name}
+                                selectedDocuments={this.state.selectedDocuments}
+                                // onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
+                                selectedDocumentsToMove={this.state.selectedDocumentsToMove}
+                                onSelectNewFolder={this.onSelectNewFolderToMoveDocuments.bind(this)}
+                            //selectedDocumentsToMove={this.state.selectedDocumentsToMove}
                             />
+                        </SmallDialogTemplate>
+                    }
+                    <div className="documents-folders">
+                        {
+                            //selectedFolder &&
+                            <ContentMenu
+                                onCreateNewFolder={this.onCreateNewFolder}
+                                oncloseList={this.onCloseList}
+                                inEditModeFolderList={this.state.inEditModeFolderList}
+                                onEditFolderList={this.onEditFolderList}
+                                selectedForlder={selectedFolder}
+                                onClickShowFolderDocuments={this.onClickShowFolderDocuments}
+                                onClickBack={this.onClickBackFolder}
+                                folderLevel={folderLevel.length}
+                                onEditFolderName={this.onEditFolderName}
+                                onDeleteFolder={this.onDeleteFolder}
+                            />
+                        }
+                    </div>
+                    <div className="documents-area">
+                        <div className="page-content">
+                            <div className="page-actions">
+                                <PageActions page="Documents"
+                                    onMoveDocuments={this.onMoveDocumentsToFolder}
+                                    onChangeSearchValue={this.onChangeSearchValue}
+                                    onDuplicateDocuments={this.onDuplicateDocuments}
+                                    onDeleteDocuments={this.onDeleteDocuments}
+                                    search={this.state.search}
+                                    selectedDocuments={this.state.selectedDocuments.length}
+                                    onClickSearch={() => { this.setState({ search: true }) }}
+                                    onSearchClose={() => { this.setState({ search: false }) }}
+                                />
 
-                        </div>
-                        <div className="content-area">
-                            <div className="content-head header-shadow head-container">
-                                <ul className="list-unstyled m-0">
-                                    <UserDocumentListItemHeader
-                                        onSelectAll={this.selectAllDocuments}
-                                        checked={this.state.allDocumentsAreSelected}
-                                    />
-                                </ul>
                             </div>
+                            <div className="content-area">
+                                <div className="content-head header-shadow head-container">
+                                    <ul className="list-unstyled m-0">
+                                        <UserDocumentListItemHeader
+                                            onSelectAll={this.selectAllDocuments}
+                                            checked={this.state.allDocumentsAreSelected}
+                                        />
+                                    </ul>
+                                </div>
 
-                            <div className="content-detail">
-                                <ul className="list-unstyled m-0">
-                                    {
-                                        selectedFolder && selectedFolder.documents ? (
-                                            selectedFolder.documents.map((doc, index) => (
-                                                <UserDocumentListItem
-                                                    key={getGuid()}
-                                                    document={doc}
-                                                    checked={this.getListItemCheckState(doc)}
-                                                    onClickDocumentItem={this.onClickDocumentItem.bind(this, doc)}
-                                                    onCheckSingleDocument={this.onCheckSingleDocument.bind(this, doc)}
-                                                    selectedDocuments={this.state.selectedDocuments.length}
-                                                    options={this.state.actions}
-                                                    onClickAction={this.handleRowAction}
-                                                    onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
-                                                    menuRelationKey={doc.id}
-                                                    clickedSearchTagID={this.state.clickedSearchTagKey}
-                                                    ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
-                                                    onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
-                                                    onCloseTagIcon={this.onCloseTagIcon.bind(this)}
-                                                    onTagsInputChange={this.handleTagInputChange.bind(this)}
-                                                    showAddTagButton={this.state.showTagAddButton}
-                                                    writtenTags={this.state.writtenTags}
-                                                    onTagInputClick={this.onTagInputClick.bind(this)}
-                                                    showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
-                                                    onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
-                                                    closeContextMenu={this.onCloseRowContextMenu.bind(this)}
-                                                    onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
-                                                    onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
-                                                    arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
-                                                    onDeleteDocument={this.onDeleteSingleDocument}
-                                                    onSingleMoveDocument={this.onMoveSingleDocument}
-                                                />
-                                            ))
-                                        ) : (
-                                                <div className="d-flex justify-content-center align-items-center py-50">
-                                                    <h4>No documents found</h4>
-                                                </div>
-                                            )
-                                    }
-                                </ul>
+                                <div className="content-detail">
+                                    <ul className="list-unstyled m-0">
+                                        {
+                                            selectedFolder && selectedFolder.documents ? (
+                                                selectedFolder.documents.map((doc, index) => (
+                                                    <UserDocumentListItem
+                                                        key={getGuid()}
+                                                        document={doc}
+                                                        checked={this.getListItemCheckState(doc)}
+                                                        onClickDocumentItem={this.onClickDocumentItem.bind(this, doc)}
+                                                        onCheckSingleDocument={this.onCheckSingleDocument.bind(this, doc)}
+                                                        selectedDocuments={this.state.selectedDocuments.length}
+                                                        options={this.state.actions}
+                                                        onClickAction={this.handleRowAction}
+                                                        onSelectAction={() => { console.log('onSelectAction called with args:', arguments) }}
+                                                        menuRelationKey={doc.id}
+                                                        clickedSearchTagID={this.state.clickedSearchTagKey}
+                                                        ShowSearchTags={this.state.clickedSearchTagKey == doc.id}
+                                                        onClickTagIcon={this.onClickTagIcon.bind(this, doc)}
+                                                        onCloseTagIcon={this.onCloseTagIcon.bind(this)}
+                                                        onTagsInputChange={this.handleTagInputChange.bind(this)}
+                                                        showAddTagButton={this.state.showTagAddButton}
+                                                        writtenTags={this.state.writtenTags}
+                                                        onTagInputClick={this.onTagInputClick.bind(this)}
+                                                        showRowContextMenu={this.state.clickedRowContextMenuKey == doc.id}
+                                                        onClickMoreVert={this.onClickMoreVert.bind(this, doc)}
+                                                        closeContextMenu={this.onCloseRowContextMenu.bind(this)}
+                                                        onAddTags={this.onClickAddTag.bind(this, doc, selectedFolder.id)}
+                                                        onRemoveTags={this.onClickRemoveTag.bind(this, doc, selectedFolder.id)}
+                                                        arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
+                                                        onDeleteDocument={this.onDeleteSingleDocument}
+                                                        onSingleMoveDocument={this.onMoveSingleDocument}
+                                                    />
+                                                ))
+                                            ) : (
+                                                    <div className="d-flex justify-content-center align-items-center py-50">
+                                                        <h4>No documents found</h4>
+                                                    </div>
+                                                )
+                                        }
+                                    </ul>
+                                </div>
+
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
+
+
         );
     }
 }

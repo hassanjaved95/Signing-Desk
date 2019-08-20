@@ -224,7 +224,7 @@ class Profile extends Component {
                 disabled={isSubmitting}
               />
               <br />
-              {loading && <LinearProgress />}
+              {/* {loading && <LinearProgress />} */}
               <Button
                 type="submit"
                 variant="contained"
@@ -327,7 +327,7 @@ class Profile extends Component {
                   )
                 }}
               />
-              {loading && <LinearProgress />}
+              {/* {loading && <LinearProgress />} */}
               <Button
                 type="submit"
                 color="primary"

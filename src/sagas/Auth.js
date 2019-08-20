@@ -35,16 +35,17 @@ import {
 
 import AppConfig from "Constants/AppConfig";
 import axios from "axios";
+import API from 'Api';
+
 
 const updateUserProfileRequest = async user => {
   try {
-    debugger;
-    await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    });
-    
-    debugger;
-    return user;
+    // await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
+    //   headers: { Authorization: `Bearer ${user.token}` }
+    // });
+
+    var response = await API.post('users/update-profile', user);
+    return response.user;
   } catch (error) {
     if (error.response) {
       return error.response.data;
@@ -288,7 +289,6 @@ function* createUserWithEmailPassword({ payload }) {
 
 function* updateUserProfile({ payload }) {
   try {
-    debugger;
     const user = yield call(updateUserProfileRequest, payload);
     if (user.message) {
       yield put(updateProfileFailure(user.message));

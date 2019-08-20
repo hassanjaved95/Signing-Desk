@@ -43,7 +43,6 @@ class Signature extends Component {
   };
 
   onSave = async () => {
-    debugger;
     this.setState({ saving: true });
 
     var signature = {
@@ -98,7 +97,7 @@ class Signature extends Component {
           />
         </div>
         <br />
-        {loading && <LinearProgress />}
+        {/* {loading && <LinearProgress />} */}
         <Button
           type="submit"
           variant="contained"
