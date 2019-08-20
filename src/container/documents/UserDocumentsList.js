@@ -40,7 +40,6 @@ class UserDocumentsList extends Component {
             folderListControl: true,
             folderCreationDialog: false,
             folderListPath: "",
-            folderList: ['Apple', 'Bananna', 'Orange'],
             inEditModeFolderList: false,
             moveDocumentsToFolder: false,
             moveDocumentsListOpen: true,
