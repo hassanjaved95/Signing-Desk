@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getViewingDocument } from "Actions";
 import { makeStyles } from '@material-ui/styles';
+import WidgetsIcon from '@material-ui/icons/Widgets';
+import PeopleIcon from '@material-ui/icons/People';
+
+import NavPanel from "Components/document-viewer/nav-panel";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 const useStyles = makeStyles({
@@ -16,7 +20,8 @@ const useStyles = makeStyles({
         width: '300px'
     },
     documentNavPanel: {
-        width: '76px'
+        width: '76px',
+        backgroundColor: '#F9F9F9'
     },
     documentViewer: {
         width: "calc(100% - 376px)",
@@ -24,7 +29,16 @@ const useStyles = makeStyles({
     }
 });
 
-
+const navPanelItems = [
+    {
+        Icon: <WidgetsIcon />,
+        Text: "Content"
+    },
+    {
+        Icon: <PeopleIcon />,
+        Text: "Recipients"
+    }
+];
 
 const DocumentViewerLayout = function (props) {
     console.log('DocumentViewerLayout props:', props);
@@ -33,13 +47,16 @@ const DocumentViewerLayout = function (props) {
     return (
         <div className={classes.documentViewerContainer}>
             <div className={classes.documentViewer}>
-
+                <h3>documentViewer</h3>
             </div>
             <div className={classes.documentActionPanel}>
-
+                <h3>documentActionPanel</h3>
             </div>
             <div className={classes.documentNavPanel}>
-
+                <NavPanel navPanelItems={navPanelItems}
+                    onNavPanelItemClick={props.onNavPanelItemClick}
+                    onClickSend={props.onClickSend}
+                />
             </div>
         </div>
     )
@@ -48,8 +65,18 @@ const DocumentViewerLayout = function (props) {
 class UserDocumentViewer extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+
+        }
     }
 
+    onNavPanelItemClick = (item) => {
+        console.log('clicked item:', item);
+    }
+
+    onClickSend = () => {
+        console.log('send clicked');
+    }
 
     componentDidMount() {
         // this.props.getViewingDocument();
@@ -66,7 +93,10 @@ class UserDocumentViewer extends Component {
         // }
 
         return (
-            <DocumentViewerLayout {...this.props} />
+            <DocumentViewerLayout {...this.props}
+                onNavPanelItemClick={this.onNavPanelItemClick}
+                onClickSend={this.onClickSend}
+            />
         )
     }
 }
