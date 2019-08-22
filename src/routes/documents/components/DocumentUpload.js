@@ -180,9 +180,10 @@ class DocumentUpload extends React.Component {
 
                                     <DialogContent width={'900px'} height={'550px'}>
                                         <div className="dropzoneForm">
-
+                                    
                                             <div className="flex-row">
                                                 <div className="flex-split-2-left" style={{ width: '30%', marginRight: '10%' }}>
+                                                   
                                                     <TextField
                                                         label="Document Name"
                                                         name="FileName"

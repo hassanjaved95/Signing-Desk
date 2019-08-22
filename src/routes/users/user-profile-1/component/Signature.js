@@ -44,12 +44,26 @@ class Signature extends Component {
 
   onSave = async () => {
     this.setState({ saving: true });
-    let newUser = {
+
+    var signature = {
       ...this.props.user.profile.signature,
       signatureImage: this.state.signatureImage
-    };
+    }
 
-    this.props.updateProfile(newUser);
+    let profile = {
+      ...this.props.user.profile,
+      signature
+    }
+
+    // let newUser = {
+    //   ...this.props.user.profile.info,
+    //   ...this.props.user.profile.user,
+    //   ...this.props.user.profile.signature,
+    //   signatureImage: this.state.signatureImage,
+    //   token: this.props.user.profile.user.token
+    // };
+
+    this.props.updateProfile(profile);
     this.setState({ saving: false, dirty: false });
   };
 
@@ -79,11 +93,11 @@ class Signature extends Component {
             src={this.state.signatureImage}
             alt="signature appearance"
             style={{ height: "100%", width: "100%", objectFit: "contain" }}
-            // className="mx-auto d-block"
+          // className="mx-auto d-block"
           />
         </div>
         <br />
-        {loading && <LinearProgress />}
+        {/* {loading && <LinearProgress />} */}
         <Button
           type="submit"
           variant="contained"

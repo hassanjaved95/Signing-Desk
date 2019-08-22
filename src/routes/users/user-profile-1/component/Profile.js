@@ -154,7 +154,7 @@ class Profile extends Component {
 
     const { loading } = this.props;
     return (
-      <div className="profile-wrapper w-50">
+      <div className="profile-wrapper w-50" >
         <h2 className="heading">
           <IntlMessages id="widgets.personalDetails" />
         </h2>
@@ -224,7 +224,7 @@ class Profile extends Component {
                 disabled={isSubmitting}
               />
               <br />
-              {loading && <LinearProgress />}
+              {/* {loading && <LinearProgress />} */}
               <Button
                 type="submit"
                 variant="contained"
@@ -327,7 +327,7 @@ class Profile extends Component {
                   )
                 }}
               />
-              {loading && <LinearProgress />}
+              {/* {loading && <LinearProgress />} */}
               <Button
                 type="submit"
                 color="primary"

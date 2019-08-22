@@ -35,14 +35,17 @@ import {
 
 import AppConfig from "Constants/AppConfig";
 import axios from "axios";
+import API from 'Api';
+
 
 const updateUserProfileRequest = async user => {
   try {
-    await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    });
+    // await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
+    //   headers: { Authorization: `Bearer ${user.token}` }
+    // });
 
-    return user;
+    var response = await API.post('users/update-profile', user);
+    return response.user;
   } catch (error) {
     if (error.response) {
       return error.response.data;

@@ -58,7 +58,6 @@ class Signin extends Component {
 
   setSlickSliderHeight = () => {
     var loginPageHeight = $('.row.row-eq-height .col-sm-5.col-md-5.col-lg-4').height();
-    console.log('loginPageHeight (login page):', loginPageHeight);
     $('.slick-track').height(loginPageHeight);
   }
 

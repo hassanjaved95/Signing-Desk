@@ -30,7 +30,6 @@ export default class SessionSlider extends Component {
   setSlickSliderHeight = () => {
 
     var loginPageHeight = $('.row.row-eq-height').height();
-    console.log('loginPageHeight:', loginPageHeight);
     $('.slick-track').height(loginPageHeight);
   }
   // session users data

@@ -7,14 +7,22 @@ import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 
 import { updateProfile } from "Actions";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
 
 class UserBlock extends Component {
+  state = {
+    avatar: this.props.user.profile.info.avatar,
+    saving: false,
+    dirty: false,
+    loading: false,
+  };
   constructor(props) {
     super(props);
     this.fileUpload = React.createRef();
   }
 
-  handleAvatarChange = event => {
+  handleAvatarChange = (event) => {
     let files;
     if (event.dataTransfer) {
       files = event.dataTransfer.files;
@@ -23,9 +31,20 @@ class UserBlock extends Component {
     }
     const reader = new FileReader();
     reader.onload = () => {
-      const newUser = { ...this.props.user.profile.info };
-      newUser.avatar = reader.result;
-      this.props.updateProfile(newUser);
+      this.setState({
+        dirty: true,
+        avatar: reader.result
+      });
+      const info = {
+        ...this.props.user.profile.info,
+        avatar: reader.result
+      };
+      
+      const profile = {
+        ...this.props.user.profile,
+       info
+      }
+      this.props.updateProfile(profile);
     };
     reader.readAsDataURL(files[0]);
   };
@@ -37,6 +56,8 @@ class UserBlock extends Component {
   render() {
     const { classes } = this.props;
     const { user } = this.props;
+    const { loading } = this.props;
+
     return (
       <div className="profile-top mb-20">
         <img
@@ -56,13 +77,17 @@ class UserBlock extends Component {
               ref={this.fileUpload}
               onChange={this.handleAvatarChange}
             />
+            <div onClick={this.handleAvatarClick}>
             <Avatar
               alt={`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}
-              src={this.props.user.profile.info.avatar}
+              src={this.state.avatar}
               className="mr-30 bordered"
               style={{ width: "140px", height: "140px", cursor: "pointer" }}
-              onClick={this.handleAvatarClick}
+              
             />
+            
+            </div>
+            
             <div className="media-body pt-25">
               <div className="mb-20">
                 <h2>{`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}</h2>
@@ -71,6 +96,7 @@ class UserBlock extends Component {
             </div>
           </div>
         </div>
+        {loading && <LinearProgress />}
       </div>
     );
   }
