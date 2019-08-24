@@ -7,6 +7,7 @@ import WidgetsIcon from '@material-ui/icons/Widgets';
 import PeopleIcon from '@material-ui/icons/People';
 
 import NavPanel from "Components/document-viewer/nav-panel";
+import PDFViewer from "Container/documents/pdf-viewer";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
 const useStyles = makeStyles({
@@ -47,7 +48,7 @@ const DocumentViewerLayout = function (props) {
     return (
         <div className={classes.documentViewerContainer}>
             <div className={classes.documentViewer}>
-                <h3>documentViewer</h3>
+                <PDFViewer />
             </div>
             <div className={classes.documentActionPanel}>
                 <h3>documentActionPanel</h3>
@@ -84,8 +85,8 @@ class UserDocumentViewer extends Component {
 
     render() {
 
-        const { viewingDocument, loading } = this.props;
-        console.log('viewingDocument:', viewingDocument);
+        const { selectedDocument, loading } = this.props;
+        console.log('viewingDocument:', selectedDocument);
         // if (loading) {
         //     return (
         //         <RctSectionLoader />
@@ -101,11 +102,10 @@ class UserDocumentViewer extends Component {
     }
 }
 
-const mapStateToProps = ({ documentViewer }) => {
-    return documentViewer;
+const mapStateToProps = ({ documents }) => {
+    const { selectedDocument } = documents;
+    return {selectedDocument};
 }
 
 export default withRouter(
-    connect(mapStateToProps, {
-        getViewingDocument
-    })(UserDocumentViewer));
+    connect(mapStateToProps)(UserDocumentViewer));

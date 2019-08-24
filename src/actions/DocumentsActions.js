@@ -23,7 +23,8 @@ import {
   DELETE_FOLDER_SUCCESS,
   DELETE_FOLDER_FAILURE,
   ADD_NEW_FOLDER,
-  ADD_NEW_FOLDER_SUCCESS
+  ADD_NEW_FOLDER_SUCCESS,
+  SET_SELECTED_DOCUMENT
 } from "./types";
 
 export const getDocuments = () => ({
@@ -50,7 +51,7 @@ export const setSelectedFolder = (payload) => ({
   payload
 });
 
-export const createDocument = (payload,handleClose) => ({
+export const createDocument = (payload, handleClose) => ({
   type: CREATE_DOCUMENT,
   payload, handleClose
 });
@@ -64,9 +65,9 @@ export const createDocumentFailure = error => ({
   payload: error
 });
 
-export const updateDocument = (payload,onCloseDlg,movedDocument,nextFolderID) => ({
+export const updateDocument = (payload, onCloseDlg, movedDocument, nextFolderID) => ({
   type: UPDATE_DOCUMENT,
-  payload, onCloseDlg,movedDocument,nextFolderID
+  payload, onCloseDlg, movedDocument, nextFolderID
 });
 export const updateDocumentSuccess = (payload) => ({
   type: UPDATE_DOCUMENT_SUCCESS,
@@ -141,4 +142,12 @@ export const addNewFolder = (payload) => ({
 export const addNewFolderSuccess = (payload) => ({
   type: ADD_NEW_FOLDER_SUCCESS,
   payload
+});
+
+export const setSelectedDocument = (document, callback) => ({
+  type: SET_SELECTED_DOCUMENT,
+  payload: {
+    document,
+    callback
+  }
 });

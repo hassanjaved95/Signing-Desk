@@ -80,7 +80,7 @@ const UserDocumentListItem = (props) => {
 
 
     return (
-        <li>
+        <li onClick={props.onClickDocumentItem}>
             <div className="flex-row"></div>
             <table className="row-container">
                 <tbody>
