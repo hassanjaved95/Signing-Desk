@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 
-/**
- * Page.js
- * Component rendering page of PDF
- **/
 
 class Page extends Component {
     state = {
@@ -70,9 +66,10 @@ class Page extends Component {
 
     render() {
         let { width, height, status } = this.state;
+        let { classes } = this.props;
 
         return (
-            <div className={`pdf-page ${status}`} style={{ width, height }}>
+            <div className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height }}>
                 <canvas ref={this.setCanvasRef} />
             </div>
         );

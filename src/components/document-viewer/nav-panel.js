@@ -12,10 +12,7 @@ const useStyles = makeStyles({
     navPanelItem: {
         height: "66px",
         cursor: "pointer",
-        margin: 0,
-        padding: 0,
-        textAlign: "center",
-        alignContent: "center",
+        fontSize: "12px",
         "&:hover": {
             backgroundColor: '#F1F1F1'
         }
@@ -29,7 +26,9 @@ const useStyles = makeStyles({
         flexDirection: "column",
         textAlign: "center",
         alignContent: "center",
-        opacity: 0.9,
+        opacity: "0.9",
+        margin: "5px",
+        paddingTop: "5px",
         "&:hover": {
             backgroundColor: "#007bff", 
             opacity: 1,

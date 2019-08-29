@@ -446,7 +446,7 @@ class UserDocumentsList extends Component {
             )
         }
         return (
-            <React.Fragment>
+            <div className="page-content">
                 <div>
                     {this.updateBreadCrumbs()}
                 </div>
@@ -585,7 +585,7 @@ class UserDocumentsList extends Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
 
 
         );

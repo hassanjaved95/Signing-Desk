@@ -1,0 +1,65 @@
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+    actionPanelContainer: {
+        display: "flex",
+        flexDirection: "column"
+    },
+    actionPanelHeader: {
+        height: "50px",
+        display: "flex",
+        borderBottom: "1px solid #E5E5E5",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "center"
+    },
+    actionPanelButtonContainer: {
+        padding: "0 20px",
+        margin: "20px 0",
+    },
+    actionPanelButton: {
+        display: "inline-block",
+        position: "relative",
+        margin: "0 0 6px 6px",
+        width: "80px",
+        height: "64px",
+        padding: 0,
+        cursor: "move",
+        border: "1px solid #e5e5e5",
+        background: "#f4f4f4",
+        color: "#000",
+        fontSize: "12px",
+        fontWeight: "400",
+        lineHeight: "1.42857143",
+        textAlign: "center",
+        verticalAlign: "middle",
+        borderRadius: "3px",
+        whiteSpace: "nowrap",
+    },
+    actionPanelEmptyBtn: {
+        borderStyle: "dashed",
+        borderColor: "#000",
+        background: "#fff"
+    },
+    btnContentContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        alignContent: "center",
+        height: "100%",
+        width: "100%",
+        padding: "10px 0"
+    },
+    btnContent: {
+        
+    },
+    btnText: {
+        fontSize: "10px",
+        color: "#8d8d8d"
+    },
+    btnIcon: {
+
+    }
+});
+
+export default useStyles;

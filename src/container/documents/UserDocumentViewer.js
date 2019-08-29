@@ -5,8 +5,10 @@ import { getViewingDocument } from "Actions";
 import { makeStyles } from '@material-ui/styles';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 import PeopleIcon from '@material-ui/icons/People';
+import BrushIcon from '@material-ui/icons/Brush';
 
 import NavPanel from "Components/document-viewer/nav-panel";
+import ActionPanel from "Components/document-viewer/action-panel";
 import PDFViewer from "Container/documents/pdf-viewer";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
@@ -32,13 +34,27 @@ const useStyles = makeStyles({
 
 const navPanelItems = [
     {
+        Id: 1,
         Icon: <WidgetsIcon />,
-        Text: "Content"
+        Text: "Fields"
     },
     {
+        Id: 2,
         Icon: <PeopleIcon />,
         Text: "Recipients"
     }
+];
+
+const fieldActions = [
+    { Id: 1, Icon: <BrushIcon />, Text: "SIGNATURE" },
+    { Id: 2, Icon: '', Text: '' },
+    { Id: 3, Icon: '', Text: '' },
+    { Id: 4, Icon: '', Text: '' },
+    { Id: 5, Icon: '', Text: '' },
+    { Id: 6, Icon: '', Text: '' },
+    { Id: 7, Icon: '', Text: '' },
+    { Id: 8, Icon: '', Text: '' },
+    { Id: 9, Icon: '', Text: '' },
 ];
 
 const DocumentViewerLayout = function (props) {
@@ -51,7 +67,7 @@ const DocumentViewerLayout = function (props) {
                 <PDFViewer />
             </div>
             <div className={classes.documentActionPanel}>
-                <h3>documentActionPanel</h3>
+                <ActionPanel actionType={props.actionType} fieldActionItems={fieldActions} />
             </div>
             <div className={classes.documentNavPanel}>
                 <NavPanel navPanelItems={navPanelItems}
@@ -60,19 +76,22 @@ const DocumentViewerLayout = function (props) {
                 />
             </div>
         </div>
-    )
+    );
 }
 
 class UserDocumentViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            selectedNavPanelItem: 'Fields'
         }
     }
 
     onNavPanelItemClick = (item) => {
         console.log('clicked item:', item);
+        this.setState({
+            selectedNavPanelItem: item.Text
+        });
     }
 
     onClickSend = () => {
@@ -95,6 +114,7 @@ class UserDocumentViewer extends Component {
 
         return (
             <DocumentViewerLayout {...this.props}
+                actionType={this.state.selectedNavPanelItem}
                 onNavPanelItemClick={this.onNavPanelItemClick}
                 onClickSend={this.onClickSend}
             />
@@ -104,7 +124,7 @@ class UserDocumentViewer extends Component {
 
 const mapStateToProps = ({ documents }) => {
     const { selectedDocument } = documents;
-    return {selectedDocument};
+    return { selectedDocument };
 }
 
 export default withRouter(
