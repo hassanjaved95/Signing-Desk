@@ -43,7 +43,6 @@ const updateUserProfileRequest = async user => {
     // await axios.post(`${AppConfig.apiBaseUrl}/users/update-profile`, user, {
     //   headers: { Authorization: `Bearer ${user.token}` }
     // });
-
     var response = await API.post('users/update-profile', user);
     return response.user;
   } catch (error) {
@@ -290,12 +289,15 @@ function* createUserWithEmailPassword({ payload }) {
 function* updateUserProfile({ payload }) {
   try {
     const user = yield call(updateUserProfileRequest, payload);
-    if (user.message) {
-      yield put(updateProfileFailure(user.message));
-    } else {
-      localStorage.setItem("user", JSON.stringify(user));
-      yield put(updateProfileSuccess(user));
-    }
+      localStorage.setItem("user", JSON.stringify({profile:payload}));
+      yield put(updateProfileSuccess(payload));
+
+    // if (user.message) {
+    //   yield put(updateProfileFailure(user.message));
+    // } else {
+    //   localStorage.setItem("user", JSON.stringify(user));
+    //   yield put(updateProfileSuccess(user));
+    // }
   } catch (error) {
     yield put(updateProfileFailure(error));
   }

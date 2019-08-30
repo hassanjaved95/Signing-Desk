@@ -37,12 +37,16 @@ class UserBlock extends Component {
       });
       const info = {
         ...this.props.user.profile.info,
-        avatar: reader.result
       };
-      
+      info.avatar = reader.result;
+      var signature = {
+        ...this.props.user.profile.signature
+        }
+
       const profile = {
         ...this.props.user.profile,
-       info
+        signature,
+        info
       }
       this.props.updateProfile(profile);
     };
@@ -59,13 +63,14 @@ class UserBlock extends Component {
     const { loading } = this.props;
 
     return (
-      <div className="profile-top mb-20">
+      <React.Fragment>
+        <div className="profile-top" style={{ height: '175px', marginBottom:'0px !important' }} >
         <img
           src={require("Assets/img/profile-bg.jpg")}
           alt="profile banner"
           className="img-fluid"
           width="1920"
-          height="345"
+
         />
         <div className="profile-content">
           <div className="media">
@@ -78,16 +83,16 @@ class UserBlock extends Component {
               onChange={this.handleAvatarChange}
             />
             <div onClick={this.handleAvatarClick}>
-            <Avatar
-              alt={`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}
-              src={this.state.avatar}
-              className="mr-30 bordered"
-              style={{ width: "140px", height: "140px", cursor: "pointer" }}
-              
-            />
-            
+              <Avatar
+                alt={`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}
+                src={this.state.avatar}
+                className="mr-30 bordered"
+                style={{ width: "140px", height: "140px", cursor: "pointer" }}
+
+              />
+
             </div>
-            
+
             <div className="media-body pt-25">
               <div className="mb-20">
                 <h2>{`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}</h2>
@@ -96,8 +101,14 @@ class UserBlock extends Component {
             </div>
           </div>
         </div>
+
+      </div>
+      <div>
         {loading && <LinearProgress />}
       </div>
+      </React.Fragment>
+
+      
     );
   }
 }

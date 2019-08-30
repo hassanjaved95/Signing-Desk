@@ -32,7 +32,7 @@ export default (state = INIT_STATE, action) => {
 
     case UPDATE_PROFILE_SUCCESS:
       NotificationManager.success("User profile updated successfully");
-      return { ...state, loading: false, user: state.user };
+      return { ...state, loading: false, user:{profile: action.payload}  };
 
     case UPDATE_PROFILE_FAILURE:
       NotificationManager.error(action.payload);

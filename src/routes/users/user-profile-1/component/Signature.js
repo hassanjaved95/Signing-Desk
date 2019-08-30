@@ -44,14 +44,18 @@ class Signature extends Component {
 
   onSave = async () => {
     this.setState({ saving: true });
-
+  
+    var info = {
+      ...this.props.user.profile.info,
+    };
     var signature = {
       ...this.props.user.profile.signature,
-      signatureImage: this.state.signatureImage
     }
+    signature.signatureImage= this.state.signatureImage;
 
     let profile = {
       ...this.props.user.profile,
+      info,
       signature
     }
 
