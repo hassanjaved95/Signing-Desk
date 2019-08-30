@@ -23,7 +23,8 @@ import {
   ADD_NEW_FOLDER,
   ADD_NEW_FOLDER_SUCCESS,
   DELETE_DOCUMENTS,
-  DELETE_DOCUMENTS_SUCCESS
+  DELETE_DOCUMENTS_SUCCESS,
+  SET_SELECTED_DOCUMENT
 } from "Actions/types";
 
 
@@ -33,7 +34,7 @@ const INITIAL_STATE = {
   selectedFolder: null,
   folderLevel: [],
   selectedFolderDocs: null,
-  viewingDocument: null
+  selectedDocument: null
 };
 
 function setSelectedFolder(state, folderId, levelUp) {
@@ -118,7 +119,7 @@ export default (state = INITIAL_STATE, action) => {
       newDocument.status = 0;
       return {
         ...state,
-        selectedFolder: {...state.selectedFolder, documents: [...state.selectedFolder.documents, newDocument]},
+        selectedFolder: { ...state.selectedFolder, documents: [...state.selectedFolder.documents, newDocument] },
         loading: false
       };
     case GET_DOCUMENTS:
@@ -290,6 +291,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state, loading: false,
         documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.name)
+      }
+    }
+    case SET_SELECTED_DOCUMENT: {
+      return {
+        ...state,
+        selectedDocument: action.payload.document
       }
     }
     default:

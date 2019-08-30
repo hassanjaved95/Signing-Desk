@@ -9,7 +9,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UserDocumentListItem from "Components/ListItem/UserDocumentListItem";
 import UserDocumentListItemHeader from "Components/ListItem/UserDocumentListItemHeader";
 import IntlMessages from "Util/IntlMessages";
-import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments, searchDocuments } from "Actions";
+import { getDocuments, setSelectedFolder, updateDocument, editFolderName, deleteFolder, moveDocuments, addNewFolder, deleteDocuments, searchDocuments, setSelectedDocument } from "Actions";
 import { CreateNewFolder, Edit, Folder, Delete, FolderOpen, ChevronRight } from '@material-ui/icons';
 import ContentMenu from 'Components/RctCRMLayout/ContentMenu';
 import $ from 'jquery';
@@ -101,7 +101,16 @@ class UserDocumentsList extends Component {
 
 
     onClickDocumentItem = (document, e) => {
-        console.log('Document Row Clicked');
+        console.log('Document:', document);
+        console.log('e:', e);
+        this.props.setSelectedDocument(document);
+        // this.props.history.push("/app/document-viewer", this.props);
+        this.props.history.push({
+            pathname: '/app/document-viewer',
+            state: { state: this.state }
+        });
+
+        console.log('props:', this.props);
     }
 
     onCheckSingleDocument = (document, event, checked) => {
@@ -437,7 +446,7 @@ class UserDocumentsList extends Component {
             )
         }
         return (
-            <React.Fragment>
+            <div className="page-content">
                 <div>
                     {this.updateBreadCrumbs()}
                 </div>
@@ -576,7 +585,7 @@ class UserDocumentsList extends Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
 
 
         );
@@ -585,7 +594,6 @@ class UserDocumentsList extends Component {
 
 // map state to props
 const mapStateToProps = ({ documents }) => {
-    console.log('documents store:', documents);
     return documents;
 };
 
@@ -600,7 +608,8 @@ export default withRouter(
             moveDocuments,
             addNewFolder,
             deleteDocuments,
-            searchDocuments
+            searchDocuments,
+            setSelectedDocument
         }
     )(UserDocumentsList)
 );
