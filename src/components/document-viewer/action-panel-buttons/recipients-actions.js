@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap
 import classnames from 'classnames';
 import useStyles from "./action-button-css";
 import Recipients from './recipients';
+import SigningOrder from "./sigining-order";
 
 const companies = [
     { id: 'CompanyA', value: 'CompanyA', label: "CompanyA" },
@@ -24,7 +25,7 @@ export default class RecipientActions extends React.Component {
         this.state = {
             activeTab: '1',
             selectedUsers: [],
-            selectedCompany: '',
+            selectedCompany: {},
             editingContact: ''
         };
     }
@@ -56,6 +57,11 @@ export default class RecipientActions extends React.Component {
         this.setState({
             editingContact: user
         })
+    }
+    clearEditingContact = () => {
+        this.setState({
+            editingContact: ''
+        });
     }
 
     toggle(tab) {
@@ -105,6 +111,7 @@ export default class RecipientActions extends React.Component {
                                     selectedUsers={this.state.selectedUsers}
                                     selectedCompany={this.state.selectedCompany}
                                     deleteEditingContact={this.deleteEditingContact}
+                                    clearEditing={this.clearEditingContact}
                                     editingContact={this.state.editingContact}
                                     onClickRecipient={this.onClickRecipient}
                                     companies={companies} />
@@ -114,7 +121,7 @@ export default class RecipientActions extends React.Component {
                     <TabPane tabId="2">
                         <Row>
                             <Col sm="12">
-                                <h4>Tab 2 Contents</h4>
+                                <SigningOrder selectedUsers={this.state.selectedUsers} onClickRecipient={() => {}}/>
                             </Col>
                         </Row>
                     </TabPane>

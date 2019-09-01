@@ -25,10 +25,14 @@ const useStyles = makeStyles({
     },
     userDetail: {
         padding: "20px 0",
-        borderBottom: "1px solid #E5E5E5"
+        borderBottom: "1px solid #E5E5E5",
+        "& li": {
+            padding: "0"
+        }
     },
     deleteBtn: {
         outline: "1px solid #d9534f",
+        marginTop: "10px",
         color: "#d9534f",
         fontSize: "12px",
         height: "31px",
@@ -50,14 +54,14 @@ const EditingRecipient = (props) => {
         <div className={container}>
 
             <div className={header}>
-                <div className={icon}> <ArrowBack /></div>
+                <div className={icon}> <ArrowBack onClick={props.clearEditing} /></div>
                 <div className={text}>
                     <div> Recipient details </div>
                 </div>
             </div>
             <div className={userDetail}>
                 <UserListItem user={props.editingContact} onClickRecipient={() => console.log('send edit user request from this point')}>
-                    <Edit onClick={() => console.log('edit clicked')} />
+                    <Edit style={{ fontSize: "20px" }} />
                 </UserListItem>
             </div>
             <div className={deleteBtn}>

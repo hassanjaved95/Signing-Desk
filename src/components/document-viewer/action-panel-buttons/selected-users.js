@@ -5,8 +5,6 @@ import UserListItem from "./user-list-item";
 
 
 const SelectedUsers = (props) => {
-
-
     return (
         <ul>
             {

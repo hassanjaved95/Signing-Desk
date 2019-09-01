@@ -23,7 +23,7 @@ const Recipients = (props) => {
             {!props.editingContact &&
                 <React.Fragment>
                     <div style={{ fontSize: "12px" }}>COMPANY<span style={{ position: "absolute", fontSize: "10px", color: "red" }}>(*)</span></div>
-                    <Select options={props.companies} styles={customStyles} onChange={(obj) => { props.onSelectCompany(obj.value) }} />
+                    <Select options={props.companies} value={props.selectedCompany} styles={customStyles} onChange={(obj) => { props.onSelectCompany(obj) }} />
                     <br />
                     {props.selectedCompany && <DocumentViewerUsers users={props.users} onSelectUser={props.onSelectUser} />}
                     <br />
@@ -31,7 +31,7 @@ const Recipients = (props) => {
                 </React.Fragment>
             }
 
-            {props.editingContact && <EditingRecipient editingContact={props.editingContact} />}
+            {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} />}
         </div>
     );
 }
