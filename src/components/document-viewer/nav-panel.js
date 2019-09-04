@@ -17,8 +17,11 @@ const useStyles = makeStyles({
             backgroundColor: '#F1F1F1'
         }
     },
+    selectedPanelItem: {
+        backgroundColor: '#E2E2E2'
+    },
     sendBtn: {
-        backgroundColor: "#007bff", 
+        backgroundColor: "#5D92F4",
         color: "#ffffff",
         height: "52px",
         borderRadius: "3px",
@@ -30,7 +33,7 @@ const useStyles = makeStyles({
         margin: "5px",
         paddingTop: "5px",
         "&:hover": {
-            backgroundColor: "#007bff", 
+            backgroundColor: "#5D92F4",
             opacity: 1,
         }
     },
@@ -49,8 +52,9 @@ const NavPanel = (props) => {
         <div className={classes.navPanelContainer}>
             {
                 props.navPanelItems.map(item => {
+                    const selected = item.Text === props.actionType ? classes.selectedPanelItem : '';
                     return (
-                        <div key={getGuid()} className={classes.navPanelItem} onClick={props.onNavPanelItemClick.bind(null, item)}>
+                        <div key={getGuid()} className={`${classes.navPanelItem} ${selected}`} onClick={props.onNavPanelItemClick.bind(null, item)}>
                             <NavPanelItem item={item} />
                         </div>
                     )

@@ -20,7 +20,8 @@ const useStyles = makeStyles({
         flexDirection: 'row'
     },
     documentActionPanel: {
-        width: '300px'
+        width: '300px',
+        overflowY: "auto"
     },
     documentNavPanel: {
         width: '76px',
@@ -73,6 +74,7 @@ const DocumentViewerLayout = function (props) {
                 <NavPanel navPanelItems={navPanelItems}
                     onNavPanelItemClick={props.onNavPanelItemClick}
                     onClickSend={props.onClickSend}
+                    actionType={props.actionType}
                 />
             </div>
         </div>

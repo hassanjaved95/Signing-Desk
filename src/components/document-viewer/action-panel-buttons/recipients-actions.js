@@ -14,7 +14,10 @@ const companies = [
 const users = [
     { id: 'User1', value: "User1", label: "User1", firstName: 'User', lastName: "1", email: "user1@gmail.com" },
     { id: 'User2', value: "User2", label: "User2", firstName: 'User', lastName: "2", email: "user2@gmail.com" },
-    { id: 'User3', value: "User3", label: "User3", firstName: 'User', lastName: "3", email: "user3@gmail.com" }
+    { id: 'User3', value: "User3", label: "User3", firstName: 'User', lastName: "3", email: "user3@gmail.com" },
+    { id: 'User4', value: "User4", label: "User4", firstName: 'User', lastName: "4", email: "user4@gmail.com" },
+    { id: 'User5', value: "User5", label: "User5", firstName: 'User', lastName: "5", email: "user5@gmail.com" },
+    { id: 'User6', value: "User6", label: "User6", firstName: 'User', lastName: "6", email: "user6@gmail.com" }
 ];
 
 export default class RecipientActions extends React.Component {
