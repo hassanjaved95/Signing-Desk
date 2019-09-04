@@ -7,9 +7,10 @@ import Page from './page';
 
 const useStyles = makeStyles({
     pdfPage: {
-        margin: "0 auto 2px",
+        margin: "0 auto",
         maxWidth: "800px",
-        position: "relative"
+        position: "relative",
+        marginTop: 10
     },
     pdfContainer: {
         height: "calc(100vh - 65px)",

@@ -118,11 +118,13 @@ class Page extends Component {
             <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height }}>
                 <canvas ref={this.setCanvasRef} />
                 {
-                    docSigns.map((sign, index) =>
-                        <div key={`${sign.pageX}-${sign.pageY}-${index}`} className={`${classes.signature} signaturediv`} style={{ top: sign.pageY, left: sign.pageX }}>
-                            <div> <Brush /> </div> <div> SIGNATURE </div>
-                        </div>
-                    )
+                    docSigns
+                        .filter(doc => doc.pageId === pageId)
+                        .map((sign, index) =>
+                            <div key={`${sign.pageX}-${sign.pageY}-${index}`} className={`${classes.signature} signaturediv`} style={{ top: sign.pageY, left: sign.pageX }}>
+                                <div> <Brush /> </div> <div> SIGNATURE </div>
+                            </div>
+                        )
                 }
             </div>
         );
