@@ -62,17 +62,34 @@ function isBefore(el1, el2) {
     } else return false;
 }
 
-function dragOver(e) {
-    console.log('dragOver:', e);
-    if (isBefore(_el, e.target))
-        e.target.parentNode.insertBefore(_el, e.target);
-    else
-        e.target.parentNode.insertBefore(_el, e.target.nextSibling);
+function dragDrop(e) {
+
 }
 
-function dragStart(user, e) {
+function dragOver(callback, e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+
+    
+    if (isBefore(_el, e.target)) {
+        e.target.parentNode.insertBefore(_el, e.target);
+    } else {
+        try {
+            console.log('e.target.nextSibling:', e.target.nextSibling);
+            e.target.parentNode.insertBefore(_el, e.target.nextSibling);
+        } catch (error) { }
+    }
+
+    if (typeof callback === "function") {
+        callback();
+    }
+
+
+}
+
+function dragStart(e) {
+    console.log('dragStart target:', e.target);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", user.id);
     _el = e.target;
 }
 
@@ -88,12 +105,13 @@ const UserListItem = (props) => {
         <li key={user.id}
             className={liStyles}
             onClick={props.onClickRecipient.bind(null, user)}
-            onDragOver={dragOver}
-            onDragStart={dragStart.bind(null, user)}
+            onDragOver={dragOver.bind(this, props.reorder)}
+            onDragStart={dragStart}
             onDragEnd={dragEnd}
+            onDrop={dragDrop}
             draggable={props.dragdropEnabled}>
             <div className={rowContainer}>
-                {props.dragdropEnabled && <div className={order}> {props.index} </div>}
+                {/* {props.dragdropEnabled && <div className={order}> {props.index} </div>} */}
                 <div className={avatar} style={{ background: getRandomColor(user.email) }}>
                     {getNameInitials(user.firstName + ' ' + user.lastName)}
                 </div>

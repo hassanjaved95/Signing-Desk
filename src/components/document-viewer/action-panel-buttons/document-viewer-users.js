@@ -12,7 +12,10 @@ const DocumentViewerUsers = (props) => {
         <React.Fragment>
             <div className={rowContainer}>
                 <div className={`${half} ${flexLeft}`} style={{ fontSize: "12px" }}>USERS</div>
-                <div className={`${half} ${flexRight}`}><AddBox style={{ color: "#5D92F4", fontSize: "17px", cursor: "pointer" }} /></div>
+                {
+                    !props.addContact &&
+                    <div className={`${half} ${flexRight}`}><AddBox style={{ color: "#5D92F4", fontSize: "17px", cursor: "pointer" }} onClick={props.setAddContact} /></div>
+                }
             </div>
             <div style={{ fontSize: "13px" }}>
                 <Select options={props.users} value={''} placeholder="Name or Email" onChange={(user) => props.onSelectUser(user)} />

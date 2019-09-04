@@ -32,7 +32,8 @@ class PDFViewer extends Component {
         super(props);
         this.state = {
             pdf: null,
-            scale: 1
+            scale: 1,
+            signs: []
         };
     }
 
@@ -46,6 +47,13 @@ class PDFViewer extends Component {
         });
     }
 
+    onDropSign = (signature) => {
+        var newState = [...this.state.signs, signature];
+        this.setState({
+            signs: newState
+        })
+    }
+
     render() {
         const { pdf, scale } = this.state;
         return (
@@ -53,6 +61,8 @@ class PDFViewer extends Component {
                 <Viewer
                     pdf={pdf}
                     scale={scale}
+                    signs={this.state.signs}
+                    onDropSign={this.onDropSign}
                 />
             </div>
         );
