@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     pdfPage: {
         margin: "0 auto",
         maxWidth: "800px",
-        position: "relative",
+        //position: "relative",
         marginTop: 10
     },
     pdfContainer: {
