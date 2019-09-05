@@ -55,9 +55,12 @@ function fwdRefContact(props, ref) {
 
     }
 
+    const receivedState = props.initialState || {};
+    const mergedInitialState = { ...initialState, ...receivedState }
+
     return (
         <Formik
-            initialValues={initialState}
+            initialValues={mergedInitialState}
             onSubmit={(values, actions) => {
                 console.log('values', values);
                 props.onSubmit(values, actions);

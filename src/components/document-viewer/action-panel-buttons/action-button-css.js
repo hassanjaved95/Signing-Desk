@@ -1,6 +1,11 @@
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
+    root: {
+        "flexGrow": "1",
+        "width": "100%",
+        "backgroundColor": "#E5E5E5",
+    },
     actionPanelContainer: {
         display: "flex",
         flexDirection: "column"
@@ -51,7 +56,7 @@ const useStyles = makeStyles({
         padding: "10px 0"
     },
     btnContent: {
-        
+
     },
     btnText: {
         fontSize: "10px",
@@ -59,6 +64,25 @@ const useStyles = makeStyles({
     },
     btnIcon: {
 
+    },
+    selectedTab: {
+        borderColor: "#EBEDF2 #EBEDF2 #195bff #F4F7FA",
+        borderWidth: "2px"
+    },
+    rowContainer: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    half: {
+        width: "50%"
+    },
+    flexLeft: {
+        display: "flex",
+        alignItems: "start",
+    },
+    flexRight: {
+        display: "flex",
+        justifyContent: "flex-end"
     }
 });
 

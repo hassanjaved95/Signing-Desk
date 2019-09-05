@@ -3,6 +3,11 @@ import { getGuid } from "Helpers/helpers";
 import useStyles from "./action-button-css";
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
+const dragStart = (item, ev) => {
+    console.log('dragstart:', ev.target);
+    ev.dataTransfer.setData("text/plain", item.Text);
+    ev.dataTransfer.dropEffect = "move";
+}
 
 const FieldActions = (props) => {
     const classes = useStyles();
@@ -15,7 +20,7 @@ const FieldActions = (props) => {
                 {
                     props.fieldActionItems.map(item => {
                         return (
-                            <div key={getGuid()} className={`${classes.actionPanelButton} ${!item.Text ? classes.actionPanelEmptyBtn : ''}`}  >
+                            <div key={getGuid()} draggable="true" onDragStart={dragStart.bind(null, item)} className={`${classes.actionPanelButton} ${!item.Text ? classes.actionPanelEmptyBtn : ''}`}  >
                                 <div className={classes.btnContentContainer}>
                                     <div className={`${classes.btnContent} ${classes.btnIcon}`}>{item.Icon || <HourglassEmptyIcon />}</div>
                                     <div className={`${classes.btnContent} ${classes.btnText}`}>{item.Text}</div>
