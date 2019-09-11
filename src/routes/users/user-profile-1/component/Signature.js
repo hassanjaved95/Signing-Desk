@@ -53,10 +53,17 @@ class Signature extends Component {
     }
     signature.signatureImage= this.state.signatureImage;
 
-    let profile = {
-      ...this.props.user.profile,
-      info,
-      signature
+    var general = {
+      ...this.props.user.profile.general
+    }
+
+    const profile = {
+      profile: {
+        info,
+        signature,
+        general
+      }
+
     }
 
     // let newUser = {
