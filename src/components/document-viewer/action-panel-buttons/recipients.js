@@ -7,6 +7,8 @@ import SelectedUsers from "./selected-users";
 import EditingRecipient from "./editing-recipient";
 import ContactSummary from "./contact-summary";
 
+import Switch from 'react-toggle-switch';
+
 const customStyles = {
     option: (provided, state) => ({
         ...provided,
@@ -15,6 +17,13 @@ const customStyles = {
     
 }
 
+// const switchStyle ={
+//     option: (provided, state) => ({
+//         ...provided,
+//         backgroundColor:'#5D92F4'
+//     })
+    
+// }
 
 
 function onChangeRecipient(val) {
@@ -28,7 +37,10 @@ const Recipients = (props) => {
 
     return (
         <div style={{ padding: "20px 20px 0" }}>
-            <div style={{cursor:'pointer'}} onClick={props.onClickToggleUsers}>Toggle Users</div> <br/>
+            
+            <div style={{fontSize:'12px'}} >
+            <Switch className="toggleUsers" onClick={props.onClickToggleUsers} on={props.isUsers} />
+                <span>Company Users/Personal Users</span></div> <br/>
             {!props.editingContact &&
                 <React.Fragment>
                     {addContact &&
