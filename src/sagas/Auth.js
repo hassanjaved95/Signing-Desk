@@ -44,7 +44,8 @@ const updateUserProfileRequest = async user => {
     //   headers: { Authorization: `Bearer ${user.token}` }
     // });
     var response = await API.post('users/update-profile', user);
-    return response.user;
+
+    return response;
   } catch (error) {
     if (error.response) {
       return error.response.data;
@@ -289,15 +290,13 @@ function* createUserWithEmailPassword({ payload }) {
 function* updateUserProfile({ payload }) {
   try {
     const user = yield call(updateUserProfileRequest, payload);
-      localStorage.setItem("user", JSON.stringify({profile:payload}));
+    if (user.status && user.status == 200) {
+      localStorage.setItem("user", JSON.stringify({ profile: payload }));
       yield put(updateProfileSuccess(payload));
-
-    // if (user.message) {
-    //   yield put(updateProfileFailure(user.message));
-    // } else {
-    //   localStorage.setItem("user", JSON.stringify(user));
-    //   yield put(updateProfileSuccess(user));
-    // }
+    }
+    else {
+      yield put(updateProfileFailure(user.message));
+    }
   } catch (error) {
     yield put(updateProfileFailure(error));
   }

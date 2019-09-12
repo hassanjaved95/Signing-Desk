@@ -46,16 +46,21 @@ class UserBlock extends Component {
         ...this.props.user.profile.general
       }
 
-      //...this.props.user.profile,
       const profile = {
         profile: {
           info,
           signature,
           general
         }
-
       }
 
+      // const profile = {
+        
+      //     info,
+      //     signature,
+      //     general
+        
+      // }
 
       this.props.updateProfile(profile);
     };

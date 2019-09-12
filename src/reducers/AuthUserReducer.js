@@ -46,7 +46,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false, user: action.payload };
 
     case LOGIN_USER_FAILURE:
-      NotificationManager.error(action.payload);
+    NotificationManager.error(action.payload);
       return { ...state, loading: false };
 
     case LOGOUT_USER:
