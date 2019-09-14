@@ -66,7 +66,7 @@ class PDFViewer extends Component {
     render() {
         const { pdf, scale } = this.state;
         return (
-            <div className="pdf-context">
+            <div className="pdf-context" style={styles.pdfDoc}>
                 <Viewer
                     pdf={pdf}
                     scale={scale}
@@ -75,6 +75,12 @@ class PDFViewer extends Component {
                 />
             </div>
         );
+    }
+}
+
+var styles = {
+    pdfDoc: {
+        marginTop: 10
     }
 }
 
