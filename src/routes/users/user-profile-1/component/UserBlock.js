@@ -41,13 +41,27 @@ class UserBlock extends Component {
       info.avatar = reader.result;
       var signature = {
         ...this.props.user.profile.signature
-        }
+      }
+      var general = {
+        ...this.props.user.profile.general
+      }
 
       const profile = {
-        ...this.props.user.profile,
-        signature,
-        info
+        profile: {
+          info,
+          signature,
+          general
+        }
       }
+
+      // const profile = {
+        
+      //     info,
+      //     signature,
+      //     general
+        
+      // }
+
       this.props.updateProfile(profile);
     };
     reader.readAsDataURL(files[0]);
@@ -64,51 +78,51 @@ class UserBlock extends Component {
 
     return (
       <React.Fragment>
-        <div className="profile-top" style={{ height: '175px', marginBottom:'0px !important' }} >
-        <img
-          src={require("Assets/img/profile-bg.jpg")}
-          alt="profile banner"
-          className="img-fluid"
-          width="1920"
+        <div className="profile-top" style={{ height: '175px', marginBottom: '0px !important' }} >
+          <img
+            src={require("Assets/img/profile-bg.jpg")}
+            alt="profile banner"
+            className="img-fluid"
+            width="1920"
 
-        />
-        <div className="profile-content">
-          <div className="media">
-            <input
-              type="file"
-              name="profileImage"
-              id="profileImage"
-              style={{ display: "none" }}
-              ref={this.fileUpload}
-              onChange={this.handleAvatarChange}
-            />
-            <div onClick={this.handleAvatarClick}>
-              <Avatar
-                alt={`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}
-                src={this.state.avatar}
-                className="mr-30 bordered"
-                style={{ width: "140px", height: "140px", cursor: "pointer" }}
-
+          />
+          <div className="profile-content">
+            <div className="media">
+              <input
+                type="file"
+                name="profileImage"
+                id="profileImage"
+                style={{ display: "none" }}
+                ref={this.fileUpload}
+                onChange={this.handleAvatarChange}
               />
+              <div onClick={this.handleAvatarClick}>
+                <Avatar
+                  alt={`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}
+                  src={this.state.avatar}
+                  className="mr-30 bordered"
+                  style={{ width: "140px", height: "140px", cursor: "pointer" }}
 
-            </div>
+                />
 
-            <div className="media-body pt-25">
-              <div className="mb-20">
-                <h2>{`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}</h2>
-                <p>{this.props.user.profile.info.email}</p>
+              </div>
+
+              <div className="media-body pt-25">
+                <div className="mb-20">
+                  <h2>{`${this.props.user.profile.info.firstName} ${this.props.user.profile.info.lastName}`}</h2>
+                  <p>{this.props.user.profile.info.email}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-      </div>
-      <div>
-        {loading && <LinearProgress />}
-      </div>
+        </div>
+        <div>
+          {loading && <LinearProgress />}
+        </div>
       </React.Fragment>
 
-      
+
     );
   }
 }

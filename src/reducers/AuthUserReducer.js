@@ -32,7 +32,7 @@ export default (state = INIT_STATE, action) => {
 
     case UPDATE_PROFILE_SUCCESS:
       NotificationManager.success("User profile updated successfully");
-      return { ...state, loading: false, user:{profile: action.payload}  };
+      return { ...state, loading: false, user: action.payload  };
 
     case UPDATE_PROFILE_FAILURE:
       NotificationManager.error(action.payload);
@@ -46,7 +46,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false, user: action.payload };
 
     case LOGIN_USER_FAILURE:
-      NotificationManager.error(action.payload);
+    NotificationManager.error(action.payload);
       return { ...state, loading: false };
 
     case LOGOUT_USER:

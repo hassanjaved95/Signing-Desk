@@ -29,7 +29,8 @@ export default class RecipientActions extends React.Component {
             activeTab: '1',
             selectedUsers: [],
             selectedCompany: {},
-            editingContact: ''
+            editingContact: '',
+            isUsers: true
         };
     }
 
@@ -59,6 +60,11 @@ export default class RecipientActions extends React.Component {
     onClickRecipient = (user) => {
         this.setState({
             editingContact: user
+        })
+    }
+    onToggleUsers = () =>{
+        this.setState({
+            isUsers : !this.state.isUsers
         })
     }
     clearEditingContact = () => {
@@ -117,7 +123,9 @@ export default class RecipientActions extends React.Component {
                                     clearEditing={this.clearEditingContact}
                                     editingContact={this.state.editingContact}
                                     onClickRecipient={this.onClickRecipient}
-                                    companies={companies} />
+                                    companies={companies}
+                                    isUsers={this.state.isUsers}
+                                    onClickToggleUsers={this.onToggleUsers} />
                             </Col>
                         </Row>
                     </TabPane>
