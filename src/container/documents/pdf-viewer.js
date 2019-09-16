@@ -67,17 +67,19 @@ class PDFViewer extends Component {
 
     setSelectedSign = (signKey, ev) => {
         console.log('setSelectedSign:', arguments);
+        ev.stopPropagation();
         this.setState({
             selectedSign: signKey
         });
 
-        ev.stopPropagation();
+
     }
 
     render() {
         const { pdf, scale } = this.state;
+        //
         return (
-            <div className="pdf-context" style={styles.pdfDoc} onClick={this.setSelectedSign.bind(this, null)} >
+            <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.setSelectedSign.bind(this, null)}>
                 <Viewer
                     pdf={pdf}
                     scale={scale}

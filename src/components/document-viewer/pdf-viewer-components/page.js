@@ -100,8 +100,9 @@ class Page extends Component {
                         .filter(doc => doc.pageId === pageId)
                         .map((sign, index) =>
                             <Signature
+                                key={`${pageId}-${index}`}
                                 sign={sign}
-                                signKey={`${sign.pageX}-${sign.pageY}-${index}`}
+                                signKey={`${pageId}-${index}`}
                                 setSelectedSign={this.props.setSelectedSign}
                                 selectedSign={this.props.selectedSign}
                                 pageBoundary={this.getPageBoundary()}
