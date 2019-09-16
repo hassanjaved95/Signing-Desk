@@ -13,7 +13,7 @@ const DocumentViewerUsers = (props) => {
             <div className={rowContainer}>
                 <div className={`${half} ${flexLeft}`} style={{ fontSize: "12px" }}>USERS</div>
                 {
-                    !props.addContact &&
+                    !props.addContact && props.isUsers &&
                     <div className={`${half} ${flexRight}`}><AddBox style={{ color: "#5D92F4", fontSize: "17px", cursor: "pointer" }} onClick={props.setAddContact} /></div>
                 }
             </div>

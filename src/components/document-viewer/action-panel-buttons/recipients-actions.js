@@ -1,37 +1,53 @@
-import React from 'react';
+import React, { Component, useState } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { getCompanies, getCompanyUsers, getContactsAsUsers } from "Actions";
+
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import useStyles from "./action-button-css";
 import Recipients from './recipients';
-import SigningOrder from "./sigining-order";
+import SigningOrder from './sigining-order';
+import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 
-const companies = [
-    { id: 'CompanyA', value: 'CompanyA', label: "CompanyA" },
-    { id: 'CompanyB', value: 'CompanyB', label: "CompanyB" },
-    { id: 'CompanyC', value: 'CompanyC', label: "CompanyC" },
-]
+// const companies = [
+//     { id: 'CompanyA', value: 'CompanyA', label: "CompanyA" },
+//     { id: 'CompanyB', value: 'CompanyB', label: "CompanyB" },
+//     { id: 'CompanyC', value: 'CompanyC', label: "CompanyC" },
+// ]
 
-const users = [
-    { id: 'User1', value: "User1", label: "User1", firstName: 'User', lastName: "1", email: "user1@gmail.com" },
-    { id: 'User2', value: "User2", label: "User2", firstName: 'User', lastName: "2", email: "user2@gmail.com" },
-    { id: 'User3', value: "User3", label: "User3", firstName: 'User', lastName: "3", email: "user3@gmail.com" },
-    { id: 'User4', value: "User4", label: "User4", firstName: 'User', lastName: "4", email: "user4@gmail.com" },
-    { id: 'User5', value: "User5", label: "User5", firstName: 'User', lastName: "5", email: "user5@gmail.com" },
-    { id: 'User6', value: "User6", label: "User6", firstName: 'User', lastName: "6", email: "user6@gmail.com" }
-];
+// const users = [
+//     { id: 'User1', value: "User1", label: "User1", firstName: 'User', lastName: "1", email: "user1@gmail.com" },
+//     { id: 'User2', value: "User2", label: "User2", firstName: 'User', lastName: "2", email: "user2@gmail.com" },
+//     { id: 'User3', value: "User3", label: "User3", firstName: 'User', lastName: "3", email: "user3@gmail.com" },
+//     { id: 'User4', value: "User4", label: "User4", firstName: 'User', lastName: "4", email: "user4@gmail.com" },
+//     { id: 'User5', value: "User5", label: "User5", firstName: 'User', lastName: "5", email: "user5@gmail.com" },
+//     { id: 'User6', value: "User6", label: "User6", firstName: 'User', lastName: "6", email: "user6@gmail.com" }
+// ];
 
-export default class RecipientActions extends React.Component {
+
+class RecipientActions extends React.Component {
+    users = null;
+    companies = null;
     constructor(props) {
         super(props);
 
         this.toggle = this.toggle.bind(this);
         this.state = {
+            loading: true,
             activeTab: '1',
             selectedUsers: [],
             selectedCompany: {},
             editingContact: '',
-            isUsers: true
+            isUsers: true,
+            companies: []
         };
+    }
+
+    componentDidMount() {
+        this.props.getContactsAsUsers();
+        //this.props.getCompanyUsers();
+        this.props.getCompanies();
     }
 
     deleteEditingContact = () => {
@@ -47,6 +63,7 @@ export default class RecipientActions extends React.Component {
         this.setState({
             selectedCompany: company
         });
+        this.props.getCompanyUsers({companyId : company.id});
     }
 
     onSelectUser = (user) => {
@@ -62,10 +79,13 @@ export default class RecipientActions extends React.Component {
             editingContact: user
         })
     }
-    onToggleUsers = () =>{
+    onToggleUsers = () => {
         this.setState({
-            isUsers : !this.state.isUsers
+            isUsers: !this.state.isUsers
         })
+        this.props.getCompanies();
+
+        this.companies = this.props.companies;
     }
     clearEditingContact = () => {
         this.setState({
@@ -80,9 +100,40 @@ export default class RecipientActions extends React.Component {
             });
         }
     }
+
+    switchUsers = () => {
+        this.users = [];
+        if (this.state.isUsers) {
+            this.users = this.props.contacts;
+        }
+        else {
+            if(this.props.companyUsers != null){
+                this.users = this.props.companyUsers;
+            }
+            else{
+                this.users = [];
+            }
+        }
+    }
+    toggleLoader =()=>{
+        if (this.state.loading) {
+            return (
+                <RctSectionLoader />
+            )
+        }
+    }
+
     render() {
+        const { companies, companyUsers, contacts, loading } = this.props;
+       
+        this.toggleLoader();
+        this.switchUsers();
         return (
             <div>
+                {/* {
+                    this.state.loading == true &&
+                    <RctSectionLoader />
+                } */}
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -113,31 +164,54 @@ export default class RecipientActions extends React.Component {
                     <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
-                                <Recipients
-                                    users={users}
-                                    onSelectUser={this.onSelectUser}
-                                    onSelectCompany={this.onSelectCompany}
-                                    selectedUsers={this.state.selectedUsers}
-                                    selectedCompany={this.state.selectedCompany}
-                                    deleteEditingContact={this.deleteEditingContact}
-                                    clearEditing={this.clearEditingContact}
-                                    editingContact={this.state.editingContact}
-                                    onClickRecipient={this.onClickRecipient}
-                                    companies={companies}
-                                    isUsers={this.state.isUsers}
-                                    onClickToggleUsers={this.onToggleUsers} />
+
+                                {
+                                    this.users &&
+                                    <Recipients
+                                        users={this.users}
+                                        onSelectUser={this.onSelectUser}
+                                        onSelectCompany={this.onSelectCompany}
+                                        selectedUsers={this.state.selectedUsers}
+                                        selectedCompany={this.state.selectedCompany}
+                                        deleteEditingContact={this.deleteEditingContact}
+                                        clearEditing={this.clearEditingContact}
+                                        editingContact={this.state.editingContact}
+                                        onClickRecipient={this.onClickRecipient}
+                                        companies={this.companies}
+                                        isUsers={this.state.isUsers}
+                                        onClickToggleUsers={this.onToggleUsers} />
+                                }
+
+
+
                             </Col>
                         </Row>
                     </TabPane>
                     <TabPane tabId="2">
                         <Row>
                             <Col sm="12">
-                                <SigningOrder selectedUsers={this.state.selectedUsers} onClickRecipient={() => {}}/>
+                                <SigningOrder selectedUsers={this.state.selectedUsers} onClickRecipient={() => { }} />
                             </Col>
                         </Row>
                     </TabPane>
                 </TabContent>
             </div>
         );
+
     }
 }
+
+const mapStateToProps = ({ documentViewer }) => {
+    const {companies, companyUsers, contacts } = documentViewer;
+    
+    return { companies,companyUsers, contacts };
+}
+
+export default withRouter(
+    connect(mapStateToProps,
+        {
+            getCompanies,
+            getCompanyUsers,
+            getContactsAsUsers
+        }
+    )(RecipientActions));

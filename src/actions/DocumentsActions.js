@@ -31,6 +31,7 @@ export const getDocuments = () => ({
   type: GET_DOCUMENTS
 });
 
+
 export const getDocumentsSuccess = response => ({
   type: GET_DOCUMENTS_SUCCESS,
   payload: response.data

@@ -600,6 +600,7 @@ const mapStateToProps = ({ documents }) => {
 export default withRouter(
     connect(mapStateToProps,
         {
+            
             getDocuments,
             setSelectedFolder,
             updateDocument,

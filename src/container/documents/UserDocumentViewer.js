@@ -126,7 +126,7 @@ class UserDocumentViewer extends Component {
 
 const mapStateToProps = ({ documents }) => {
     const { selectedDocument } = documents;
-    return { selectedDocument };
+    return {selectedDocument};
 }
 
 export default withRouter(

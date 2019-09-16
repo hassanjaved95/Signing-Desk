@@ -40,7 +40,7 @@ const Recipients = (props) => {
             
             <div style={{fontSize:'12px'}} >
             <Switch className="toggleUsers" onClick={props.onClickToggleUsers} on={props.isUsers} />
-                <span>Company Users/Personal Users</span></div> <br/>
+                <span>Company / Personal Users</span></div> <br/>
             {!props.editingContact &&
                 <React.Fragment>
                     {addContact &&
@@ -55,23 +55,18 @@ const Recipients = (props) => {
                         <React.Fragment>
                             <div style={{ fontSize: "12px" }}>COMPANY<span style={{ position: "absolute", fontSize: "10px", color: "red" }}>(*)</span></div>
                             <Select options={props.companies} value={props.selectedCompany} styles={customStyles} onChange={(obj) => { props.onSelectCompany(obj) }} />
+                       <br/>
                         </React.Fragment>
                     }
 
-                    
-                    {
-                        props.isUsers &&
                         <React.Fragment>
                             {props.selectedCompany &&
 
-                                <DocumentViewerUsers users={props.users} onSelectUser={props.onSelectUser} addContact={addContact} setAddContact={() => {
+                                <DocumentViewerUsers users={props.users} isUsers={props.isUsers} onSelectUser={props.onSelectUser} addContact={addContact} setAddContact={() => {
                                     setAddContact(true);
 
                                 }} />}
                         </React.Fragment>
-
-                    }
-
                     <br />
                     {props.selectedUsers && <SelectedUsers selectedUsers={props.selectedUsers} onClickRecipient={props.onClickRecipient} />}
                 </React.Fragment>
