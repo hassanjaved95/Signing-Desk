@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     pdfPage: {
         margin: "0 auto",
         maxWidth: "800px",
-        //position: "relative",
+        position: "relative",
         marginTop: 10
     },
     pdfContainer: {
@@ -17,21 +17,6 @@ const useStyles = makeStyles({
         overflowX: "hidden",
         overflowY: "auto",
         padding: "40px 0",
-    },
-    signature: {
-        position: "absolute",
-        fontSize: 15,
-        backgroundColor: "antiquewhite",
-        color: "lightgrey",
-        display: "flex",
-        width: 120,
-        height: 50,
-        border: "3px solid #4286f4",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        userSelect: "none",
-        opacity: "0.5"
     }
 });
 
@@ -54,6 +39,8 @@ const Viewer = (props) => {
                             docSigns={props.signs}
                             scale={props.scale}
                             onDropSign={props.onDropSign}
+                            setSelectedSign={props.setSelectedSign}
+                            selectedSign={props.selectedSign}
                         />
                     )
                 )}

@@ -20,9 +20,9 @@ const FieldActions = (props) => {
                 {
                     props.fieldActionItems.map(item => {
                         return (
-                            <div key={getGuid()} draggable="true" onDragStart={dragStart.bind(null, item)} className={`${classes.actionPanelButton} ${!item.Text ? classes.actionPanelEmptyBtn : ''}`}  >
+                            <div key={getGuid()} draggable={item.Disabled ? "false" : "true"} disabled={item.Disabled} onDragStart={dragStart.bind(null, item)} className={`${classes.actionPanelButton} ${!item.Text ? classes.actionPanelEmptyBtn : ''} ${item.Disabled ? classes.actionPanelBtnDisabled : ''}`}  >
                                 <div className={classes.btnContentContainer}>
-                                    <div className={`${classes.btnContent} ${classes.btnIcon}`}>{item.Icon || <HourglassEmptyIcon />}</div>
+                                    <div className={`${classes.btnContent} ${classes.btnIcon}`}>{item.Icon}</div>
                                     <div className={`${classes.btnContent} ${classes.btnText}`}>{item.Text}</div>
                                 </div>
                             </div>
