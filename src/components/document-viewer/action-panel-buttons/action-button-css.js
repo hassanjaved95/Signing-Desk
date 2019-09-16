@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         padding: 0,
         cursor: "move",
         border: "1px solid #e5e5e5",
-        background: "#f4f4f4",
+        background: "#dee2e6",
         color: "#000",
         fontSize: "12px",
         fontWeight: "400",
@@ -44,7 +44,12 @@ const useStyles = makeStyles({
     actionPanelEmptyBtn: {
         borderStyle: "dashed",
         borderColor: "#000",
-        background: "#fff"
+        background: "#fff",
+        cursor: 'default'
+    },
+    actionPanelBtnDisabled: {
+        cursor: 'default',
+        background: "#f4f4f4"
     },
     btnContentContainer: {
         display: "flex",

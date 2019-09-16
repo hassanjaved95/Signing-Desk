@@ -6,6 +6,8 @@ import { makeStyles } from '@material-ui/styles';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 import PeopleIcon from '@material-ui/icons/People';
 import BrushIcon from '@material-ui/icons/Brush';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 
 import NavPanel from "Components/document-viewer/nav-panel";
 import ActionPanel from "Components/document-viewer/action-panel";
@@ -29,7 +31,7 @@ const useStyles = makeStyles({
     },
     documentViewer: {
         width: "calc(100% - 376px)",
-        backgroundColor: '#F9F9F9'
+        backgroundColor: '#dee2e6'
     }
 });
 
@@ -47,15 +49,9 @@ const navPanelItems = [
 ];
 
 const fieldActions = [
-    { Id: 1, Icon: <BrushIcon />, Text: "SIGNATURE" },
-    { Id: 2, Icon: '', Text: '' },
-    { Id: 3, Icon: '', Text: '' },
-    { Id: 4, Icon: '', Text: '' },
-    { Id: 5, Icon: '', Text: '' },
-    { Id: 6, Icon: '', Text: '' },
-    { Id: 7, Icon: '', Text: '' },
-    { Id: 8, Icon: '', Text: '' },
-    { Id: 9, Icon: '', Text: '' },
+    { Id: 1, Icon: <BrushIcon />, Text: "SIGNATURE", Disabled: false },
+    { Id: 2, Icon: <TextFieldsIcon />, Text: 'TEXTFIELD', Disabled: true },
+    { Id: 3, Icon: <DateRangeIcon />, Text: 'DATE' , Disabled: true}
 ];
 
 const DocumentViewerLayout = function (props) {

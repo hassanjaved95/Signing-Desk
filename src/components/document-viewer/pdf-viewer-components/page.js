@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import $ from "jquery";
-import * as jqUI from "jquery-ui";
-import Brush from "@material-ui/icons/Brush"
+import React, { Component, useMemo } from 'react';
+import Signature from './signature';
 
 class Page extends Component {
     constructor(props) {
@@ -14,16 +12,13 @@ class Page extends Component {
         };
     }
 
+    pageBoundary = null;
     // shouldComponentUpdate(nextProps, nextState) {
     //     return this.props.pdf !== nextProps.pdf || this.state.status !== nextState.status;
     // }
 
     componentDidUpdate(nextProps) {
         this._update(nextProps.pdf);
-        // $(this.refs.resizable)
-        // $('.signaturediv').resizable({
-        //     handles: "n, e, s, w"
-        // });
     }
 
     componentDidMount() {
@@ -79,35 +74,18 @@ class Page extends Component {
     }
 
     onDrop = (ev) => {
-        // this.setState((currState, props) => {
-        //     return {
-        //         signs: currState.signs.concat([{
-        //             pageX: ev.pageX,
-        //             pageY: ev.pageY
-        //         }])
-        //     }
-        // })
-        // this.setState({
-        //     signs: this.state.signs.concat([{
-        //         pageX: ev.pageX,
-        //         pageY: ev.pageY
-        //     }])
-        // }, () => {
-        //     console.log('callback:', this.state.signs)
-        //     this.render();
-        // });
-
-        const pagePos = document.getElementById(this.props.pageId).getBoundingClientRect();
+        const pagePos = this.getPageBoundary();
         const dropPos = {
             pageId: this.props.pageId,
             pageX: Math.abs(ev.pageX - pagePos.left),
             pageY: Math.abs(ev.pageY - pagePos.top)
         }
 
-        console.log('pagePos:', pagePos);
-        console.log('dropPos:', dropPos);
-
         this.props.onDropSign(dropPos);
+    }
+
+    getPageBoundary = () => {
+        return document.getElementById(this.props.pageId).getBoundingClientRect();
     }
 
     render() {
@@ -121,9 +99,13 @@ class Page extends Component {
                     docSigns
                         .filter(doc => doc.pageId === pageId)
                         .map((sign, index) =>
-                            <div key={`${sign.pageX}-${sign.pageY}-${index}`} className={`${classes.signature} signaturediv`} style={{ top: sign.pageY, left: sign.pageX }}>
-                                <div> <Brush /> </div> <div> SIGNATURE </div>
-                            </div>
+                            <Signature
+                                sign={sign}
+                                signKey={`${sign.pageX}-${sign.pageY}-${index}`}
+                                setSelectedSign={this.props.setSelectedSign}
+                                selectedSign={this.props.selectedSign}
+                                pageBoundary={this.getPageBoundary()}
+                            />
                         )
                 }
             </div>

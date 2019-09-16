@@ -42,7 +42,8 @@ class PDFViewer extends Component {
         this.state = {
             pdf: null,
             scale: 1,
-            signs: []
+            signs: [],
+            selectedSign: null
         };
     }
 
@@ -59,22 +60,40 @@ class PDFViewer extends Component {
     onDropSign = (signature) => {
         var newState = [...this.state.signs, signature];
         this.setState({
-            signs: newState
+            signs: newState,
+            selectedSign: null
         })
+    }
+
+    setSelectedSign = (signKey, ev) => {
+        console.log('setSelectedSign:', arguments);
+        this.setState({
+            selectedSign: signKey
+        });
+
+        ev.stopPropagation();
     }
 
     render() {
         const { pdf, scale } = this.state;
         return (
-            <div className="pdf-context">
+            <div className="pdf-context" style={styles.pdfDoc} onClick={this.setSelectedSign.bind(this, null)} >
                 <Viewer
                     pdf={pdf}
                     scale={scale}
                     signs={this.state.signs}
                     onDropSign={this.onDropSign}
+                    setSelectedSign={this.setSelectedSign}
+                    selectedSign={this.state.selectedSign}
                 />
             </div>
         );
+    }
+}
+
+var styles = {
+    pdfDoc: {
+        marginTop: 10
     }
 }
 
