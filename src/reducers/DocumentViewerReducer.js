@@ -39,6 +39,10 @@ function makeDataCompatibleToOptionsCompanyUsers(data){
          data.forEach(function(item){
              item.value = item.companyUserBridgeID;
              item.label = item.username;
+             item.email = item.certEmail;
+             item.firstName = item.username;
+             item.lastName = '';
+             item.id = item.companyUserBridgeID;
          })
          return data;
     }
