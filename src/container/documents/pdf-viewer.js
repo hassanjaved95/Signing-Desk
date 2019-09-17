@@ -71,8 +71,6 @@ class PDFViewer extends Component {
         this.setState({
             selectedSign: signKey
         });
-
-
     }
 
     render() {
