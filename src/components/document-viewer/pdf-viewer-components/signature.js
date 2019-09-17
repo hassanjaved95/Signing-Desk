@@ -3,11 +3,11 @@ import Brush from "@material-ui/icons/Brush";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
-    signature: {
+    signature: props => ({
         position: "absolute",
         fontSize: 15,
-        backgroundColor: "#c0d7fb",
-        color: "#4286f4",
+        backgroundColor: props.selectedSignStyle ? "antiquewhite" : "#c0d7fb",
+        color: props.selectedSignStyle ? "lightgrey" : "#4286f4",
         display: "flex",
         width: 120,
         height: 50,
@@ -18,11 +18,7 @@ const useStyles = makeStyles({
         userSelect: "none",
         opacity: "0.5",
         cursor: "move"
-    },
-    selectedSign: {
-        backgroundColor: "antiquewhite",
-        color: "lightgrey"
-    },
+    }),
     noevents: {
         pointerEvents: 'none'
     }
@@ -36,15 +32,33 @@ var initialY;
 var xOffset = 0;
 var yOffset = 0;
 var dragItem;
+var dragItemBoundary;
+var maxLeft, maxRight, maxTop, maxBottom;
 
-const dragStart = (e) => {
-    initialX = e.clientX - xOffset;
-    initialY = e.clientY - yOffset;
-
-
+const dragStart = (e, pageBoundary) => {
     if (e.target.classList.contains('signaturediv')) {
         active = true;
         dragItem = e.target;
+        dragItemBoundary = e.target.getBoundingClientRect();
+
+        maxLeft = pageBoundary.left - dragItemBoundary.left;
+        maxRight = pageBoundary.right - dragItemBoundary.right;
+        maxTop = pageBoundary.top - dragItemBoundary.top;
+        maxBottom = pageBoundary.bottom - dragItemBoundary.bottom;
+
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+
+        console.log('dragItemBoundary:', dragItemBoundary);
+        console.log('pageBoundary:', pageBoundary);
+
+        console.log('maxLeft:', maxLeft);
+        console.log('maxRight:', maxRight);
+        console.log('maxTop:', maxTop);
+        console.log('maxBottom:', maxBottom);
+
+        console.log('initialX:', initialX);
+        console.log('initialY:', initialY);
     }
 }
 
@@ -52,6 +66,7 @@ const dragEnd = (e) => {
     initialX = currentX;
     initialY = currentY;
 
+    dragItemBoundary = e.target.getBoundingClientRect();
     active = false;
 }
 
@@ -66,17 +81,19 @@ const drag = (e, pageBoundary) => {
         currentX = e.clientX - initialX;
         currentY = e.clientY - initialY;
 
-        // if (currentX > pageBoundary.right) {
-        //     currentX = pageBoundary.right;
-        // } else if (currentX < pageBoundary.left) {
-        //     currentX = pageBoundary.left;
-        // }
 
-        // if (currentY > pageBoundary.bottom) {
-        //     currentY = pageBoundary.bottom;
-        // } else if (currentY < pageBoundary.top) {
-        //     currentY = pageBoundary.top;
-        // }
+
+        if (currentX > maxRight) {
+            currentX = maxRight;
+        } else if (currentX < maxLeft) {
+            currentX = maxLeft;
+        }
+
+        if (currentY > maxBottom) {
+            currentY = maxBottom;
+        } else if (currentY < maxTop) {
+            currentY = maxTop;
+        }
 
 
         console.log('currentX:', currentX);
@@ -92,24 +109,34 @@ const drag = (e, pageBoundary) => {
 
 const Signature = (props) => {
     const { sign, signKey, selectedSign, pageBoundary } = props;
-    const classes = useStyles();
+    const classes = useStyles({ selectedSignStyle: signKey === selectedSign });
 
     return (
         <div
-            key={signKey}
             onDragStart={dragStart}
-            className={`${classes.signature} signaturediv ${signKey === selectedSign ? classes.selectedSign : ''}`}
+            className={`${classes.signature} signaturediv`}
             style={{ top: sign.pageY, left: sign.pageX }}
             onMouseUp={(ev) => {
                 dragEnd(ev);
-                props.setSelectedSign(signKey, ev);
+                sign.pageX = dragItemBoundary.left - pageBoundary.left;
+                sign.pageY = dragItemBoundary.top - pageBoundary.top;
             }}
-            onMouseDown={(e) => dragStart(e)}
-            onMouseMove={(e) => { drag(e, pageBoundary) }}
+            onMouseDown={(ev) => {
+                props.setSelectedSign(signKey, ev);
+                dragStart(ev, pageBoundary);
+            }}
+            onMouseMove={(ev) => { drag(ev, pageBoundary) }}
         >
             <div className={classes.noevents}> <Brush /> </div> <div className={classes.noevents}> SIGNATURE </div>
         </div>
     );
+}
+
+const styles = {
+    selectedSign: {
+        backgroundColor: "antiquewhite !important",
+        color: "lightgrey  !important"
+    }
 }
 
 export default Signature;
