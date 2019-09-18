@@ -117,15 +117,18 @@ const Signature = (props) => {
                         <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
                     </div>
 
-                    <div>
-                        <Menu anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
-                            <MenuItem onClick={() => { console.log('Duplicate Sign') }}> Duplicate </MenuItem>
-                            <MenuItem onClick={() => { console.log('Delete Sign') }}> Delete </MenuItem>
-                        </Menu>
-                    </div>
                 </div>
             </Draggable>
 
+
+            <div>
+                <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
+                    <Menu anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
+                        <MenuItem onClick={() => { console.log('Duplicate Sign') }}> Duplicate </MenuItem>
+                        <MenuItem onClick={() => { console.log('Delete Sign') }}> Delete </MenuItem>
+                    </Menu>
+                </ClickAwayListener>
+            </div>
         </React.Fragment>
     );
 }
