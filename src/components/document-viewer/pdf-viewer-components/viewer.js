@@ -41,6 +41,8 @@ const Viewer = (props) => {
                             onDropSign={props.onDropSign}
                             setSelectedSign={props.setSelectedSign}
                             selectedSign={props.selectedSign}
+                            anchorEl={props.anchorEl}
+                            setAnchorEl={props.setAnchorEl}
                         />
                     )
                 )}

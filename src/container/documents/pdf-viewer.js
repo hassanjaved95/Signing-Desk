@@ -43,7 +43,8 @@ class PDFViewer extends Component {
             pdf: null,
             scale: 1,
             signs: [],
-            selectedSign: null
+            selectedSign: null,
+            anchorEl: null
         };
     }
 
@@ -65,9 +66,23 @@ class PDFViewer extends Component {
         })
     }
 
+    handleMouseDown = (e) => {
+        this.setState({
+            selectedSign: null,
+            anchorEl: null
+        });
+    }
+
+    setAnchorEl = (e, el) => {
+        if (e) e.stopPropagation();
+        this.setState({
+            anchorEl: el
+        });
+    }
+
     setSelectedSign = (signKey, ev) => {
-        console.log('setSelectedSign:', arguments);
-        ev.stopPropagation();
+        if (ev) ev.stopPropagation();
+
         this.setState({
             selectedSign: signKey
         });
@@ -75,9 +90,9 @@ class PDFViewer extends Component {
 
     render() {
         const { pdf, scale } = this.state;
-        //
+
         return (
-            <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.setSelectedSign.bind(this, null)}>
+            <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.handleMouseDown}>
                 <Viewer
                     pdf={pdf}
                     scale={scale}
@@ -85,6 +100,8 @@ class PDFViewer extends Component {
                     onDropSign={this.onDropSign}
                     setSelectedSign={this.setSelectedSign}
                     selectedSign={this.state.selectedSign}
+                    anchorEl={this.state.anchorEl}
+                    setAnchorEl={this.setAnchorEl}
                 />
             </div>
         );
