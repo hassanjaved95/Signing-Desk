@@ -108,6 +108,8 @@ class Page extends Component {
                                 pageBoundary={this.getPageBoundary()}
                                 anchorEl={this.props.anchorEl}
                                 setAnchorEl={this.props.setAnchorEl}
+                                deleteSelectedSign={this.props.deleteSelectedSign}
+                                duplicateSelectedSign={this.props.duplicateSelectedSign}
                             />
                         )
                 }

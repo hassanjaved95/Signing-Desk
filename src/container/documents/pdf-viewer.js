@@ -88,6 +88,18 @@ class PDFViewer extends Component {
         });
     }
 
+    deleteSelectedSign = (sign) => {
+        this.setState({
+            signs: this.state.signs.filter(s => s != sign)
+        });
+    }
+
+    duplicateSelectedSign = (sign) => {
+        this.setState({
+            signs: [...this.state.signs, sign]
+        });
+    }
+
     render() {
         const { pdf, scale } = this.state;
 
@@ -102,6 +114,8 @@ class PDFViewer extends Component {
                     selectedSign={this.state.selectedSign}
                     anchorEl={this.state.anchorEl}
                     setAnchorEl={this.setAnchorEl}
+                    deleteSelectedSign={this.deleteSelectedSign}
+                    duplicateSelectedSign={this.duplicateSelectedSign}
                 />
             </div>
         );

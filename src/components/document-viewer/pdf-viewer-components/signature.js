@@ -78,6 +78,16 @@ const useStyles = makeStyles({
         verticalAlign: 'bottom',
         cursor: 'help',
         borderRadius: 2,
+    },
+    menuStyle: {
+        marginTop: 40,
+        "& ul": {
+            margin: 0,
+            padding: 0,
+        },
+        "& li": {
+            fontSize: 13
+        }
     }
 });
 
@@ -123,9 +133,9 @@ const Signature = (props) => {
 
             <div>
                 <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
-                    <Menu anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
-                        <MenuItem onClick={() => { console.log('Duplicate Sign') }}> Duplicate </MenuItem>
-                        <MenuItem onClick={() => { console.log('Delete Sign') }}> Delete </MenuItem>
+                    <Menu className={classes.menuStyle} anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
+                        <MenuItem onClick={() => { props.duplicateSelectedSign({ ...sign, pageY: sign.pageY + 10, pageX: sign.pageX + 10 }) }}> Duplicate </MenuItem>
+                        <MenuItem style={{ color: 'red' }} onClick={() => { props.deleteSelectedSign(sign) }}> Delete </MenuItem>
                     </Menu>
                 </ClickAwayListener>
             </div>
