@@ -45,7 +45,7 @@ const Recipients = (props) => {
                 <React.Fragment>
                     {addContact &&
                         <React.Fragment>
-                            <ContactSummary onCloseContact={() => {
+                            <ContactSummary editingContact={props.editingContact} onSubmitForm={props.onSubmitForm} onCloseContact={() => {
                                 setAddContact(false);
                             }} />
                             <hr />
@@ -72,7 +72,7 @@ const Recipients = (props) => {
                 </React.Fragment>
             }
 
-            {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} />}
+            {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} onSubmitForm={props.onSubmitForm} deleteContact={props.deleteContact}  />}
         </div>
     );
 }

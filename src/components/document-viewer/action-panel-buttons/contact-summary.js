@@ -4,16 +4,23 @@ import TextField from '@material-ui/core/TextField';
 import NewContact from "Components/ListItem/NewContact";
 import Button from '@material-ui/core/Button';
 import DialogTemplate from "Components/Dialogs/DialogTemplate";
+import $ from "jquery";
+
+
+
 import {
     Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import * as Yup from 'yup';
 
+
 const initialState = {
     firstName: '',
-    lastName: '',
-    email: ''
+    lastName: '' ,
+    email:  '' 
 };
+
+
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -22,8 +29,12 @@ const validationSchema = Yup.object().shape({
 });
 
 class ContactSummary extends Component {
+
     constructor(props) {
         super(props);
+        this.ref = React.createRef();
+        const createContact = props.createContact;
+        const updateContact = props.updateContact;
         this.state = {
             showDetailedContact: false,
             address: false,
@@ -38,26 +49,34 @@ class ContactSummary extends Component {
     }
 
     onSubmitForm = (obj) => {
-        console.log('onSubmit:', obj);
+
     }
 
     dlgButtons = {
         save: {
             onSave: () => {
                 console.log('save new contact')
+                console.log('onSaveDlg-Ref:', this.ref.current);
+                $(this.ref.current).click();
             },
             text: "ADD CONTACT"
         }
     }
 
     render() {
+        const receivedState = this.props.initialState || {};
+        const mergedInitialState = { ...initialState, ...receivedState }
         return (
             <Formik
-                initialValues={initialState}
-                onSubmit={(values, actions) => {
-                    console.log('values', values);
-                    props.onSubmit(values, actions);
-                }}
+                initialValues={mergedInitialState}
+                // onSubmit={(values, actions,customAction) => {
+                //     debugger;
+                //     console.log('values', values);
+                //    //props.onSubmit(values, actions);
+                //    //actions.submitForm(values);
+                //    //this.onSubmit();
+                // }}
+                onSubmit={this.props.onSubmitForm}
                 validationSchema={validationSchema}
             >
                 {({ values,
@@ -67,7 +86,7 @@ class ContactSummary extends Component {
                     handleBlur,
                     handleSubmit }) => {
                     return (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} >
                             {
                                 this.state.showDetailedContact && (<DialogTemplate
                                     title="New contact"
@@ -78,8 +97,10 @@ class ContactSummary extends Component {
                                     <NewContact
                                         toggleAddressFields={this.toggleAddressFieldSet}
                                         showAddressFields={this.state.address}
-                                        onSubmit={this.onSubmitForm}
+                                        onSubmit={this.props.onSubmitForm}
                                         initialState={values}
+                                        
+                                        ref={this.ref}
                                     />
                                 </DialogTemplate>)
                             }

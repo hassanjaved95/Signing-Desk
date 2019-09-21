@@ -1,3 +1,5 @@
+import { NotificationManager } from "react-notifications";
+
 import {
     GET_CONTACTS,
     GET_CONTACTS_SUCCESS,
@@ -10,7 +12,8 @@ import {
     CREATE_CONTACT,
     CREATE_CONTACT_SUCCESS,
     UPDATE_CONTACT,
-    UPDATE_CONTACT_SUCCESS
+    UPDATE_CONTACT_SUCCESS,
+    UPDATE_CONTACT_FAILURE
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -109,6 +112,28 @@ export default (state = INITIAL_STATE, action) => {
                 contacts: [...state.contacts, newContact],
                 loading: false
             };
+        }
+
+        case UPDATE_CONTACT: {
+            return {
+                ...state,
+                loading: true
+            }
+        }
+
+        case UPDATE_CONTACT_SUCCESS: {
+            NotificationManager.success("Contact updated successfully");
+            return {
+                ...state,
+                loading: false
+            }
+        }
+        case UPDATE_CONTACT_FAILURE: {
+            NotificationManager.error(action.payload);
+            return {
+                ...state,
+                loading: false
+            }
         }
 
         default:

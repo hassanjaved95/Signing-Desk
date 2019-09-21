@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects"
 
 import { GET_CONTACTS, DELETE_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT } from "Actions/types";
 
-import { getContactsSuccess, getContactsFailure, deleteContactsSuccess, createContactSuccess, updateContactSuccess } from "Actions/ContactsActions";
+import { getContactsSuccess, getContactsFailure, deleteContactsSuccess, createContactSuccess, updateContactSuccess, updateContactFailure } from "Actions/ContactsActions";
 import API from 'Api';
 
 const response = {
@@ -80,7 +80,7 @@ function* createContactOnServer({ payload }) {
         const response = yield call(createContactRequest, payload);
 
         if (response.status == 200) {
-            payload.id= response.data.contactID;
+            payload.id = response.data.contactID;
             yield put(createContactSuccess(payload));
         } else {
             console.log('createContactOnServer api error code:', response.status);
@@ -93,10 +93,16 @@ function* createContactOnServer({ payload }) {
 
 function* updateContactOnServer({ payload }) {
     try {
-        const response = yield call(updateContactOnServer, payload);
-        yield put(updateContactSuccess(response));
+        const response = yield call(updateContactRequest, payload);
+        if (response && response.status == 200) {
+            yield put(updateContactSuccess(response));
+        }
+        else {
+            yield put(updateContactFailure(response.message));
+        }
     } catch (error) {
         console.log('updateContactOnServer api error:', error);
+        yield put(updateContactFailure(response));
     }
 }
 

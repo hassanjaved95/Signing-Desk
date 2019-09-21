@@ -9,6 +9,7 @@ import {
     CREATE_CONTACT_SUCCESS,
     UPDATE_CONTACT,
     UPDATE_CONTACT_SUCCESS,
+    UPDATE_CONTACT_FAILURE,
     DELETE_CONTACTS,
     DELETE_CONTACTS_SUCCESS
 } from "./types";
@@ -66,5 +67,9 @@ export const updateContact = (payload) => ({
 export const updateContactSuccess = (payload) => ({
     type: UPDATE_CONTACT_SUCCESS,
     payload
+});
+export const updateContactFailure = (payload) => ({
+ type: UPDATE_CONTACT_FAILURE,
+ payload
 });
 

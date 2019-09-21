@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getCompanies, getCompanyUsers, getContactsAsUsers } from "Actions";
+import { getCompanies, getCompanyUsers, getContactsAsUsers, createContact, updateContact,deleteContacts } from "Actions";
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
@@ -9,6 +9,9 @@ import useStyles from "./action-button-css";
 import Recipients from './recipients';
 import SigningOrder from './sigining-order';
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+import { toBase64 } from "Helpers/helpers";
+import IntlMessages from "Util/IntlMessages";
+
 
 // const companies = [
 //     { id: 'CompanyA', value: 'CompanyA', label: "CompanyA" },
@@ -50,7 +53,7 @@ class RecipientActions extends React.Component {
         this.props.getCompanies();
     }
 
-    deleteEditingContact = () => {
+    deleteEditingContact = (obj) => {
         if (this.state.editingContact) {
             this.setState({
                 selectedUsers: this.state.selectedUsers.filter(user => user.id != this.state.editingContact.id),
@@ -63,7 +66,7 @@ class RecipientActions extends React.Component {
         this.setState({
             selectedCompany: company
         });
-        this.props.getCompanyUsers({companyId : company.id});
+        this.props.getCompanyUsers({ companyId: company.id });
     }
 
     onSelectUser = (user) => {
@@ -107,25 +110,73 @@ class RecipientActions extends React.Component {
             this.users = this.props.contacts;
         }
         else {
-            if(this.props.companyUsers != null){
+            if (this.props.companyUsers != null) {
                 this.users = this.props.companyUsers;
             }
-            else{
+            else {
                 this.users = [];
             }
         }
     }
-    toggleLoader =()=>{
+    toggleLoader = () => {
         if (this.state.loading) {
             return (
                 <RctSectionLoader />
             )
         }
     }
+    createContact = (reqObj) => {
+        // console.log('CreateContact with Params:', reqObj);
+        this.props.createContact(reqObj);
+        this.loadAppropriateUsers();
+    }
+
+    loadAppropriateUsers = () =>{
+        if (this.state.isUsers) {
+            this.props.getContactsAsUsers();
+        } else {
+            this.props.getCompanyUsers();
+        }
+    }
+
+    updateContact = (reqObj) => {
+        this.props.updateContact(reqObj);
+        this.loadAppropriateUsers();
+
+    }
+    deleteContact = () =>{
+        var result = window.confirm("Are you sure you want to delete the contact(s)?");
+        if(result){
+            this.props.deleteContacts({ "ContactIDs": [this.state.editingContact.id] });
+            this.loadAppropriateUsers();
+        }
+    }
+    
+    onSubmitForm = (obj) => {
+        if (obj.file) {
+            toBase64(obj.file).then((base64) => {
+                obj.CertPEM = base64;
+                obj.certEmail = obj.email;
+                if(obj.id){
+                    this.updateContact(obj);
+                }else{
+                this.createContact(obj);
+                }
+            }).catch(console.log);
+        } else {
+            obj.certEmail = obj.email;
+            if(obj.id){
+                this.updateContact(obj);
+            }
+            else{
+            this.createContact(obj);
+            }
+        }
+    }
 
     render() {
         const { companies, companyUsers, contacts, loading } = this.props;
-       
+
         this.toggleLoader();
         this.switchUsers();
         return (
@@ -179,7 +230,10 @@ class RecipientActions extends React.Component {
                                         onClickRecipient={this.onClickRecipient}
                                         companies={this.companies}
                                         isUsers={this.state.isUsers}
-                                        onClickToggleUsers={this.onToggleUsers} />
+                                        onClickToggleUsers={this.onToggleUsers}
+                                        onSubmitForm={this.onSubmitForm}
+                                        deleteContact={this.deleteContact}
+                                    />
                                 }
 
 
@@ -202,9 +256,9 @@ class RecipientActions extends React.Component {
 }
 
 const mapStateToProps = ({ documentViewer }) => {
-    const {companies, companyUsers, contacts } = documentViewer;
-    
-    return { companies,companyUsers, contacts };
+    const { companies, companyUsers, contacts } = documentViewer;
+
+    return { companies, companyUsers, contacts };
 }
 
 export default withRouter(
@@ -212,6 +266,9 @@ export default withRouter(
         {
             getCompanies,
             getCompanyUsers,
-            getContactsAsUsers
+            getContactsAsUsers,
+            createContact,
+            updateContact,
+            deleteContacts
         }
     )(RecipientActions));

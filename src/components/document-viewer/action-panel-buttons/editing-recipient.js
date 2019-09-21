@@ -4,6 +4,10 @@ import Edit from "@material-ui/icons/Edit";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
 import UserListItem from "./user-list-item";
+import ContactSummary from "./contact-summary";
+
+
+
 
 const useStyles = makeStyles({
     container: {
@@ -49,10 +53,20 @@ const useStyles = makeStyles({
 
 const EditingRecipient = (props) => {
     const { container, header, text, icon, userDetail, deleteBtn } = useStyles();
-
+    const [addContact, setAddContact] = React.useState(false);
     return (
         <div className={container}>
+            {
+                props.editingContact && props.editingContact.id &&
+                <ContactSummary initialState={props.editingContact} onSubmitForm={props.onSubmitForm}  onCloseContact={() => {
+                    setAddContact(false);
+                }} />
 
+                // onSubmitForm={props.onSubmitForm} onCloseContact={() => {
+                //     setAddContact(false);
+                // }}
+
+            }
             <div className={header}>
                 <div className={icon}> <ArrowBack onClick={props.clearEditing} /></div>
                 <div className={text}>
@@ -61,11 +75,11 @@ const EditingRecipient = (props) => {
             </div>
             <div className={userDetail}>
                 <UserListItem user={props.editingContact} onClickRecipient={() => console.log('send edit user request from this point')}>
-                    <Edit style={{ fontSize: "20px" }} />
+                    <Edit  style={{ fontSize: "20px" }} />
                 </UserListItem>
             </div>
             <div className={deleteBtn}>
-                <div> DELETE THIS RECIPIENT </div>
+                <div onClick={props.deleteContact}> DELETE THIS RECIPIENT </div>
             </div>
         </div>
     );
