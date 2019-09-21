@@ -1,6 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Brush from "@material-ui/icons/Brush";
 import { makeStyles } from "@material-ui/styles";
+import Draggable from "react-draggable";
+import { Resizable } from "re-resizable";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles({
     signature: props => ({
@@ -21,122 +27,110 @@ const useStyles = makeStyles({
     }),
     noevents: {
         pointerEvents: 'none'
+    },
+    moreHoriIcon: {
+        position: 'absolute',
+        height: 22,
+        width: 22,
+        maxWidth: 22,
+        padding: 0,
+        fontSize: 11,
+        fontFamily: 'Graphik, -apple - system, system - ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans - serif',
+        lineHeight: 20,
+        borderRadius: 2,
+        background: '#fff',
+        color: '#6d6f7a',
+        transition: '.05s',
+        userSelect: 'none',
+        right: '-30px',
+        top: 0,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, .2), 0 0 30px rgba(0, 0, 0, .08)',
+        '& :hover': {
+            color: '#4286f4'
+        }
+    },
+    rightArrow: {
+        width: 0,
+        height: 0,
+        borderTop: '9px solid transparent',
+        borderLeft: '18px solid #555',
+        borderBottom: '9px solid transparent'
+    },
+    nameSection: {
+        width: 'auto',
+        height: 18,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: '#555'
+    },
+    assigneeContainer: {
+        display: 'flex',
+        position: 'absolute',
+        zIndex: 15,
+        right: '100%',
+        fontSize: 10,
+        color: 'white',
+        fontWeight: 700,
+        lineHeight: 1,
+        textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+        verticalAlign: 'bottom',
+        cursor: 'help',
+        borderRadius: 2,
     }
 });
 
-var active = false;
-var currentX;
-var currentY;
-var initialX;
-var initialY;
-var xOffset = 0;
-var yOffset = 0;
-var dragItem;
-var dragItemBoundary;
-var maxLeft, maxRight, maxTop, maxBottom;
-
-const dragStart = (e, pageBoundary) => {
-    if (e.target.classList.contains('signaturediv')) {
-        active = true;
-        dragItem = e.target;
-        dragItemBoundary = e.target.getBoundingClientRect();
-
-        maxLeft = pageBoundary.left - dragItemBoundary.left;
-        maxRight = pageBoundary.right - dragItemBoundary.right;
-        maxTop = pageBoundary.top - dragItemBoundary.top;
-        maxBottom = pageBoundary.bottom - dragItemBoundary.bottom;
-
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
-
-        console.log('dragItemBoundary:', dragItemBoundary);
-        console.log('pageBoundary:', pageBoundary);
-
-        console.log('maxLeft:', maxLeft);
-        console.log('maxRight:', maxRight);
-        console.log('maxTop:', maxTop);
-        console.log('maxBottom:', maxBottom);
-
-        console.log('initialX:', initialX);
-        console.log('initialY:', initialY);
-    }
-}
-
-const dragEnd = (e) => {
-    initialX = currentX;
-    initialY = currentY;
-
-    dragItemBoundary = e.target.getBoundingClientRect();
-    active = false;
-}
-
-const setTranslate = (xPos, yPos, el) => {
-    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-}
-
-const drag = (e, pageBoundary) => {
-    if (active) {
-        e.preventDefault();
-
-        currentX = e.clientX - initialX;
-        currentY = e.clientY - initialY;
-
-
-
-        if (currentX > maxRight) {
-            currentX = maxRight;
-        } else if (currentX < maxLeft) {
-            currentX = maxLeft;
-        }
-
-        if (currentY > maxBottom) {
-            currentY = maxBottom;
-        } else if (currentY < maxTop) {
-            currentY = maxTop;
-        }
-
-
-        console.log('currentX:', currentX);
-        console.log('currentY:', currentY);
-        console.log('pageBoundary:', pageBoundary);
-
-        xOffset = currentX;
-        yOffset = currentY;
-
-        setTranslate(currentX, currentY, dragItem);
-    }
-}
-
 const Signature = (props) => {
-    const { sign, signKey, selectedSign, pageBoundary } = props;
+    const { sign, signKey, selectedSign } = props;
     const classes = useStyles({ selectedSignStyle: signKey === selectedSign });
 
     return (
-        <div
-            onDragStart={dragStart}
-            className={`${classes.signature} signaturediv`}
-            style={{ top: sign.pageY, left: sign.pageX }}
-            onMouseUp={(ev) => {
-                dragEnd(ev);
-                sign.pageX = dragItemBoundary.left - pageBoundary.left;
-                sign.pageY = dragItemBoundary.top - pageBoundary.top;
-            }}
-            onMouseDown={(ev) => {
-                props.setSelectedSign(signKey, ev);
-                dragStart(ev, pageBoundary);
-            }}
-            onMouseMove={(ev) => { drag(ev, pageBoundary) }}
-        >
-            <div className={classes.noevents}> <Brush /> </div> <div className={classes.noevents}> SIGNATURE </div>
-        </div>
-    );
-}
+        <React.Fragment>
+            <Draggable
+                bounds='parent'
+                onMouseDown={(ev) => {
+                    props.setSelectedSign(signKey, ev);
+                }}
+            >
+                <div
+                    id={signKey}
+                    className={`${classes.signature} signaturediv`}
+                    style={{ top: sign.pageY, left: sign.pageX }}
+                >
 
-const styles = {
-    selectedSign: {
-        backgroundColor: "antiquewhite !important",
-        color: "lightgrey  !important"
-    }
+                    <div className={classes.assigneeContainer}>
+                        <div className={classes.nameSection}>HG</div>
+                        <div className={classes.rightArrow}></div>
+
+                    </div>
+                    <div className={classes.noevents}>
+                        <Brush />
+                    </div>
+                    <div className={classes.noevents}>
+                        SIGNATURE
+                    </div>
+
+                    <div
+                        className={`${classes.moreHoriIcon}`}
+                    >
+                        <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
+                    </div>
+
+                </div>
+            </Draggable>
+
+
+            <div>
+                <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
+                    <Menu anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
+                        <MenuItem onClick={() => { console.log('Duplicate Sign') }}> Duplicate </MenuItem>
+                        <MenuItem onClick={() => { console.log('Delete Sign') }}> Delete </MenuItem>
+                    </Menu>
+                </ClickAwayListener>
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default Signature;
