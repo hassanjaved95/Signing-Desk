@@ -16,8 +16,6 @@ const useStyles = makeStyles({
         backgroundColor: props.selectedSignStyle ? "antiquewhite" : "#c0d7fb",
         color: props.selectedSignStyle ? "lightgrey" : "#4286f4",
         display: "flex",
-        width: 120,
-        height: 50,
         border: "1px dotted #4286f4",
         flexDirection: "row",
         justifyContent: "center",
@@ -63,7 +61,8 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: props.userNameColor
+        background: props.userNameColor,
+        padding: '0 5px'
     }),
     assigneeContainer: {
         display: 'flex',
@@ -78,7 +77,7 @@ const useStyles = makeStyles({
         whiteSpace: 'nowrap',
         verticalAlign: 'bottom',
         cursor: 'help',
-        borderRadius: 2,
+        borderRadius: 2
     },
     menuStyle: {
         marginTop: 40,
@@ -101,6 +100,8 @@ const Signature = (props) => {
     const shortName = sign.recipient ? getNameInitials(userName) : '';
     const fullName = sign.recipient ? userName : '';
     const [name, setName] = React.useState(shortName);
+    const [width, setWidth] = React.useState(120);
+    const [height, setHeight] = React.useState(50);
 
     function setUserName(n) {
         console.log('setUserName:', n);
@@ -115,47 +116,60 @@ const Signature = (props) => {
                     props.setSelectedSign(sign, ev);
                 }}
             >
-                <div
-                    id={signKey}
-                    className={`${classes.signature} signaturediv`}
-                    style={{ top: sign.pageY, left: sign.pageX }}
-                >
-                    {
-                        sign.recipient &&
-                        <div className={classes.assigneeContainer}
+                <div style={{ position: 'absolute', top: sign.pageY, left: sign.pageX }}>
+                    <Resizable
+                        size={{ width, height }}
+                        onResizeStop={(e, direction, ref, d) => {
+                            setWidth(width + d.width);
+                            setHeight(height + d.height);
+                        }}
+                        onResizeStart={(e) => {
+                            e.stopPropagation();
+                        }}
+                        onResize={(e, direction, ref, d) => {
+                            // setWidth(width + d.width);
+                            // setHeight(height + d.height);
+                        }}
+                    >
+                        <div
+                            id={signKey}
+                            className={`${classes.signature} signaturediv`}
+                            style={{ width, height }}
                             onMouseOver={() => {
-                                console.log('onMouseOver event called.');
                                 setUserName(fullName)
                             }}
                             onMouseOut={() => {
-                                console.log('onMouseOut event called.');
                                 setUserName(shortName)
                             }}
                         >
-                            <div className={classes.nameSection}>
-                                {name || shortName}
+                            {
+                                sign.recipient &&
+                                <div className={classes.assigneeContainer}>
+                                    <div className={classes.nameSection}>
+                                        {name || shortName}
+                                    </div>
+                                    <div className={classes.rightArrow}></div>
+
+                                </div>
+
+                            }
+                            <div className={classes.noevents}>
+                                <Brush />
                             </div>
-                            <div className={classes.rightArrow}></div>
+                            <div className={classes.noevents}>
+                                SIGNATURE
+                    </div>
+
+                            <div
+                                className={`${classes.moreHoriIcon}`}
+                            >
+                                <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
+                            </div>
 
                         </div>
-
-                    }
-                    <div className={classes.noevents}>
-                        <Brush />
-                    </div>
-                    <div className={classes.noevents}>
-                        SIGNATURE
-                    </div>
-
-                    <div
-                        className={`${classes.moreHoriIcon}`}
-                    >
-                        <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
-                    </div>
-
+                    </Resizable>
                 </div>
             </Draggable>
-
 
             <div>
                 <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
