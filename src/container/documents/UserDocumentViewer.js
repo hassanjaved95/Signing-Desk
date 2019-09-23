@@ -51,7 +51,7 @@ const navPanelItems = [
 const fieldActions = [
     { Id: 1, Icon: <BrushIcon />, Text: "SIGNATURE", Disabled: false },
     { Id: 2, Icon: <TextFieldsIcon />, Text: 'TEXTFIELD', Disabled: true },
-    { Id: 3, Icon: <DateRangeIcon />, Text: 'DATE' , Disabled: true}
+    { Id: 3, Icon: <DateRangeIcon />, Text: 'DATE', Disabled: true }
 ];
 
 const DocumentViewerLayout = function (props) {
@@ -61,7 +61,18 @@ const DocumentViewerLayout = function (props) {
     return (
         <div className={classes.documentViewerContainer}>
             <div className={classes.documentViewer}>
-                <PDFViewer />
+                <PDFViewer
+                    onClickSignature={props.onClickSignature}
+                    onDropSign={props.onDropSign}
+                    setSelectedSign={props.setSelectedSign}
+                    selectedSign={props.selectedSign}
+                    anchorEl={props.anchorEl}
+                    setAnchorEl={props.setAnchorEl}
+                    deleteSelectedSign={props.deleteSelectedSign}
+                    duplicateSelectedSign={props.duplicateSelectedSign}
+                    signs={props.signs}
+                    handleMouseDown={props.handleMouseDown}
+                />
             </div>
             <div className={classes.documentActionPanel}>
                 <ActionPanel actionType={props.actionType} fieldActionItems={fieldActions} />
@@ -81,8 +92,59 @@ class UserDocumentViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedNavPanelItem: 'Fields'
+            selectedNavPanelItem: 'Fields',
+            signs: [],
+            selectedSign: null,
+            anchorEl: null
         }
+    }
+
+    onDropSign = (signature) => {
+        var newState = [...this.state.signs, signature];
+        this.setState({
+            signs: newState,
+            selectedSign: null
+        })
+    }
+
+    handleMouseDown = (e) => {
+        this.setState({
+            selectedSign: null,
+            anchorEl: null
+        });
+    }
+
+    setAnchorEl = (e, el) => {
+        if (e) e.stopPropagation();
+        this.setState({
+            anchorEl: el
+        });
+    }
+
+    setSelectedSign = (signKey, ev) => {
+        if (ev) ev.stopPropagation();
+
+        this.setState({
+            selectedSign: signKey
+        });
+    }
+
+    deleteSelectedSign = (sign) => {
+        this.setState({
+            signs: this.state.signs.filter(s => s != sign)
+        });
+    }
+
+    duplicateSelectedSign = (sign) => {
+        this.setState({
+            signs: [...this.state.signs, sign]
+        });
+    }
+
+    onClickSignature = () => {
+        this.setState({
+            selectedNavPanelItem: 'Fields'
+        });
     }
 
     onNavPanelItemClick = (item) => {
@@ -115,6 +177,16 @@ class UserDocumentViewer extends Component {
                 actionType={this.state.selectedNavPanelItem}
                 onNavPanelItemClick={this.onNavPanelItemClick}
                 onClickSend={this.onClickSend}
+                onClickSignature={this.onClickSignature}
+                onDropSign={this.onDropSign}
+                signs={this.state.signs}
+                setSelectedSign={this.setSelectedSign}
+                selectedSign={this.state.selectedSign}
+                anchorEl={this.state.anchorEl}
+                setAnchorEl={this.setAnchorEl}
+                deleteSelectedSign={this.deleteSelectedSign}
+                duplicateSelectedSign={this.duplicateSelectedSign}
+                handleMouseDown={this.handleMouseDown}
             />
         )
     }
@@ -122,7 +194,7 @@ class UserDocumentViewer extends Component {
 
 const mapStateToProps = ({ documents }) => {
     const { selectedDocument } = documents;
-    return {selectedDocument};
+    return { selectedDocument };
 }
 
 export default withRouter(

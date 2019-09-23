@@ -41,10 +41,7 @@ class PDFViewer extends Component {
         super(props);
         this.state = {
             pdf: null,
-            scale: 1,
-            signs: [],
-            selectedSign: null,
-            anchorEl: null
+            scale: 1
         };
     }
 
@@ -58,64 +55,22 @@ class PDFViewer extends Component {
         });
     }
 
-    onDropSign = (signature) => {
-        var newState = [...this.state.signs, signature];
-        this.setState({
-            signs: newState,
-            selectedSign: null
-        })
-    }
-
-    handleMouseDown = (e) => {
-        this.setState({
-            selectedSign: null,
-            anchorEl: null
-        });
-    }
-
-    setAnchorEl = (e, el) => {
-        if (e) e.stopPropagation();
-        this.setState({
-            anchorEl: el
-        });
-    }
-
-    setSelectedSign = (signKey, ev) => {
-        if (ev) ev.stopPropagation();
-
-        this.setState({
-            selectedSign: signKey
-        });
-    }
-
-    deleteSelectedSign = (sign) => {
-        this.setState({
-            signs: this.state.signs.filter(s => s != sign)
-        });
-    }
-
-    duplicateSelectedSign = (sign) => {
-        this.setState({
-            signs: [...this.state.signs, sign]
-        });
-    }
-
     render() {
         const { pdf, scale } = this.state;
 
         return (
-            <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.handleMouseDown}>
+            <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.props.handleMouseDown}>
                 <Viewer
                     pdf={pdf}
                     scale={scale}
-                    signs={this.state.signs}
-                    onDropSign={this.onDropSign}
-                    setSelectedSign={this.setSelectedSign}
-                    selectedSign={this.state.selectedSign}
-                    anchorEl={this.state.anchorEl}
-                    setAnchorEl={this.setAnchorEl}
-                    deleteSelectedSign={this.deleteSelectedSign}
-                    duplicateSelectedSign={this.duplicateSelectedSign}
+                    signs={this.props.signs}
+                    onDropSign={this.props.onDropSign}
+                    setSelectedSign={this.props.setSelectedSign}
+                    selectedSign={this.props.selectedSign}
+                    anchorEl={this.props.anchorEl}
+                    setAnchorEl={this.props.setAnchorEl}
+                    deleteSelectedSign={this.props.deleteSelectedSign}
+                    duplicateSelectedSign={this.props.duplicateSelectedSign}
                 />
             </div>
         );
