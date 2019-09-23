@@ -78,7 +78,8 @@ class Page extends Component {
         const dropPos = {
             pageId: this.props.pageId,
             pageX: Math.abs(ev.pageX - pagePos.left),
-            pageY: Math.abs(ev.pageY - pagePos.top)
+            pageY: Math.abs(ev.pageY - pagePos.top),
+            recipient: null
         }
 
         this.props.onDropSign(dropPos);

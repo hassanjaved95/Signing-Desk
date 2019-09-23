@@ -7,6 +7,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { getNameInitials, getRandomColor } from "Helpers/helpers";
 
 const useStyles = makeStyles({
     signature: props => ({
@@ -49,21 +50,21 @@ const useStyles = makeStyles({
             color: '#4286f4'
         }
     },
-    rightArrow: {
+    rightArrow: props => ({
         width: 0,
         height: 0,
         borderTop: '9px solid transparent',
-        borderLeft: '18px solid #555',
+        borderLeft: `18px solid ${props.userNameColor}`,
         borderBottom: '9px solid transparent'
-    },
-    nameSection: {
+    }),
+    nameSection: props => ({
         width: 'auto',
         height: 18,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: '#555'
-    },
+        background: props.userNameColor
+    }),
     assigneeContainer: {
         display: 'flex',
         position: 'absolute',
@@ -93,14 +94,25 @@ const useStyles = makeStyles({
 
 const Signature = (props) => {
     const { sign, signKey, selectedSign } = props;
-    const classes = useStyles({ selectedSignStyle: signKey === selectedSign });
+    const userName = sign.recipient ? (sign.recipient.firstName + ' ' + sign.recipient.lastName) : '';
+    const userEmail = sign.recipient ? sign.recipient.email : '';
+    const userNameColor = getRandomColor(userEmail);
+    const classes = useStyles({ selectedSignStyle: sign == selectedSign, userNameColor });
+    const shortName = sign.recipient ? getNameInitials(userName) : '';
+    const fullName = sign.recipient ? userName : '';
+    const [name, setName] = React.useState(shortName);
+
+    function setUserName(n) {
+        console.log('setUserName:', n);
+        setName(n);
+    }
 
     return (
         <React.Fragment>
             <Draggable
                 bounds='parent'
                 onMouseDown={(ev) => {
-                    props.setSelectedSign(signKey, ev);
+                    props.setSelectedSign(sign, ev);
                 }}
             >
                 <div
@@ -108,12 +120,26 @@ const Signature = (props) => {
                     className={`${classes.signature} signaturediv`}
                     style={{ top: sign.pageY, left: sign.pageX }}
                 >
+                    {
+                        sign.recipient &&
+                        <div className={classes.assigneeContainer}
+                            onMouseOver={() => {
+                                console.log('onMouseOver event called.');
+                                setUserName(fullName)
+                            }}
+                            onMouseOut={() => {
+                                console.log('onMouseOut event called.');
+                                setUserName(shortName)
+                            }}
+                        >
+                            <div className={classes.nameSection}>
+                                {name || shortName}
+                            </div>
+                            <div className={classes.rightArrow}></div>
 
-                    <div className={classes.assigneeContainer}>
-                        <div className={classes.nameSection}>HG</div>
-                        <div className={classes.rightArrow}></div>
+                        </div>
 
-                    </div>
+                    }
                     <div className={classes.noevents}>
                         <Brush />
                     </div>

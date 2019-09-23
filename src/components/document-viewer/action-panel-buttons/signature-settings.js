@@ -1,11 +1,15 @@
 import React from "react";
 import Cancel from "@material-ui/icons/Cancel";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import Select from 'react-select';
 import { makeStyles } from "@material-ui/styles";
+import UserListItem from "./user-list-item";
 
 const useStyles = makeStyles({
     container: {
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        padding: 10
     },
     header: {
         display: "flex",
@@ -45,7 +49,7 @@ const useStyles = makeStyles({
 });
 
 const SignatureSettings = (props) => {
-    const { signature } = this.props;
+    const { signature } = props;
     const { container, header, text, icon, userDetail, deleteBtn } = useStyles();
     return (
         <div className={container}>
@@ -59,18 +63,18 @@ const SignatureSettings = (props) => {
                 {
                     signature.recipient &&
                     <UserListItem user={signature.recipient}>
-                        <Cancel style={{ fontSize: "20px", cursor: 'pointer', color: 'red' }} onClick={props.removeRecipient} />
+                        <Cancel style={{ fontSize: "20px", cursor: 'pointer', color: 'red' }} onClick={() => { props.onSelectRecipient(null, signature) }} />
                     </UserListItem>
                 }
                 {
                     !signature.recipient &&
                     <div style={{ fontSize: "13px" }}>
-                        <Select options={props.recipientsList} value={''} placeholder="Name or Email" onChange={(user) => props.onSelectRecipient(user)} />
+                        <Select options={props.recipientsList} value={''} placeholder="Name or Email" onChange={(user) => props.onSelectRecipient(user, signature)} />
                     </div>
                 }
             </div>
             <div className={deleteBtn}>
-                <div onClick={props.deleteSignature}> DELETE FIELD </div>
+                <div onClick={() => { props.deleteSignature(signature) }}> DELETE FIELD </div>
             </div>
         </div>
 

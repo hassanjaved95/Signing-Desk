@@ -62,7 +62,6 @@ const DocumentViewerLayout = function (props) {
         <div className={classes.documentViewerContainer}>
             <div className={classes.documentViewer}>
                 <PDFViewer
-                    onClickSignature={props.onClickSignature}
                     onDropSign={props.onDropSign}
                     setSelectedSign={props.setSelectedSign}
                     selectedSign={props.selectedSign}
@@ -72,10 +71,22 @@ const DocumentViewerLayout = function (props) {
                     duplicateSelectedSign={props.duplicateSelectedSign}
                     signs={props.signs}
                     handleMouseDown={props.handleMouseDown}
+                    selectedUsers={props.selectedUsers}
+                    onSelectUser={props.onSelectUser}
                 />
             </div>
             <div className={classes.documentActionPanel}>
-                <ActionPanel actionType={props.actionType} fieldActionItems={fieldActions} />
+                <ActionPanel
+                    actionType={props.actionType}
+                    fieldActionItems={fieldActions}
+                    onSelectUser={props.onSelectUser}
+                    selectedUsers={props.selectedUsers}
+                    selectedSign={props.selectedSign}
+                    onSelectRecipient={props.onSelectRecipient}
+                    deleteSignature={props.deleteSelectedSign}
+                    removeRecipient={props.removeRecipient}
+                    closeSignatureSettings={props.handleMouseDown}
+                />
             </div>
             <div className={classes.documentNavPanel}>
                 <NavPanel navPanelItems={navPanelItems}
@@ -95,8 +106,17 @@ class UserDocumentViewer extends Component {
             selectedNavPanelItem: 'Fields',
             signs: [],
             selectedSign: null,
-            anchorEl: null
+            anchorEl: null,
+            selectedUsers: []
         }
+    }
+
+    onSelectUser = (user) => {
+        if (this.state.selectedUsers.indexOf(user) !== -1) return;
+
+        this.setState({
+            selectedUsers: [...this.state.selectedUsers, user]
+        });
     }
 
     onDropSign = (signature) => {
@@ -121,17 +141,19 @@ class UserDocumentViewer extends Component {
         });
     }
 
-    setSelectedSign = (signKey, ev) => {
+    setSelectedSign = (sign, ev) => {
         if (ev) ev.stopPropagation();
 
         this.setState({
-            selectedSign: signKey
+            selectedSign: sign,
+            selectedNavPanelItem: 'Fields'
         });
     }
 
     deleteSelectedSign = (sign) => {
         this.setState({
-            signs: this.state.signs.filter(s => s != sign)
+            signs: this.state.signs.filter(s => s != sign),
+            selectedSign: null
         });
     }
 
@@ -158,6 +180,18 @@ class UserDocumentViewer extends Component {
         console.log('send clicked');
     }
 
+    onSelectRecipient = (user, sign) => {
+        this.setState({
+            selectedSign: { ...this.state.selectedSign, recipient: user },
+            signs: this.state.signs.filter(s => {
+                if (s == sign) {
+                    s.recipient = user;
+                }
+                return true;
+            })
+        });
+    }
+
     componentDidMount() {
         // this.props.getViewingDocument();
     }
@@ -177,7 +211,6 @@ class UserDocumentViewer extends Component {
                 actionType={this.state.selectedNavPanelItem}
                 onNavPanelItemClick={this.onNavPanelItemClick}
                 onClickSend={this.onClickSend}
-                onClickSignature={this.onClickSignature}
                 onDropSign={this.onDropSign}
                 signs={this.state.signs}
                 setSelectedSign={this.setSelectedSign}
@@ -187,6 +220,9 @@ class UserDocumentViewer extends Component {
                 deleteSelectedSign={this.deleteSelectedSign}
                 duplicateSelectedSign={this.duplicateSelectedSign}
                 handleMouseDown={this.handleMouseDown}
+                onSelectUser={this.onSelectUser}
+                selectedUsers={this.state.selectedUsers}
+                onSelectRecipient={this.onSelectRecipient}
             />
         )
     }

@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getCompanies, getCompanyUsers, getContactsAsUsers, createContact, updateContact,deleteContacts } from "Actions";
+import { getCompanies, getCompanyUsers, getContactsAsUsers, createContact, updateContact, deleteContacts } from "Actions";
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
@@ -39,7 +39,6 @@ class RecipientActions extends React.Component {
         this.state = {
             loading: true,
             activeTab: '1',
-            selectedUsers: [],
             selectedCompany: {},
             editingContact: '',
             isUsers: true,
@@ -69,13 +68,7 @@ class RecipientActions extends React.Component {
         this.props.getCompanyUsers({ companyId: company.id });
     }
 
-    onSelectUser = (user) => {
-        if (this.state.selectedUsers.indexOf(user) !== -1) return;
 
-        this.setState({
-            selectedUsers: [...this.state.selectedUsers, user]
-        });
-    }
 
     onClickRecipient = (user) => {
         this.setState({
@@ -131,7 +124,7 @@ class RecipientActions extends React.Component {
         this.loadAppropriateUsers();
     }
 
-    loadAppropriateUsers = () =>{
+    loadAppropriateUsers = () => {
         if (this.state.isUsers) {
             this.props.getContactsAsUsers();
         } else {
@@ -144,32 +137,32 @@ class RecipientActions extends React.Component {
         this.loadAppropriateUsers();
 
     }
-    deleteContact = () =>{
+    deleteContact = () => {
         var result = window.confirm("Are you sure you want to delete the contact(s)?");
-        if(result){
+        if (result) {
             this.props.deleteContacts({ "ContactIDs": [this.state.editingContact.id] });
             this.loadAppropriateUsers();
         }
     }
-    
+
     onSubmitForm = (obj) => {
         if (obj.file) {
             toBase64(obj.file).then((base64) => {
                 obj.CertPEM = base64;
                 obj.certEmail = obj.email;
-                if(obj.id){
+                if (obj.id) {
                     this.updateContact(obj);
-                }else{
-                this.createContact(obj);
+                } else {
+                    this.createContact(obj);
                 }
             }).catch(console.log);
         } else {
             obj.certEmail = obj.email;
-            if(obj.id){
+            if (obj.id) {
                 this.updateContact(obj);
             }
-            else{
-            this.createContact(obj);
+            else {
+                this.createContact(obj);
             }
         }
     }
@@ -220,9 +213,9 @@ class RecipientActions extends React.Component {
                                     this.users &&
                                     <Recipients
                                         users={this.users}
-                                        onSelectUser={this.onSelectUser}
+                                        onSelectUser={this.props.onSelectUser}
                                         onSelectCompany={this.onSelectCompany}
-                                        selectedUsers={this.state.selectedUsers}
+                                        selectedUsers={this.props.selectedUsers}
                                         selectedCompany={this.state.selectedCompany}
                                         deleteEditingContact={this.deleteEditingContact}
                                         clearEditing={this.clearEditingContact}
@@ -244,7 +237,7 @@ class RecipientActions extends React.Component {
                     <TabPane tabId="2">
                         <Row>
                             <Col sm="12">
-                                <SigningOrder selectedUsers={this.state.selectedUsers} onClickRecipient={() => { }} />
+                                <SigningOrder selectedUsers={this.props.selectedUsers} onClickRecipient={() => { }} />
                             </Col>
                         </Row>
                     </TabPane>
