@@ -8,11 +8,15 @@ import PeopleIcon from '@material-ui/icons/People';
 import BrushIcon from '@material-ui/icons/Brush';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-
+import Button from '@material-ui/core/Button';
 import NavPanel from "Components/document-viewer/nav-panel";
 import ActionPanel from "Components/document-viewer/action-panel";
 import PDFViewer from "Container/documents/pdf-viewer";
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
+import MobileStepper from '@material-ui/core/MobileStepper';
 
 const useStyles = makeStyles({
     documentViewerContainer: {
@@ -105,6 +109,7 @@ class UserDocumentViewer extends Component {
         this.state = {
             selectedNavPanelItem: 'Fields',
             signs: [],
+            signRecipientsCount: 0,
             selectedSign: null,
             anchorEl: null,
             selectedUsers: []
@@ -177,6 +182,18 @@ class UserDocumentViewer extends Component {
     }
 
     onClickSend = () => {
+        const recipientsCount = this.state.signs.reduce((count, sign) => {
+            if (sign.recipient) count += 1;
+            return count;
+        }, 0);
+
+        this.setState({
+            signRecipientsCount: recipientsCount
+        });
+
+        if (recipientsCount != this.state.signs.length) {
+
+        }
         console.log('send clicked');
     }
 
@@ -190,6 +207,10 @@ class UserDocumentViewer extends Component {
                 return true;
             })
         });
+    }
+
+    transitionUp = (props) => {
+        return <Slide {...props} direction="up" />;
     }
 
     componentDidMount() {
@@ -207,23 +228,58 @@ class UserDocumentViewer extends Component {
         // }
 
         return (
-            <DocumentViewerLayout {...this.props}
-                actionType={this.state.selectedNavPanelItem}
-                onNavPanelItemClick={this.onNavPanelItemClick}
-                onClickSend={this.onClickSend}
-                onDropSign={this.onDropSign}
-                signs={this.state.signs}
-                setSelectedSign={this.setSelectedSign}
-                selectedSign={this.state.selectedSign}
-                anchorEl={this.state.anchorEl}
-                setAnchorEl={this.setAnchorEl}
-                deleteSelectedSign={this.deleteSelectedSign}
-                duplicateSelectedSign={this.duplicateSelectedSign}
-                handleMouseDown={this.handleMouseDown}
-                onSelectUser={this.onSelectUser}
-                selectedUsers={this.state.selectedUsers}
-                onSelectRecipient={this.onSelectRecipient}
-            />
+            <React.Fragment>
+                <DocumentViewerLayout {...this.props}
+                    actionType={this.state.selectedNavPanelItem}
+                    onNavPanelItemClick={this.onNavPanelItemClick}
+                    onClickSend={this.onClickSend}
+                    onDropSign={this.onDropSign}
+                    signs={this.state.signs}
+                    setSelectedSign={this.setSelectedSign}
+                    selectedSign={this.state.selectedSign}
+                    anchorEl={this.state.anchorEl}
+                    setAnchorEl={this.setAnchorEl}
+                    deleteSelectedSign={this.deleteSelectedSign}
+                    duplicateSelectedSign={this.duplicateSelectedSign}
+                    handleMouseDown={this.handleMouseDown}
+                    onSelectUser={this.onSelectUser}
+                    selectedUsers={this.state.selectedUsers}
+                    onSelectRecipient={this.onSelectRecipient}
+                />
+                {
+                    this.state.signRecipientsCount != this.state.signs.length &&
+                    <Snackbar
+                        style={{ width: 600, marginBottom: 20 }}
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        open={this.state.signRecipientsCount != this.state.signs.length}
+                        TransitionComponent={this.transitionUp}
+                        ContentProps={{
+                            'aria-describedby': 'message-id',
+                        }}
+                        message={
+                            <div id="message-id" style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div>
+                                    You have <b>{this.state.signs.length - this.state.signRecipientsCount} unassigned</b> field(s) to fill
+                                </div>
+                                <div>
+                                    <MobileStepper
+                                        variant="progress"
+                                        steps={6}
+                                        position="static"
+                                        activeStep={3}
+                                        style={{ maxWidth: 600, flexGrow: 1 }}
+                                        nextButton={
+                                            <Button size="small" onClick={() => { }}>
+                                                Next
+                                            </Button>
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        }
+                    />
+                }
+            </React.Fragment>
         )
     }
 }
