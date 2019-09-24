@@ -55,7 +55,9 @@ const createContactRequest = async (data) => {
 }
 
 const updateContactRequest = async (data) => {
-    var response = await API.post('contacts/update', data)
+    debugger;
+    console.log(data);
+    var response = await API.put('contacts/update', data)
     console.log('updateContactRequest response:', response);
     return response;
 }
