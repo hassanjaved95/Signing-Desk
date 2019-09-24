@@ -78,7 +78,8 @@ class Page extends Component {
         const dropPos = {
             pageId: this.props.pageId,
             pageX: Math.abs(ev.pageX - pagePos.left),
-            pageY: Math.abs(ev.pageY - pagePos.top)
+            pageY: Math.abs(ev.pageY - pagePos.top),
+            recipient: null
         }
 
         this.props.onDropSign(dropPos);
@@ -96,6 +97,7 @@ class Page extends Component {
             <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height }}>
                 <canvas ref={this.setCanvasRef} />
                 {
+                    docSigns &&
                     docSigns
                         .filter(doc => doc.pageId === pageId)
                         .map((sign, index) =>
@@ -108,6 +110,8 @@ class Page extends Component {
                                 pageBoundary={this.getPageBoundary()}
                                 anchorEl={this.props.anchorEl}
                                 setAnchorEl={this.props.setAnchorEl}
+                                deleteSelectedSign={this.props.deleteSelectedSign}
+                                duplicateSelectedSign={this.props.duplicateSelectedSign}
                             />
                         )
                 }

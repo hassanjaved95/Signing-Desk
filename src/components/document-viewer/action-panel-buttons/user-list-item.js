@@ -70,7 +70,7 @@ function dragOver(callback, e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
 
-    
+
     if (isBefore(_el, e.target)) {
         e.target.parentNode.insertBefore(_el, e.target);
     } else {
@@ -104,7 +104,7 @@ const UserListItem = (props) => {
     return (
         <li key={user.id}
             className={liStyles}
-            onClick={props.onClickRecipient.bind(null, user)}
+            onClick={props.onClickRecipient && props.onClickRecipient.bind(null, user)}
             onDragOver={dragOver.bind(this, props.reorder)}
             onDragStart={dragStart}
             onDragEnd={dragEnd}

@@ -43,6 +43,8 @@ const Viewer = (props) => {
                             selectedSign={props.selectedSign}
                             anchorEl={props.anchorEl}
                             setAnchorEl={props.setAnchorEl}
+                            deleteSelectedSign={props.deleteSelectedSign}
+                            duplicateSelectedSign={props.duplicateSelectedSign}
                         />
                     )
                 )}

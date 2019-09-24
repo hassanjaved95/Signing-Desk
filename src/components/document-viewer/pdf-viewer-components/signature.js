@@ -7,6 +7,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { getNameInitials, getRandomColor } from "Helpers/helpers";
 
 const useStyles = makeStyles({
     signature: props => ({
@@ -15,8 +16,6 @@ const useStyles = makeStyles({
         backgroundColor: props.selectedSignStyle ? "antiquewhite" : "#c0d7fb",
         color: props.selectedSignStyle ? "lightgrey" : "#4286f4",
         display: "flex",
-        width: 120,
-        height: 50,
         border: "1px dotted #4286f4",
         flexDirection: "row",
         justifyContent: "center",
@@ -49,21 +48,22 @@ const useStyles = makeStyles({
             color: '#4286f4'
         }
     },
-    rightArrow: {
+    rightArrow: props => ({
         width: 0,
         height: 0,
         borderTop: '9px solid transparent',
-        borderLeft: '18px solid #555',
+        borderLeft: `18px solid ${props.userNameColor}`,
         borderBottom: '9px solid transparent'
-    },
-    nameSection: {
+    }),
+    nameSection: props => ({
         width: 'auto',
         height: 18,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: '#555'
-    },
+        background: props.userNameColor,
+        padding: '0 5px'
+    }),
     assigneeContainer: {
         display: 'flex',
         position: 'absolute',
@@ -77,55 +77,105 @@ const useStyles = makeStyles({
         whiteSpace: 'nowrap',
         verticalAlign: 'bottom',
         cursor: 'help',
-        borderRadius: 2,
+        borderRadius: 2
+    },
+    menuStyle: {
+        marginTop: 40,
+        "& ul": {
+            margin: 0,
+            padding: 0,
+        },
+        "& li": {
+            fontSize: 13
+        }
     }
 });
 
 const Signature = (props) => {
     const { sign, signKey, selectedSign } = props;
-    const classes = useStyles({ selectedSignStyle: signKey === selectedSign });
+    const userName = sign.recipient ? (sign.recipient.firstName + ' ' + sign.recipient.lastName) : '';
+    const userEmail = sign.recipient ? sign.recipient.email : '';
+    const userNameColor = getRandomColor(userEmail);
+    const classes = useStyles({ selectedSignStyle: sign == selectedSign, userNameColor });
+    const shortName = sign.recipient ? getNameInitials(userName) : '';
+    const fullName = sign.recipient ? userName : '';
+    const [name, setName] = React.useState(shortName);
+    const [width, setWidth] = React.useState(120);
+    const [height, setHeight] = React.useState(50);
+
+    function setUserName(n) {
+        console.log('setUserName:', n);
+        setName(n);
+    }
 
     return (
         <React.Fragment>
             <Draggable
                 bounds='parent'
                 onMouseDown={(ev) => {
-                    props.setSelectedSign(signKey, ev);
+                    props.setSelectedSign(sign, ev);
                 }}
             >
-                <div
-                    id={signKey}
-                    className={`${classes.signature} signaturediv`}
-                    style={{ top: sign.pageY, left: sign.pageX }}
-                >
-
-                    <div className={classes.assigneeContainer}>
-                        <div className={classes.nameSection}>HG</div>
-                        <div className={classes.rightArrow}></div>
-
-                    </div>
-                    <div className={classes.noevents}>
-                        <Brush />
-                    </div>
-                    <div className={classes.noevents}>
-                        SIGNATURE
-                    </div>
-
-                    <div
-                        className={`${classes.moreHoriIcon}`}
+                <div style={{ position: 'absolute', top: sign.pageY, left: sign.pageX }}>
+                    <Resizable
+                        size={{ width, height }}
+                        onResizeStop={(e, direction, ref, d) => {
+                            setWidth(width + d.width);
+                            setHeight(height + d.height);
+                        }}
+                        onResizeStart={(e) => {
+                            e.stopPropagation();
+                        }}
+                        onResize={(e, direction, ref, d) => {
+                            // setWidth(width + d.width);
+                            // setHeight(height + d.height);
+                        }}
                     >
-                        <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
+                        <div
+                            id={signKey}
+                            className={`${classes.signature} signaturediv`}
+                            style={{ width, height }}
+                            onMouseOver={() => {
+                                setUserName(fullName)
+                            }}
+                            onMouseOut={() => {
+                                setUserName(shortName)
+                            }}
+                        >
+                            {
+                                sign.recipient &&
+                                <div className={classes.assigneeContainer}>
+                                    <div className={classes.nameSection}>
+                                        {name || shortName}
+                                    </div>
+                                    <div className={classes.rightArrow}></div>
+
+                                </div>
+
+                            }
+                            <div className={classes.noevents}>
+                                <Brush />
+                            </div>
+                            <div className={classes.noevents}>
+                                SIGNATURE
                     </div>
 
+                            <div
+                                className={`${classes.moreHoriIcon}`}
+                            >
+                                <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
+                            </div>
+
+                        </div>
+                    </Resizable>
                 </div>
             </Draggable>
 
-
             <div>
                 <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
-                    <Menu anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
-                        <MenuItem onClick={() => { console.log('Duplicate Sign') }}> Duplicate </MenuItem>
-                        <MenuItem onClick={() => { console.log('Delete Sign') }}> Delete </MenuItem>
+                    <Menu className={classes.menuStyle} anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
+                        <MenuItem onClick={() => { props.duplicateSelectedSign({ ...sign, pageY: sign.pageY + 10, pageX: sign.pageX + 10 }) }}> Duplicate </MenuItem>
+                        <MenuItem style={{ color: 'red' }} onClick={() => { props.deleteSelectedSign(sign) }}> Delete </MenuItem>
                     </Menu>
                 </ClickAwayListener>
             </div>
