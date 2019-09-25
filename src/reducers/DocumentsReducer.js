@@ -14,6 +14,7 @@ import {
   SELECTED_FOLDER,
   EDIT_FOLDER_NAME,
   EDIT_FOLDER_NAME_SUCCESS,
+  EDIT_FOLDER_NAME_FAILURE,
   DELETE_FOLDER,
   DELETE_FOLDER_SUCCESS,
   DELETE_FOLDER_FAILURE,
@@ -22,8 +23,10 @@ import {
   MOVE_DOCUMENTS_FAILURE,
   ADD_NEW_FOLDER,
   ADD_NEW_FOLDER_SUCCESS,
+  ADD_NEW_FOLDER_FAILURE,
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
+  DELETE_DOCUMENTS_FAILURE,
   SET_SELECTED_DOCUMENT
 } from "Actions/types";
 
@@ -125,7 +128,7 @@ export default (state = INITIAL_STATE, action) => {
     case GET_DOCUMENTS:
       return { ...state, documents: null, loading: true };
     case CREATE_DOCUMENT_FAILURE:
-      NotificationManager.error("Document creation failed");
+      NotificationManager.error(action.payload)
       return {
         ...state,
         documents: null,
@@ -151,7 +154,12 @@ export default (state = INITIAL_STATE, action) => {
         }
       }
     }
-
+    case DELETE_DOCUMENTS_FAILURE: {
+      NotificationManager.error(action.payload);
+      return {
+        ...state
+      }
+    }
     case UPDATE_DOCUMENTS: {
       return { ...state, loading: true };
     }
@@ -184,7 +192,7 @@ export default (state = INITIAL_STATE, action) => {
 
 
     case UPDATE_DOCUMENT_FAILURE: {
-      NotificationManager.error("Document updated fail");
+      NotificationManager.error(action.payload)
 
       return {
         ...state,
@@ -213,6 +221,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case GET_DOCUMENTS_FAILURE:
+      NotificationManager.error(action.payload)
       return {
         ...state,
         documents: null,
@@ -245,6 +254,12 @@ export default (state = INITIAL_STATE, action) => {
         documents: renameInFoldersList(state.documents, action.payload.folderId, action.payload.name)
       }
     }
+    case EDIT_FOLDER_NAME_FAILURE: {
+      NotificationManager.error(action.payload);
+      return {
+        ...state
+      }
+    }
     case MOVE_DOCUMENTS: {
       return { ...state, loading: true }
     }
@@ -254,7 +269,7 @@ export default (state = INITIAL_STATE, action) => {
 
     }
     case CREATE_DOCUMENT_FAILURE: {
-      NotificationManager.error("Documents Not Moved successfully");
+      NotificationManager.error(action.payload)
       return { ...state, loading: false }
 
 
@@ -276,7 +291,7 @@ export default (state = INITIAL_STATE, action) => {
     }
 
     case DELETE_FOLDER_FAILURE: {
-      NotificationManager.error("Make sure your folder is empty.");
+      NotificationManager.error(action.payload)
       return {
         ...state, loading: false
       }
@@ -291,6 +306,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state, loading: false,
         documents: addNewFolder(state.documents, action.payload.parentFoldersID, action.payload.id, action.payload.name)
+      }
+    }
+    case ADD_NEW_FOLDER_FAILURE: {
+      NotificationManager.error(action.payload);
+      return {
+        ...state
       }
     }
     case SET_SELECTED_DOCUMENT: {

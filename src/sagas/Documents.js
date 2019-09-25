@@ -12,7 +12,11 @@ import {
   editFolderNameSuccess,
   deleteFolderSuccess,
   deleteFolderFailure,
-  addNewFolderSuccess
+  addNewFolderSuccess,
+  addNewFolderFailure,
+  deleteDocumentsFailure,
+  duplicateDocumentsFailure,
+  editFolderNameFailure
 } from "Actions";
 import {
   CREATE_DOCUMENT,
@@ -83,10 +87,14 @@ const deleteFolderRequest = async (payload) => {
 function* addNewFolderOnServer({ payload }) {
   try {
     const response = yield call(addNewFolderRequest, payload);
-    if (response.status == 200) {
+    if (response && response.status == 200) {
       const obj = { ...payload, id: response.data.folderID };
       yield put(addNewFolderSuccess(obj));
     }
+    else {
+      yield put(addNewFolderFailure(response));
+    }
+
   } catch (error) {
     console.log('addNewFolderOnServer error: ', error);
   }
@@ -95,7 +103,13 @@ function* addNewFolderOnServer({ payload }) {
 function* getDocumentsFromServer() {
   try {
     const response = yield call(getDocumentsRequest);
-    yield put(getDocumentsSuccess(response));
+    if (response && response.status == 200) {
+      yield put(getDocumentsSuccess(response));
+
+    }
+    else {
+      yield put(getDocumentsFailure(response));
+    }
   } catch (error) {
     yield put(getDocumentsFailure(error));
   }
@@ -104,15 +118,18 @@ function* getDocumentsFromServer() {
 function* createDocumentOnServer(doc) {
   try {
     const response = yield call(createDocumentRequest, doc);
-    if (response.status == 200) {
+    if (response && response.status == 200) {
       doc.payload.id = response.data.documentID;
       yield put(createDocumentSuccess(response));
       doc.handleClose(function () {
         return "";
       })
-    } else {
-      yield put(createDocumentFailure(error));
     }
+    else {
+      yield put(createDocumentFailure(response));
+
+    }
+
   } catch (error) {
     //console.log('createDocumentOnServer error: ', error);
     yield put(createDocumentFailure(error));
@@ -123,13 +140,19 @@ function* createDocumentOnServer(doc) {
 function* updateDocumentOnServer(doc) {
   try {
     const response = yield call(updateDocumentRequest, doc);
-    yield put(updateDocumentSuccess(response));
-
-    if (doc.onCloseDlg) {
-      doc.onCloseDlg(function () {
-        return "";
-      });
+    if (response && response.status == 200) {
+      yield put(updateDocumentSuccess(response));
+      if (doc.onCloseDlg) {
+        doc.onCloseDlg(function () {
+          return "";
+        });
+      }
     }
+    else {
+      yield put(updateDocumentFailure(response));
+    }
+
+
   } catch (error) {
     console.log('createDocumentOnServer error: ', error);
     yield put(updateDocumentFailure(error));
@@ -140,12 +163,16 @@ function* updateDocumentOnServer(doc) {
 function* deleteDocumentsFromServer({ payload }) {
   try {
     const response = yield call(deleteDocumentsRequest, payload.documentIds);
-    if (response.status == 200) {
+    if (response && response.status == 200) {
       if (payload.callback && typeof payload.callback === "function") {
         payload.callback();
       }
       yield put(deleteDocumentsSuccess(payload));
     }
+    else {
+      yield put(deleteDocumentsFailure(response));
+    }
+
   } catch (error) {
     console.log('deleteDocumentsFromServer error:', error);
     // yield put(getDocumentsFailure(error));
@@ -154,7 +181,14 @@ function* deleteDocumentsFromServer({ payload }) {
 function* moveDocumentsOnServer() {
   try {
     const response = yield call(moveDocumentsRequest);
-    yield put(moveDocumentsSuccess(response));
+    if (response && response.status == 200) {
+      yield put(moveDocumentsSuccess(response));
+
+    }
+    else {
+      yield put(moveDocumentsFailure(response));
+
+    }
   } catch (error) {
     console.log('moveDocumentsOnServer error:', error);
     yield put(moveDocumentsFailure(error));
@@ -173,10 +207,12 @@ function* duplicateDocumentsOnServer() {
 function* editFolderNameOnServer({ payload }) {
   try {
     const response = yield call(editFolderNameRequest, payload);
-    if (response.status == 200) {
+    if (response && response.status == 200) {
       yield put(editFolderNameSuccess(payload));
-    } else {
-      console.log('editFolderNameOnServer error:', response);
+
+    }
+    else {
+      yield put(editFolderNameFailure(response));
     }
   } catch (error) {
     console.log('editFolderNameOnServer error:', error);
@@ -186,15 +222,16 @@ function* editFolderNameOnServer({ payload }) {
 function* deleteFolderOnServer({ payload }) {
   try {
     const response = yield call(deleteFolderRequest, payload);
-    if (response.status == 200) {
+    if (response && response.status == 200) {
       yield put(deleteFolderSuccess(payload));
-    } else {
-      console.log('deleteFolderOnServer error:', response);
+    }
+    else {
       yield put(deleteFolderFailure(response));
     }
+
   } catch (error) {
     console.log('deleteFolderOnServer error:', error);
-
+    yield put(deleteFolderFailure(error));
   }
 }
 

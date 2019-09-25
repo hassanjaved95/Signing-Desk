@@ -12,11 +12,13 @@ import {
   UPDATE_DOCUMENT_FAILURE,
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
+  DELETE_DOCUMENTS_FAILURE,
   MOVE_DOCUMENTS,
   MOVE_DOCUMENTS_SUCCESS,
   MOVE_DOCUMENTS_FAILURE,
   DUPLICATE_DOCUMENTS,
   DUPLICATE_DOCUMENTS_SUCCESS,
+  DUPLICATE_DOCUMENTS_FAILURE,
   EDIT_FOLDER_NAME,
   EDIT_FOLDER_NAME_SUCCESS,
   DELETE_FOLDER,
@@ -24,7 +26,9 @@ import {
   DELETE_FOLDER_FAILURE,
   ADD_NEW_FOLDER,
   ADD_NEW_FOLDER_SUCCESS,
-  SET_SELECTED_DOCUMENT
+  SET_SELECTED_DOCUMENT,
+  ADD_NEW_FOLDER_FAILURE,
+  EDIT_FOLDER_NAME_FAILURE
 } from "./types";
 
 export const getDocuments = () => ({
@@ -89,6 +93,10 @@ export const deleteDocumentsSuccess = (payload) => ({
   type: DELETE_DOCUMENTS_SUCCESS,
   payload
 });
+export const deleteDocumentsFailure = (payload) => ({
+  type: DELETE_DOCUMENTS_FAILURE,
+  payload
+});
 export const moveDocuments = (payload) => ({
   type: MOVE_DOCUMENTS,
   payload
@@ -112,6 +120,10 @@ export const duplicateDocumentsSuccess = (payload) => ({
   type: DUPLICATE_DOCUMENTS_SUCCESS,
   payload
 });
+export const duplicateDocumentsFailure = (payload) => ({
+  type: DUPLICATE_DOCUMENTS_FAILURE,
+  payload
+});
 export const editFolderName = (payload) => ({
   type: EDIT_FOLDER_NAME,
   payload
@@ -119,6 +131,10 @@ export const editFolderName = (payload) => ({
 
 export const editFolderNameSuccess = (payload) => ({
   type: EDIT_FOLDER_NAME_SUCCESS,
+  payload
+});
+export const editFolderNameFailure = (payload) => ({
+  type: EDIT_FOLDER_NAME_FAILURE,
   payload
 });
 export const deleteFolder = (payload) => ({
@@ -144,6 +160,11 @@ export const addNewFolderSuccess = (payload) => ({
   type: ADD_NEW_FOLDER_SUCCESS,
   payload
 });
+export const addNewFolderFailure = (payload) => ({
+  type: ADD_NEW_FOLDER_FAILURE,
+  payload
+});
+
 
 export const setSelectedDocument = (document, callback) => ({
   type: SET_SELECTED_DOCUMENT,

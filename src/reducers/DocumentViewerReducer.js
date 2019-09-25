@@ -20,52 +20,52 @@ import {
 const INITIAL_STATE = {
     viewingDocument: null,
     companies: null,
-    companyUsers:null,
-    contacts:null
+    companyUsers: null,
+    contacts: null
 };
 
-function makeDataCompatibleToOptionsCompanies(data){
-  if(data){
-    data.forEach(function(item){
-        item.value = item.id;
-        item.label = item.name;
-    })
-    return data;
-  }
+function makeDataCompatibleToOptionsCompanies(data) {
+    if (data) {
+        data.forEach(function (item) {
+            item.value = item.id;
+            item.label = item.name;
+        })
+        return data;
+    }
 }
 
-function makeDataCompatibleToOptionsCompanyUsers(data){
-    if(data){
-         data.forEach(function(item){
-             item.value = item.companyUserBridgeID;
-             item.label = item.username;
-             item.email = item.certEmail;
-             item.firstName = item.username;
-             item.lastName = '';
-             item.id = item.companyUserBridgeID;
-         })
-         return data;
+function makeDataCompatibleToOptionsCompanyUsers(data) {
+    if (data) {
+        data.forEach(function (item) {
+            item.value = item.companyUserBridgeID;
+            item.label = item.username;
+            item.email = item.certEmail;
+            item.firstName = item.username;
+            item.lastName = '';
+            item.id = item.companyUserBridgeID;
+        })
+        return data;
     }
- }
+}
 
-function makeDataCompatibleToOptionsUsers(data){
-   if(data){
-        data.forEach(function(item){
+function makeDataCompatibleToOptionsUsers(data) {
+    if (data) {
+        data.forEach(function (item) {
             item.value = item.id;
             item.label = item.firstName + ' ' + item.lastName;;
         })
         return data;
-   }
+    }
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        
+
         case GET_VIEWING_DOCUMENT:
             return { ...state, loading: true };
 
-       
-            case GET_VIEWING_DOCUMENT_SUCCESS: {
+
+        case GET_VIEWING_DOCUMENT_SUCCESS: {
             const doc = action.payload;
             return {
                 ...state,
@@ -76,7 +76,7 @@ export default (state = INITIAL_STATE, action) => {
 
 
         case GET_VIEWING_DOCUMENT_FAILURE:
-            NotificationManager.error("Error occured while fetching document details.")
+            NotificationManager.error(action.payload);
             return {
                 ...state,
                 loading: false,
@@ -84,9 +84,9 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case GET_COMPANIES:
-          return{...state, loading:true};
-        
-        case GET_COMPANIES_SUCCESS:{
+            return { ...state, loading: true };
+
+        case GET_COMPANIES_SUCCESS: {
             const lstCompanies = makeDataCompatibleToOptionsCompanies(action.payload);
             return {
                 ...state,
@@ -94,21 +94,21 @@ export default (state = INITIAL_STATE, action) => {
                 companies: lstCompanies,
             };
         }
-            
-        
+
+
         case GET_COMPANIES_FAILURE:
-            NotificationManager.error("Error occured while fetching company details.")
+            NotificationManager.error(action.payload);
             return {
                 ...state,
                 loading: false,
                 lstCompanies: null,
             };
 
-            //////////////
+        //////////////
         case GET_COMPANYUSERS:
-          return{...state, loading:true};
-        
-        case GET_COMPANYUSERS_SUCCESS:{
+            return { ...state, loading: true };
+
+        case GET_COMPANYUSERS_SUCCESS: {
             const compUsers = makeDataCompatibleToOptionsCompanyUsers(action.payload);
             return {
                 ...state,
@@ -116,9 +116,9 @@ export default (state = INITIAL_STATE, action) => {
                 companyUsers: compUsers,
             };
         }
-                  
+
         case GET_COMPANYUSERS_FAILURE:
-            NotificationManager.error("Error occured while fetching company user details.")
+            NotificationManager.error(action.payload);
             return {
                 ...state,
                 loading: false,
@@ -126,10 +126,10 @@ export default (state = INITIAL_STATE, action) => {
             };
 
 
-            case GET_CONTACTSASUSERS:
-          return{...state, loading:true};
-        
-        case GET_CONTACTSASUSERS_SUCCESS:{
+        case GET_CONTACTSASUSERS:
+            return { ...state, loading: true };
+
+        case GET_CONTACTSASUSERS_SUCCESS: {
             const cont = makeDataCompatibleToOptionsUsers(action.payload);
             return {
                 ...state,
@@ -137,15 +137,15 @@ export default (state = INITIAL_STATE, action) => {
                 contacts: cont,
             };
         }
-                  
+
         case GET_CONTACTSASUSERS_FAILURE:
-            NotificationManager.error("Error occured while fetching contact details.")
+            NotificationManager.error(action.payload);
             return {
                 ...state,
                 loading: false,
                 contacts: null,
             };
-        
+
         default:
             return { ...state };
     }

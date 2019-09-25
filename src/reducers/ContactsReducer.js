@@ -35,6 +35,7 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case GET_CONTACTS_FAILURE:
+                NotificationManager.error(action.payload);
             return {
                 ...state,
                 contacts: null,

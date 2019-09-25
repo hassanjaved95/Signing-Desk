@@ -30,8 +30,8 @@ const getCompaniesRequest = async () => {
 }
 
 const getCompanyUsersRequest = async (payload) => {
-    
-    var response = await API.get('companies/user/all-users-by-company-updated/'+payload.companyId); // TODO
+
+    var response = await API.get('companies/user/all-users-by-company-updated/' + payload.companyId); // TODO
     return response;
 }
 
@@ -44,7 +44,12 @@ const getContactsRequest = async () => {
 function* getViewingDocumentFromServer() {
     try {
         const response = yield call(getViewingDocumentRequest);
-        yield put(getViewingDocumentSuccess(response));
+        if (response && response.status == 200) {
+            yield put(getViewingDocumentSuccess(response));
+        }
+        else {
+            yield put(getViewingDocumentFailure(response));
+        }
     } catch (error) {
         yield put(getViewingDocumentFailure(error));
     }
@@ -53,16 +58,26 @@ function* getViewingDocumentFromServer() {
 function* getCompaniesFromServer() {
     try {
         const response = yield call(getCompaniesRequest);
-        yield put(getCompaniesSuccess(response));
+        if (response && response.status == 200) {
+            yield put(getCompaniesSuccess(response));
+        }
+        else {
+            yield put(getCompaniesFailure(response));
+        }
     } catch (error) {
         yield put(getCompaniesFailure(error));
     }
 }
 
-function* getCompanyUsersFromServer({payload}) {
+function* getCompanyUsersFromServer({ payload }) {
     try {
         const response = yield call(getCompanyUsersRequest, payload);
-        yield put(getCompanyUsersSuccess(response));
+        if (response && response.status == 200) {
+            yield put(getCompanyUsersSuccess(response));
+        }
+        else {
+            yield put(getCompanyUsersFailure(response));
+        }
     } catch (error) {
         yield put(getCompanyUsersFailure(error));
     }
@@ -71,7 +86,12 @@ function* getCompanyUsersFromServer({payload}) {
 function* getContactsFromServer() {
     try {
         const response = yield call(getContactsRequest);
-        yield put(getContactsAsUsersSuccess(response));
+        if (response && response.status == 200) {
+            yield put(getContactsAsUsersSuccess(response));
+        }
+        else {
+            yield put(getContactsAsUsersFailure(response));
+        }
     } catch (error) {
         yield put(getContactsAsUsersFailure(error));
     }

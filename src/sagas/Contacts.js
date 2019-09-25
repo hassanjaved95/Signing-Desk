@@ -71,7 +71,12 @@ const deleteContactsRequest = async (ids) => {
 function* getContactsFromServer() {
     try {
         const response = yield call(getContactsRequest);
-        yield put(getContactsSuccess(response));
+        if (response && response.status == 200) {
+            yield put(getContactsSuccess(response));
+        }
+        else {
+            yield put(getContactsFailure(response));
+        }
     } catch (error) {
         yield put(getContactsFailure(error));
     }
