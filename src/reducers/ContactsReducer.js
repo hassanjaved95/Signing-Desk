@@ -13,13 +13,64 @@ import {
     CREATE_CONTACT_SUCCESS,
     UPDATE_CONTACT,
     UPDATE_CONTACT_SUCCESS,
-    UPDATE_CONTACT_FAILURE
+    UPDATE_CONTACT_FAILURE,
+    GET_COMPANYUSERS,
+    GET_COMPANYUSERS_SUCCESS,
+    GET_COMPANYUSERS_FAILURE,
+
+    GET_CONTACTSASUSERS,
+    GET_CONTACTSASUSERS_SUCCESS,
+    GET_CONTACTSASUSERS_FAILURE,
 } from "Actions/types";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 const INITIAL_STATE = {
     contacts: null,
     filterdContacts: null
 };
+
+function makeDataCompatibleToOptionsCompanyUsers(data) {
+    if (data && typeof data.isArray != "undefined") {
+        data.forEach(function (item) {
+            item.value = item.companyUserBridgeID;
+            item.label = item.username;
+            item.email = item.certEmail;
+            item.firstName = item.username;
+            item.lastName = '';
+            item.id = item.companyUserBridgeID;
+        })
+
+    }
+    else {
+        data.value = data.companyUserBridgeID;
+        data.label = data.username;
+        data.email = data.certEmail;
+        data.firstName = data.username;
+        data.lastName = '';
+        data.id = data.companyUserBridgeID;
+    }
+
+    return data;
+}
+
+function makeDataCompatibleToOptionsUsers(data) {
+    if (data && data.length) {
+        data.forEach(function (item) {
+            item.value = item.id;
+            item.label = item.firstName + ' ' + item.lastName;
+        })
+
+    }
+    else {
+        data.value = data.id;
+        data.label = data.firstName + ' ' + data.lastName;
+    }
+
+    return data;
+}
+
+
+
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -27,6 +78,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, contacts: null, loading: true };
 
         case GET_CONTACTS_SUCCESS:
+
             return {
                 ...state,
                 contacts: action.payload,
@@ -35,7 +87,7 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case GET_CONTACTS_FAILURE:
-                NotificationManager.error(action.payload);
+            NotificationManager.error(action.payload);
             return {
                 ...state,
                 contacts: null,
@@ -94,9 +146,9 @@ export default (state = INITIAL_STATE, action) => {
             var deleteIds = action.payload.ContactIDs;
             return {
                 ...state,
+                contacts: [...state.contacts.filter(c => deleteIds.indexOf(c.id) == -1)],
+                filterdContacts: [...state.filterdContacts.filter(c => deleteIds.indexOf(c.id) == -1)],
                 loading: false,
-                contacts: state.contacts.filter(c => deleteIds.indexOf(c.id) == -1),
-                filterdContacts: state.filterdContacts.filter(c => deleteIds.indexOf(c.id) == -1)
             };
         }
         case CREATE_CONTACT: {
@@ -107,7 +159,8 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case CREATE_CONTACT_SUCCESS: {
-            var newContact = action.payload;
+            NotificationManager.success("Contact Created successfully");
+            var newContact = makeDataCompatibleToOptionsUsers(action.payload);
             return {
                 ...state,
                 contacts: [...state.contacts, newContact],
@@ -124,8 +177,12 @@ export default (state = INITIAL_STATE, action) => {
 
         case UPDATE_CONTACT_SUCCESS: {
             NotificationManager.success("Contact updated successfully");
+            var updContact = makeDataCompatibleToOptionsUsers(JSON.parse(action.payload.config.data));
+
             return {
                 ...state,
+                contacts: [...state.contacts.filter(c => updContact.id != c.id),
+                      updContact], 
                 loading: false
             }
         }
@@ -136,6 +193,46 @@ export default (state = INITIAL_STATE, action) => {
                 loading: false
             }
         }
+        case GET_COMPANYUSERS:
+            return { ...state, loading: true };
+
+        case GET_COMPANYUSERS_SUCCESS: {
+            const compUsers = makeDataCompatibleToOptionsCompanyUsers(action.payload);
+            return {
+                ...state,
+                loading: false,
+                companyUsers: compUsers,
+            };
+        }
+
+        case GET_COMPANYUSERS_FAILURE:
+            NotificationManager.error(action.payload);
+            return {
+                ...state,
+                loading: false,
+                companyUsers: null,
+            };
+
+
+        case GET_CONTACTSASUSERS:
+            return { ...state, loading: true };
+
+        case GET_CONTACTSASUSERS_SUCCESS: {
+            const cont = makeDataCompatibleToOptionsUsers(action.payload);
+            return {
+                ...state,
+                loading: false,
+                contacts: cont,
+            };
+        }
+
+        case GET_CONTACTSASUSERS_FAILURE:
+            NotificationManager.error(action.payload);
+            return {
+                ...state,
+                loading: false,
+                contacts: null,
+            };
 
         default:
             return state;

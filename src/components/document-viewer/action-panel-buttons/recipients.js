@@ -68,11 +68,14 @@ const Recipients = (props) => {
                                 }} />}
                         </React.Fragment>
                     <br />
-                    {props.selectedUsers && <SelectedUsers selectedUsers={props.selectedUsers} onClickRecipient={props.onClickRecipient} />}
+                    {props.selectedUsers && props.currentUser && <SelectedUsers selectedUsers={props.selectedUsers} onClickRecipient={props.onClickRecipient} />}
                 </React.Fragment>
             }
 
-            {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} onSubmitForm={props.onSubmitForm} deleteContact={props.deleteContact}  />}
+            {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} onSubmitForm={props.onSubmitForm} deleteContact={props.deleteContact} setAddContact={() => {
+                                    setAddContact(true);
+
+                                }} />}
         </div>
     );
 }

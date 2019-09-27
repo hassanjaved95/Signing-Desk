@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getCompanies, getCompanyUsers, getContactsAsUsers, createContact, updateContact, deleteContacts } from "Actions";
+import {getCompanies, getCompanyUsers, getContactsAsUsers, createContact, updateContact, deleteContacts } from "Actions";
 
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
@@ -34,7 +34,7 @@ class RecipientActions extends React.Component {
     companies = null;
     constructor(props) {
         super(props);
-
+        
         this.toggle = this.toggle.bind(this);
         this.state = {
             loading: true,
@@ -42,11 +42,13 @@ class RecipientActions extends React.Component {
             selectedCompany: {},
             editingContact: '',
             isUsers: true,
-            companies: []
+            companies: [],
+            listUser: []
         };
     }
 
     componentDidMount() {
+        
         this.props.getContactsAsUsers();
         //this.props.getCompanyUsers();
         this.props.getCompanies();
@@ -72,7 +74,8 @@ class RecipientActions extends React.Component {
 
     onClickRecipient = (user) => {
         this.setState({
-            editingContact: user
+            editingContact: user,
+            listUser: user
         })
     }
     onToggleUsers = () => {
@@ -85,7 +88,8 @@ class RecipientActions extends React.Component {
     }
     clearEditingContact = () => {
         this.setState({
-            editingContact: ''
+            editingContact: '',
+            listUser: []
         });
     }
 
@@ -121,27 +125,30 @@ class RecipientActions extends React.Component {
     createContact = (reqObj) => {
         // console.log('CreateContact with Params:', reqObj);
         this.props.createContact(reqObj);
-        this.loadAppropriateUsers();
     }
 
-    loadAppropriateUsers = () => {
-        if (this.state.isUsers) {
-            this.props.getContactsAsUsers();
-        } else {
-            this.props.getCompanyUsers();
-        }
-    }
-
+   
     updateContact = (reqObj) => {
         this.props.updateContact(reqObj);
-        this.loadAppropriateUsers();
-
+       
+        this.clearEditingContact();
+       this.props.onDeSelectUser(reqObj.id);
+        
     }
     deleteContact = () => {
         var result = window.confirm("Are you sure you want to delete the contact(s)?");
         if (result) {
             this.props.deleteContacts({ "ContactIDs": [this.state.editingContact.id] });
-            this.loadAppropriateUsers();
+            this.props.onDeSelectUser(this.state.editingContact.id);
+            //this.users = this.props.contacts.contacts.filter(x => x.id != this.state.editingContact.id);
+            this.clearEditingContact();
+
+            if (this.state.isUsers) {
+                this.props.getContactsAsUsers();
+            }
+            else{
+                this.props.getCompanyUsers(this.state.selectedCompany.company.id);
+            }
         }
     }
 
@@ -174,10 +181,10 @@ class RecipientActions extends React.Component {
         this.switchUsers();
         return (
             <div>
-                {/* {
-                    this.state.loading == true &&
+                {
+                    loading == true &&
                     <RctSectionLoader />
-                } */}
+                }
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -210,9 +217,9 @@ class RecipientActions extends React.Component {
                             <Col sm="12">
 
                                 {
-                                    this.users &&
+                                    this.users && this.users.contacts &&
                                     <Recipients
-                                        users={this.users}
+                                        users={this.users.contacts}
                                         onSelectUser={this.props.onSelectUser}
                                         onSelectCompany={this.onSelectCompany}
                                         selectedUsers={this.props.selectedUsers}
@@ -226,6 +233,7 @@ class RecipientActions extends React.Component {
                                         onClickToggleUsers={this.onToggleUsers}
                                         onSubmitForm={this.onSubmitForm}
                                         deleteContact={this.deleteContact}
+                                        currentUser = {this.state.listUser}
                                     />
                                 }
 
@@ -248,15 +256,16 @@ class RecipientActions extends React.Component {
     }
 }
 
-const mapStateToProps = ({ documentViewer }) => {
-    const { companies, companyUsers, contacts } = documentViewer;
-
-    return { companies, companyUsers, contacts };
+const mapStateToProps = ({ documentViewer,contacts}) => {
+    const { companies} = documentViewer;
+    const {companyUsers} = contacts;
+    return { companies, companyUsers, contacts};
 }
 
 export default withRouter(
     connect(mapStateToProps,
         {
+            
             getCompanies,
             getCompanyUsers,
             getContactsAsUsers,

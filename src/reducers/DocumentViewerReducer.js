@@ -6,15 +6,9 @@ import {
     GET_VIEWING_DOCUMENT_FAILURE,
     GET_COMPANIES,
     GET_COMPANIES_SUCCESS,
-    GET_COMPANIES_FAILURE,
+    GET_COMPANIES_FAILURE
 
-    GET_COMPANYUSERS,
-    GET_COMPANYUSERS_SUCCESS,
-    GET_COMPANYUSERS_FAILURE,
-
-    GET_CONTACTSASUSERS,
-    GET_CONTACTSASUSERS_SUCCESS,
-    GET_CONTACTSASUSERS_FAILURE,
+   
 } from "Actions/types";
 
 const INITIAL_STATE = {
@@ -34,29 +28,6 @@ function makeDataCompatibleToOptionsCompanies(data) {
     }
 }
 
-function makeDataCompatibleToOptionsCompanyUsers(data) {
-    if (data) {
-        data.forEach(function (item) {
-            item.value = item.companyUserBridgeID;
-            item.label = item.username;
-            item.email = item.certEmail;
-            item.firstName = item.username;
-            item.lastName = '';
-            item.id = item.companyUserBridgeID;
-        })
-        return data;
-    }
-}
-
-function makeDataCompatibleToOptionsUsers(data) {
-    if (data) {
-        data.forEach(function (item) {
-            item.value = item.id;
-            item.label = item.firstName + ' ' + item.lastName;;
-        })
-        return data;
-    }
-}
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -105,46 +76,7 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         //////////////
-        case GET_COMPANYUSERS:
-            return { ...state, loading: true };
-
-        case GET_COMPANYUSERS_SUCCESS: {
-            const compUsers = makeDataCompatibleToOptionsCompanyUsers(action.payload);
-            return {
-                ...state,
-                loading: false,
-                companyUsers: compUsers,
-            };
-        }
-
-        case GET_COMPANYUSERS_FAILURE:
-            NotificationManager.error(action.payload);
-            return {
-                ...state,
-                loading: false,
-                companyUsers: null,
-            };
-
-
-        case GET_CONTACTSASUSERS:
-            return { ...state, loading: true };
-
-        case GET_CONTACTSASUSERS_SUCCESS: {
-            const cont = makeDataCompatibleToOptionsUsers(action.payload);
-            return {
-                ...state,
-                loading: false,
-                contacts: cont,
-            };
-        }
-
-        case GET_CONTACTSASUSERS_FAILURE:
-            NotificationManager.error(action.payload);
-            return {
-                ...state,
-                loading: false,
-                contacts: null,
-            };
+        
 
         default:
             return { ...state };

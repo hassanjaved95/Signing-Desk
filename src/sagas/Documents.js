@@ -42,7 +42,6 @@ const getDocumentsRequest = async () => {
   // console.log('Documents response:', response);
 
   var response = await API.get('documents/all', { id: 1 });
-
   return response;
 };
 

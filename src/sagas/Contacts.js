@@ -1,9 +1,18 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "redux-saga/effects";
 
-import { GET_CONTACTS, DELETE_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT } from "Actions/types";
+import {GET_CONTACTS, DELETE_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT } from "Actions/types";
 
 import { getContactsSuccess, getContactsFailure, deleteContactsSuccess, createContactSuccess, updateContactSuccess, updateContactFailure } from "Actions/ContactsActions";
 import API from 'Api';
+
+import {
+    getCompanyUsersSuccess,
+    getCompanyUsersFailure,
+    getContactsAsUsersSuccess,
+    getContactsAsUsersFailure
+} from "Actions";
+import { GET_COMPANYUSERS, GET_CONTACTSASUSERS } from "../actions/types";
+
 
 const response = {
     data: [
@@ -50,21 +59,28 @@ const getContactsRequest = async () => {
 
 const createContactRequest = async (data) => {
     var response = await API.post('contacts/create', data)
-    console.log('createContactRequest response:', response);
     return response;
 }
 
 const updateContactRequest = async (data) => {
-    debugger;
-    console.log(data);
     var response = await API.put('contacts/update', data)
-    console.log('updateContactRequest response:', response);
     return response;
 }
 
 const deleteContactsRequest = async (ids) => {
     var response = await API.delete('contacts/delete-multiple', ids)
     console.log('deleteContactsRequest response:', response);
+    return response;
+}
+
+const getCompanyUsersRequest = async (payload) => {
+
+    var response = await API.get('companies/user/all-users-by-company-updated/' + payload.companyId); // TODO
+    return response;
+}
+
+const getContactUsersRequest = async () => {
+    var response = await API.get('contacts/all', { id: 1 }); // TODO
     return response;
 }
 
@@ -123,6 +139,35 @@ function* deleteContactsFromServer({ payload }) {
     }
 }
 
+function* getCompanyUsersFromServer({ payload }) {
+    try {
+        const response = yield call(getCompanyUsersRequest, payload);
+        if (response && response.status == 200) {
+            yield put(getCompanyUsersSuccess(response));
+        }
+        else {
+            yield put(getCompanyUsersFailure(response));
+        }
+    } catch (error) {
+        yield put(getCompanyUsersFailure(error));
+    }
+}
+
+
+function* getContactUsersFromServer() {
+    try {
+        const response = yield call(getContactUsersRequest);
+        if (response && response.status == 200) {
+            yield put(getContactsAsUsersSuccess(response));
+        }
+        else {
+            yield put(getContactsAsUsersFailure(response));
+        }
+    } catch (error) {
+        yield put(getContactsAsUsersFailure(error));
+    }
+}
+
 // watcher
 export function* getContacts() {
     yield takeEvery(GET_CONTACTS, getContactsFromServer);
@@ -140,11 +185,21 @@ export function* deleteContacts() {
     yield takeEvery(DELETE_CONTACTS, deleteContactsFromServer);
 }
 
+export function* getCompanyUsers() {
+    yield takeEvery(GET_COMPANYUSERS, getCompanyUsersFromServer);
+}
+
+export function* getContactUsers() {
+    yield takeEvery(GET_CONTACTSASUSERS, getContactUsersFromServer);
+}
+
 export default function* rootSaga() {
     yield all([
         fork(getContacts),
         fork(createContact),
         fork(updateContact),
-        fork(deleteContacts)
+        fork(deleteContacts),
+        fork(getContactUsers),
+        fork(getCompanyUsers)
     ]);
 }

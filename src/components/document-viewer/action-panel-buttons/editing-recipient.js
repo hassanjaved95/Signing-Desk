@@ -53,19 +53,14 @@ const useStyles = makeStyles({
 
 const EditingRecipient = (props) => {
     const { container, header, text, icon, userDetail, deleteBtn } = useStyles();
-    const [addContact, setAddContact] = React.useState(false);
+    const [addContact, setAddContact] = React.useState(true);
     return (
         <div className={container}>
             {
-                props.editingContact && props.editingContact.id &&
+                props.editingContact && props.editingContact.id && addContact &&
                 <ContactSummary initialState={props.editingContact} onSubmitForm={props.onSubmitForm}  onCloseContact={() => {
                     setAddContact(false);
                 }} />
-
-                // onSubmitForm={props.onSubmitForm} onCloseContact={() => {
-                //     setAddContact(false);
-                // }}
-
             }
             <div className={header}>
                 <div className={icon}> <ArrowBack onClick={props.clearEditing} /></div>

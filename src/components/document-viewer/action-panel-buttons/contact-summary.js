@@ -69,13 +69,6 @@ class ContactSummary extends Component {
         return (
             <Formik
                 initialValues={mergedInitialState}
-                // onSubmit={(values, actions,customAction) => {
-                //     debugger;
-                //     console.log('values', values);
-                //    //props.onSubmit(values, actions);
-                //    //actions.submitForm(values);
-                //    //this.onSubmit();
-                // }}
                 onSubmit={this.props.onSubmitForm}
                 validationSchema={validationSchema}
             >

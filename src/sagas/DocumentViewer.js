@@ -17,7 +17,7 @@ import {
 
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { GET_COMPANYUSERS, GET_CONTACTSASUSERS } from "../actions/types";
+
 
 const getViewingDocumentRequest = async () => {
     var response = await API.get('view/document', { id: 1 }); // TODO
@@ -29,16 +29,9 @@ const getCompaniesRequest = async () => {
     return response;
 }
 
-const getCompanyUsersRequest = async (payload) => {
 
-    var response = await API.get('companies/user/all-users-by-company-updated/' + payload.companyId); // TODO
-    return response;
-}
 
-const getContactsRequest = async () => {
-    var response = await API.get('contacts/all', { id: 1 }); // TODO
-    return response;
-}
+
 
 
 function* getViewingDocumentFromServer() {
@@ -69,33 +62,8 @@ function* getCompaniesFromServer() {
     }
 }
 
-function* getCompanyUsersFromServer({ payload }) {
-    try {
-        const response = yield call(getCompanyUsersRequest, payload);
-        if (response && response.status == 200) {
-            yield put(getCompanyUsersSuccess(response));
-        }
-        else {
-            yield put(getCompanyUsersFailure(response));
-        }
-    } catch (error) {
-        yield put(getCompanyUsersFailure(error));
-    }
-}
 
-function* getContactsFromServer() {
-    try {
-        const response = yield call(getContactsRequest);
-        if (response && response.status == 200) {
-            yield put(getContactsAsUsersSuccess(response));
-        }
-        else {
-            yield put(getContactsAsUsersFailure(response));
-        }
-    } catch (error) {
-        yield put(getContactsAsUsersFailure(error));
-    }
-}
+
 
 export function* getViewingDocument() {
     yield takeEvery(GET_VIEWING_DOCUMENT, getViewingDocumentFromServer);
@@ -105,19 +73,14 @@ export function* getCompanies() {
     yield takeEvery(GET_COMPANIES, getCompaniesFromServer);
 }
 
-export function* getCompanyUsers() {
-    yield takeEvery(GET_COMPANYUSERS, getCompanyUsersFromServer);
-}
 
-export function* getContacts() {
-    yield takeEvery(GET_CONTACTSASUSERS, getContactsFromServer);
-}
+
+
 
 export default function* rootSaga() {
     yield all([
         fork(getViewingDocument),
-        fork(getCompanies),
-        fork(getCompanyUsers),
-        fork(getContacts)
+        fork(getCompanies)
+       
     ]);
 }

@@ -77,6 +77,7 @@ const DocumentViewerLayout = function (props) {
                     handleMouseDown={props.handleMouseDown}
                     selectedUsers={props.selectedUsers}
                     onSelectUser={props.onSelectUser}
+                    onDeSelectUser = {props.onDeSelectUser}
                 />
             </div>
             <div className={classes.documentActionPanel}>
@@ -84,6 +85,7 @@ const DocumentViewerLayout = function (props) {
                     actionType={props.actionType}
                     fieldActionItems={fieldActions}
                     onSelectUser={props.onSelectUser}
+                    onDeSelectUser = {props.onDeSelectUser}
                     selectedUsers={props.selectedUsers}
                     selectedSign={props.selectedSign}
                     onSelectRecipient={props.onSelectRecipient}
@@ -122,6 +124,13 @@ class UserDocumentViewer extends Component {
         this.setState({
             selectedUsers: [...this.state.selectedUsers, user]
         });
+    }
+
+    onDeSelectUser = (id) => {
+        console.log("Hi Hassan You are here! " + id)
+        this.setState({
+            selectedUsers:[...this.state.selectedUsers.filter(x=> x.id != id)]
+        })
     }
 
     onDropSign = (signature) => {
@@ -245,6 +254,7 @@ class UserDocumentViewer extends Component {
                     onSelectUser={this.onSelectUser}
                     selectedUsers={this.state.selectedUsers}
                     onSelectRecipient={this.onSelectRecipient}
+                    onDeSelectUser = {this.onDeSelectUser}
                 />
                 {
                     this.state.signRecipientsCount != this.state.signs.length &&
