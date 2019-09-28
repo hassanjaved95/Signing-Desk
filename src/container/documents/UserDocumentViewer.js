@@ -77,7 +77,7 @@ const DocumentViewerLayout = function (props) {
                     handleMouseDown={props.handleMouseDown}
                     selectedUsers={props.selectedUsers}
                     onSelectUser={props.onSelectUser}
-                    onDeSelectUser = {props.onDeSelectUser}
+                    onDeSelectUser={props.onDeSelectUser}
                 />
             </div>
             <div className={classes.documentActionPanel}>
@@ -85,7 +85,7 @@ const DocumentViewerLayout = function (props) {
                     actionType={props.actionType}
                     fieldActionItems={fieldActions}
                     onSelectUser={props.onSelectUser}
-                    onDeSelectUser = {props.onDeSelectUser}
+                    onDeSelectUser={props.onDeSelectUser}
                     selectedUsers={props.selectedUsers}
                     selectedSign={props.selectedSign}
                     onSelectRecipient={props.onSelectRecipient}
@@ -129,7 +129,7 @@ class UserDocumentViewer extends Component {
     onDeSelectUser = (id) => {
         console.log("Hi Hassan You are here! " + id)
         this.setState({
-            selectedUsers:[...this.state.selectedUsers.filter(x=> x.id != id)]
+            selectedUsers: [...this.state.selectedUsers.filter(x => x.id != id)]
         })
     }
 
@@ -218,6 +218,21 @@ class UserDocumentViewer extends Component {
         });
     }
 
+    selectNextUnassignedSignature = () => {
+        // console.log('selecting signature');
+        var tempSign = null;
+        for(var i=0; i<this.state.signs.length; i++){
+            if (this.state.signs[i].recipient == null){
+                tempSign = this.state.signs[i];
+                break;
+            }
+        }
+        
+        this.setState({
+            selectedSign: tempSign
+        });
+    }
+
     transitionUp = (props) => {
         return <Slide {...props} direction="up" />;
     }
@@ -254,7 +269,7 @@ class UserDocumentViewer extends Component {
                     onSelectUser={this.onSelectUser}
                     selectedUsers={this.state.selectedUsers}
                     onSelectRecipient={this.onSelectRecipient}
-                    onDeSelectUser = {this.onDeSelectUser}
+                    onDeSelectUser={this.onDeSelectUser}
                 />
                 {
                     this.state.signRecipientsCount != this.state.signs.length &&
@@ -279,7 +294,7 @@ class UserDocumentViewer extends Component {
                                         activeStep={3}
                                         style={{ maxWidth: 600, flexGrow: 1 }}
                                         nextButton={
-                                            <Button size="small" onClick={() => { }}>
+                                            <Button size="small" onClick={this.selectNextUnassignedSignature}>
                                                 Next
                                             </Button>
                                         }
