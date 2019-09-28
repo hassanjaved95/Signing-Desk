@@ -4,7 +4,10 @@ import {
     GET_VIEWING_DOCUMENT_FAILURE,
     GET_COMPANIES,
     GET_COMPANIES_SUCCESS,
-    GET_COMPANIES_FAILURE
+    GET_COMPANIES_FAILURE,
+    CREATE_COMPOSITE_WORKFLOW,
+    CREATE_COMPOSITE_WORKFLOW_FAILURE,
+    CREATE_COMPOSITE_WORKFLOW_SUCCESS
 } from "./types";
 
 export const getViewingDocument = () => ({
@@ -35,4 +38,18 @@ export const getCompaniesFailure = error => ({
     payload: error
 });
 
+export const createWorkFlow = (payload) => ({
+    type: CREATE_COMPOSITE_WORKFLOW,
+    payload
+});
+
+export const createWorkFlowSuccess = (data) => ({
+    type: CREATE_COMPOSITE_WORKFLOW_SUCCESS,
+    data
+});
+
+export const createWorkFlowFailure = (error) => ({
+    type: CREATE_COMPOSITE_WORKFLOW_FAILURE,
+    data: error
+});
 

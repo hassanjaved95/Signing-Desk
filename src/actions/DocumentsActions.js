@@ -173,3 +173,4 @@ export const setSelectedDocument = (document, callback) => ({
     callback
   }
 });
+

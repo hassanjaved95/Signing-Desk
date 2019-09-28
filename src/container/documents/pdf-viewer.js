@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import Snackbar from '@material-ui/core/Snackbar';
 import * as PdfJs from 'pdfjs-dist';
 
 // Components
@@ -40,23 +43,13 @@ class PDFViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pdf: null,
-            scale: 1
         };
     }
 
-    componentDidMount() {
-        // PdfJs.getDocument({ data: pdfData2 }).then((pdf) => {
-        PdfJs.getDocument({ data: pdf3 }).then((pdf) => {
-            console.log(pdf);
-            this.setState({ pdf });
-        }).catch(ex => {
-            console.log("ERROR while fetching PDF:", ex);
-        });
-    }
+
 
     render() {
-        const { pdf, scale } = this.state;
+        const { pdf, scale } = this.props;
 
         return (
             <div className="pdf-context" style={styles.pdfDoc} onMouseDown={this.props.handleMouseDown}>
@@ -72,6 +65,40 @@ class PDFViewer extends Component {
                     deleteSelectedSign={this.props.deleteSelectedSign}
                     duplicateSelectedSign={this.props.duplicateSelectedSign}
                 />
+
+                {
+                    this.props.signRecipientsCount != this.props.signs.length &&
+                    <Snackbar
+                        style={{ width: 600, marginBottom: 20 }}
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        open={this.props.signRecipientsCount != this.props.signs.length}
+                        TransitionComponent={this.transitionUp}
+                        ContentProps={{
+                            'aria-describedby': 'message-id',
+                        }}
+                        message={
+                            <div id="message-id" style={{ display: 'flex', flexDirection: 'column' }}>
+                                <div>
+                                    You have <b>{this.props.signs.length - this.props.signRecipientsCount} unassigned</b> field(s) to fill
+                                </div>
+                                <div>
+                                    <MobileStepper
+                                        variant="progress"
+                                        steps={6}
+                                        position="static"
+                                        activeStep={3}
+                                        style={{ maxWidth: 600, flexGrow: 1 }}
+                                        nextButton={
+                                            <Button size="small" onClick={() => { }}>
+                                                Next
+                                            </Button>
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        }
+                    />
+                }
             </div>
         );
     }

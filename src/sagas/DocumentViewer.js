@@ -6,18 +6,20 @@ import {
     getCompanyUsersSuccess,
     getCompanyUsersFailure,
     getContactsAsUsersSuccess,
-    getContactsAsUsersFailure
+    getContactsAsUsersFailure,
+    createWorkFlowSuccess,
+    createWorkFlowFailure
 } from "Actions";
 
 import {
     GET_VIEWING_DOCUMENT,
-    GET_COMPANIES
+    GET_COMPANIES,
+    CREATE_COMPOSITE_WORKFLOW
 } from "Actions/types";
 
 
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-
 
 const getViewingDocumentRequest = async () => {
     var response = await API.get('view/document', { id: 1 }); // TODO
@@ -29,10 +31,10 @@ const getCompaniesRequest = async () => {
     return response;
 }
 
-
-
-
-
+const createWorkFlowRequest = async (requestObj) => {
+    var response = await API.post('workflows/create-composite', requestObj);
+    return response;
+}
 
 function* getViewingDocumentFromServer() {
     try {
@@ -62,25 +64,37 @@ function* getCompaniesFromServer() {
     }
 }
 
-
-
+function* createCompositeWorkflowOnServer(data) {
+    try {
+        const response = yield call(createWorkFlowRequest, data);
+        if (response && response.status == 200) {
+            const responseData = { ...data, ...response };
+            yield put(createWorkFlowSuccess(responseData));
+        } else {
+            yield put(createWorkFlowFailure(response));
+        }
+    } catch (error) {
+        yield put(createWorkFlowFailure(error));
+    }
+}
 
 export function* getViewingDocument() {
     yield takeEvery(GET_VIEWING_DOCUMENT, getViewingDocumentFromServer);
+}
+
+export function* createWorkFlow() {
+    yield takeEvery(CREATE_COMPOSITE_WORKFLOW, createCompositeWorkflowOnServer);
 }
 
 export function* getCompanies() {
     yield takeEvery(GET_COMPANIES, getCompaniesFromServer);
 }
 
-
-
-
-
 export default function* rootSaga() {
     yield all([
         fork(getViewingDocument),
-        fork(getCompanies)
-       
+        fork(getCompanies),
+        fork(createWorkFlow)
+
     ]);
 }
