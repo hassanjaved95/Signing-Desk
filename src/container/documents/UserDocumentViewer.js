@@ -93,6 +93,7 @@ const DocumentViewerLayout = function (props) {
                     signRecipientsCount={props.signRecipientsCount}
                     pdf={props.pdf}
                     scale={props.scale}
+                    selectNextUnassignedSignature={props.selectNextUnassignedSignature}
                 />
             </div>
             <div className={classes.documentActionPanel}>
@@ -297,6 +298,21 @@ class UserDocumentViewer extends Component {
         });
     }
 
+    selectNextUnassignedSignature = () => {
+        // console.log('selecting signature');
+        var tempSign = null;
+        for (var i = 0; i < this.state.signs.length; i++) {
+            if (this.state.signs[i].recipient == null) {
+                tempSign = this.state.signs[i];
+                break;
+            }
+        }
+
+        this.setState({
+            selectedSign: tempSign
+        });
+    }
+
     transitionUp = (props) => {
         return <Slide {...props} direction="up" />;
     }
@@ -350,8 +366,8 @@ class UserDocumentViewer extends Component {
                     onDeSelectUser={this.onDeSelectUser}
                     pdf={this.state.pdf}
                     scale={this.state.scale}
+                    selectNextUnassignedSignature={this.selectNextUnassignedSignature}
                 />
-
             </React.Fragment>
         )
     }

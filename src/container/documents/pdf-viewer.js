@@ -89,7 +89,7 @@ class PDFViewer extends Component {
                                         activeStep={3}
                                         style={{ maxWidth: 600, flexGrow: 1 }}
                                         nextButton={
-                                            <Button size="small" onClick={() => { }}>
+                                            <Button size="small" onClick={this.props.selectNextUnassignedSignature}>
                                                 Next
                                             </Button>
                                         }
