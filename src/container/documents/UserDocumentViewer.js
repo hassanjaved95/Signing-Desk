@@ -19,6 +19,7 @@ import Slide from '@material-ui/core/Slide';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import * as PdfJs from 'pdfjs-dist';
 import config from 'Constants/AppConfig';
+import { getGuid } from "Helpers/helpers";
 
 const useStyles = makeStyles({
     documentViewerContainer: {
@@ -94,6 +95,7 @@ const DocumentViewerLayout = function (props) {
                     pdf={props.pdf}
                     scale={props.scale}
                     selectNextUnassignedSignature={props.selectNextUnassignedSignature}
+                    setSignDimentions={props.setSignDimentions}
                 />
             </div>
             <div className={classes.documentActionPanel}>
@@ -132,7 +134,9 @@ class UserDocumentViewer extends Component {
             anchorEl: null,
             selectedUsers: [],
             pdf: null,
-            scale: 1
+            scale: 1,
+            signWidth: 120,
+            signHeight: 50
         }
     }
 
@@ -152,7 +156,8 @@ class UserDocumentViewer extends Component {
     }
 
     onDropSign = (signature) => {
-        var newState = [...this.state.signs, signature];
+        let newSign = { ...signature, signId: getGuid() }
+        var newState = [...this.state.signs, newSign];
         this.setState({
             signs: newState,
             selectedSign: null
@@ -224,67 +229,107 @@ class UserDocumentViewer extends Component {
         console.log('send clicked');
     }
 
-    createWorkFlowRequest = () => ({
-        "name": "teste_wk15",
-        "timeout": "2019-07-30",
+    getCollaboratorObj = (user) => ({
+        "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+        "userID": user.id,
         "status": 0,
-        "ccRecipients": "operator@signingdesk.com",
-        "type": 0,
-        "documentsID": "38a233f5-1e52-4231-b433-362e67db7160",
-        "hops": [{
-            "Collaborators":
-            {
-                "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                "status": 0,
-                "action": "SIGNER",
-                "signatureType": "ADVANCED",
-                "metadata": "Metadata if any",
-                "notes": "Notes if any",
-                "isReadCompulsory": false,
-                "timeout": "2019-08-03 14:00:00"
-            },
-            "Designers": [
-                {
-                    "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
-                    "type": 0,
-                    "name": "Field Name",
-                    "value": "Value if any.",
-                    "pageNumber": 1,
-                    "fieldWidth": 15,
-                    "fieldHeight": 15,
-                    "fieldX": 0,
-                    "fieldY": 0
-                }
-            ]
-        },
-        {
-            "Collaborators":
-            {
-                "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                "status": 0,
-                "action": "SIGNER",
-                "signatureType": "ADVANCED",
-                "notes": "Notes if any",
-                "isReadCompulsory": false,
-                "timeout": "2019-08-03 14:00:00"
-            },
-            "Designers": [
-                {
-                    "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
-                    "type": 0,
-                    "name": "Field Name",
-                    "value": "Value if any.",
-                    "pageNumber": 1,
-                    "fieldWidth": 15,
-                    "fieldHeight": 15,
-                    "fieldX": 0,
-                    "fieldY": 0
-                }
-            ]
-        }]
+        "action": "SIGNER",
+        "signatureType": "ADVANCED",
+        "metadata": "Metadata if any",
+        "notes": "Notes if any",
+        "isReadCompulsory": false,
+        "timeout": "2019-08-03 14:00:00"
     })
+
+    getDesignersObj = (user) => {
+
+        return this.state.signs
+            .filter(s => s.recipient && s.recipient.id == user.id)
+            .map(sign => (
+                {
+                    "documentFilesID": "cbce6fe4-1693-4ca6-b1ed-49d827152895",
+                    "type": 0,
+                    "name": "Field Name",
+                    "value": "Value if any.",
+                    "pageNumber": sign.pageNum,
+                    "fieldWidth": 15,
+                    "fieldHeight": 15,
+                    "fieldX": sign.pageX,
+                    "fieldY": sign.pageY
+                }
+            ));
+    }
+
+    getHopsInfo = () => {
+        var temp = [];
+
+    }
+
+    createWorkFlowRequest = () => {
+        const { selectedDocument, user } = this.props;
+
+        return {
+            "name": selectedDocument.name,
+            "timeout": "2019-12-30",
+            "status": selectedDocument.status,
+            "ccRecipients": user.profile.user.email,
+            "type": 0,
+            "documentsID": selectedDocument.id,
+            "hops": [{
+                "Collaborators":
+                {
+                    "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+                    "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+                    "status": 0,
+                    "action": "SIGNER",
+                    "signatureType": "ADVANCED",
+                    "metadata": "Metadata if any",
+                    "notes": "Notes if any",
+                    "isReadCompulsory": false,
+                    "timeout": "2019-08-03 14:00:00"
+                },
+                "Designers": [
+                    {
+                        "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
+                        "type": 0,
+                        "name": "Field Name",
+                        "value": "Value if any.",
+                        "pageNumber": 1,
+                        "fieldWidth": 15,
+                        "fieldHeight": 15,
+                        "fieldX": 0,
+                        "fieldY": 0
+                    }
+                ]
+            },
+            {
+                "Collaborators":
+                {
+                    "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+                    "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+                    "status": 0,
+                    "action": "SIGNER",
+                    "signatureType": "ADVANCED",
+                    "notes": "Notes if any",
+                    "isReadCompulsory": false,
+                    "timeout": "2019-08-03 14:00:00"
+                },
+                "Designers": [
+                    {
+                        "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
+                        "type": 0,
+                        "name": "Field Name",
+                        "value": "Value if any.",
+                        "pageNumber": 1,
+                        "fieldWidth": 15,
+                        "fieldHeight": 15,
+                        "fieldX": 0,
+                        "fieldY": 0
+                    }
+                ]
+            }]
+        }
+    };
 
     onSelectRecipient = (user, sign) => {
         this.setState({
@@ -292,6 +337,21 @@ class UserDocumentViewer extends Component {
             signs: this.state.signs.filter(s => {
                 if (s == sign) {
                     s.recipient = user;
+                }
+                return true;
+            })
+        });
+    }
+
+    setSignDimentions = (sign, dim) => {
+        sign.width = dim.width;
+        sign.height = dim.height;
+
+        this.setState({
+            selectedSign: sign,
+            signs: this.state.signs.filter(s => {
+                if (s.signId === sign.signId) {
+                    s = sign;
                 }
                 return true;
             })
@@ -323,7 +383,7 @@ class UserDocumentViewer extends Component {
             return;
         }
 
-        let url = baseDataUrl + this.props.selectedDocument.documentFiles[0].path;
+        // let url = baseDataUrl + this.props.selectedDocument.documentFiles[0].path;
         // PdfJs.getDocument({ data: pdfData2 }).then((pdf) => {
         PdfJs.getDocument({ data: pdf3 }).then((pdf) => {
             console.log(pdf);
@@ -367,15 +427,17 @@ class UserDocumentViewer extends Component {
                     pdf={this.state.pdf}
                     scale={this.state.scale}
                     selectNextUnassignedSignature={this.selectNextUnassignedSignature}
+                    setSignDimentions={this.setSignDimentions}
                 />
             </React.Fragment>
         )
     }
 }
 
-const mapStateToProps = ({ documents }) => {
+const mapStateToProps = ({ documents, authUser }) => {
     const { selectedDocument } = documents;
-    return { selectedDocument };
+    const { user } = authUser;
+    return { selectedDocument, user };
 }
 
 export default withRouter(

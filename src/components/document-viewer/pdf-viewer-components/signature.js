@@ -100,8 +100,8 @@ const Signature = (props) => {
     const shortName = sign.recipient ? getNameInitials(userName) : '';
     const fullName = sign.recipient ? userName : '';
     const [name, setName] = React.useState(shortName);
-    const [width, setWidth] = React.useState(120);
-    const [height, setHeight] = React.useState(50);
+    const [width, setWidth] = React.useState(sign.width || 120);
+    const [height, setHeight] = React.useState(sign.height || 50);
 
     function setUserName(n) {
         console.log('setUserName:', n);
@@ -120,8 +120,12 @@ const Signature = (props) => {
                     <Resizable
                         size={{ width, height }}
                         onResizeStop={(e, direction, ref, d) => {
-                            setWidth(width + d.width);
-                            setHeight(height + d.height);
+                            let width = width + d.width;
+                            let height = height + d.height;
+
+                            props.setSignDimentions(sign, { width, height });
+                            // setWidth(width + d.width);
+                            // setHeight(height + d.height);
                         }}
                         onResizeStart={(e) => {
                             e.stopPropagation();

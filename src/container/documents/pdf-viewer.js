@@ -64,6 +64,7 @@ class PDFViewer extends Component {
                     setAnchorEl={this.props.setAnchorEl}
                     deleteSelectedSign={this.props.deleteSelectedSign}
                     duplicateSelectedSign={this.props.duplicateSelectedSign}
+                    setSignDimentions={this.props.setSignDimentions}
                 />
 
                 {
