@@ -32,6 +32,7 @@ const Viewer = (props) => {
                     (v, i) => (
                         <Page
                             pdf={props.pdf}
+                            index={i + 1}
                             pageNum={i + 1}
                             key={`document-page-${i}`}
                             pageId={`document-page-${i}`}
