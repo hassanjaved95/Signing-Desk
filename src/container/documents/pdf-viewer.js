@@ -68,6 +68,7 @@ class PDFViewer extends Component {
                 />
 
                 {
+                    this.props.signRecipientsCount != null &&
                     this.props.signRecipientsCount != this.props.signs.length &&
                     <Snackbar
                         style={{ width: 600, marginBottom: 20 }}
@@ -85,9 +86,9 @@ class PDFViewer extends Component {
                                 <div>
                                     <MobileStepper
                                         variant="progress"
-                                        steps={6}
+                                        steps={this.props.signs.length + 1}
                                         position="static"
-                                        activeStep={3}
+                                        activeStep={this.props.signRecipientsCount}
                                         style={{ maxWidth: 600, flexGrow: 1 }}
                                         nextButton={
                                             <Button size="small" onClick={this.props.selectNextUnassignedSignature}>

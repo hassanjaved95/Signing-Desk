@@ -129,7 +129,7 @@ class UserDocumentViewer extends Component {
         this.state = {
             selectedNavPanelItem: 'Fields',
             signs: [],
-            signRecipientsCount: 0,
+            signRecipientsCount: null,
             selectedSign: null,
             anchorEl: null,
             selectedUsers: [],
@@ -149,7 +149,6 @@ class UserDocumentViewer extends Component {
     }
 
     onDeSelectUser = (id) => {
-        console.log("Hi Hassan You are here! " + id)
         this.setState({
             selectedUsers: [...this.state.selectedUsers.filter(x => x.id != id)]
         })
@@ -214,19 +213,20 @@ class UserDocumentViewer extends Component {
     }
 
     onClickSend = () => {
-        const recipientsCount = this.state.signs.reduce((count, sign) => {
+        let recipientsCount = this.state.signs.reduce((count, sign) => {
             if (sign.recipient) count += 1;
             return count;
         }, 0);
 
+        if (recipientsCount === this.state.signs.length) {
+            recipientsCount = null;
+
+            // TODO: send request object from here.
+        }
+
         this.setState({
             signRecipientsCount: recipientsCount
         });
-
-        if (recipientsCount != this.state.signs.length) {
-
-        }
-        console.log('send clicked');
     }
 
     getCollaboratorObj = (user) => ({
@@ -334,8 +334,11 @@ class UserDocumentViewer extends Component {
     onSelectRecipient = (user, sign) => {
         this.setState({
             selectedSign: { ...this.state.selectedSign, recipient: user },
+            signRecipientsCount: this.state.signRecipientsCount != null ?
+                this.state.signRecipientsCount + 1 :
+                null,
             signs: this.state.signs.filter(s => {
-                if (s == sign) {
+                if (s.signId === sign.signId) {
                     s.recipient = user;
                 }
                 return true;
