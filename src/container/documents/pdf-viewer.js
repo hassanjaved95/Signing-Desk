@@ -92,6 +92,7 @@ class PDFViewer extends Component {
                                         position="static"
                                         activeStep={this.props.signRecipientsCount}
                                         style={{maxWidth:600, flexGrow:1}}
+                                        className="mStepper"
                                         
                                     />
                                     <div>
