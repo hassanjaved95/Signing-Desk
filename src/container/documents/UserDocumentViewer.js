@@ -95,6 +95,7 @@ const DocumentViewerLayout = function (props) {
                     pdf={props.pdf}
                     scale={props.scale}
                     selectNextUnassignedSignature={props.selectNextUnassignedSignature}
+                    assignAllSignature={props.assignAllSignature}
                     setSignDimentions={props.setSignDimentions}
                 />
             </div>
@@ -136,7 +137,8 @@ class UserDocumentViewer extends Component {
             pdf: null,
             scale: 1,
             signWidth: 120,
-            signHeight: 50
+            signHeight: 50,
+            selectedRecipient: null
         }
     }
 
@@ -333,6 +335,7 @@ class UserDocumentViewer extends Component {
 
     onSelectRecipient = (user, sign) => {
         this.setState({
+            selectedRecipient: user,
             selectedSign: { ...this.state.selectedSign, recipient: user },
             signRecipientsCount: this.state.signRecipientsCount != null ?
                 this.state.signRecipientsCount + 1 :
@@ -374,6 +377,19 @@ class UserDocumentViewer extends Component {
         this.setState({
             selectedSign: tempSign
         });
+    }
+
+    assignAllSignature = () =>{
+        var tempAllSigns = this.state.signs;
+        for (var i = 0; i < tempAllSigns.length; i++) {
+            if (tempAllSigns[i].recipient == null) {
+                tempAllSigns[i].recipient = this.state.selectedRecipient;
+            }
+        }
+
+        this.setState({
+            signs: tempAllSigns
+        })
     }
 
     transitionUp = (props) => {
@@ -430,6 +446,7 @@ class UserDocumentViewer extends Component {
                     pdf={this.state.pdf}
                     scale={this.state.scale}
                     selectNextUnassignedSignature={this.selectNextUnassignedSignature}
+                    assignAllSignature={this.assignAllSignature}
                     setSignDimentions={this.setSignDimentions}
                 />
             </React.Fragment>
