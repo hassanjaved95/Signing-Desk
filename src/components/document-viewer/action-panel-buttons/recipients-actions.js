@@ -108,10 +108,10 @@ class RecipientActions extends React.Component {
         }
         else {
             if (this.props.companyUsers != null) {
-                this.users = this.props.companyUsers;
+                this.users.contacts = this.props.companyUsers;
             }
             else {
-                this.users = [];
+                this.users.contacts = [];
             }
         }
     }

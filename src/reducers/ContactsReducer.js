@@ -30,7 +30,7 @@ const INITIAL_STATE = {
 };
 
 function makeDataCompatibleToOptionsCompanyUsers(data) {
-    if (data && typeof data.isArray != "undefined") {
+    if (data && data.length) {
         data.forEach(function (item) {
             item.value = item.companyUserBridgeID;
             item.label = item.username;
