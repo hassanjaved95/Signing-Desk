@@ -197,6 +197,8 @@ class UserDocumentViewer extends Component {
     }
 
     duplicateSelectedSign = (sign) => {
+        sign.signId = getGuid();
+
         this.setState({
             signs: [...this.state.signs, sign]
         });
