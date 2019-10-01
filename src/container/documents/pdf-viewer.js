@@ -91,18 +91,13 @@ class PDFViewer extends Component {
                                         steps={this.props.signs.length + 1}
                                         position="static"
                                         activeStep={this.props.signRecipientsCount}
-                                        style={{maxWidth:600, flexGrow:1}}
-                                        className="mStepper"
-                                        
+                                        style={{ width: 'auto', flexGrow: 1 }}
+                                        nextButton={
+                                            <Button size="small" style={{ background: '#5D92F4', color: 'white' }} onClick={this.props.selectNextUnassignedSignature}>
+                                                Next
+                                            </Button>
+                                        }
                                     />
-                                    <div>
-                                        <Button size="small" style={styles.btn} onClick={this.props.assignAllSignature}>
-                                            Assign All
-                                             </Button>
-                                        <Button size="small" style={styles.btn} onClick={this.props.selectNextUnassignedSignature}>
-                                            Next
-                                         </Button>
-                                    </div>
                                 </div>
                             </div>
                         }
@@ -120,9 +115,6 @@ var styles = {
     btn: {
         color: 'white',
         backgroundColor: '#93979A',
-        marginRight: 5,
-        marginTop:5
-
     },
 
 

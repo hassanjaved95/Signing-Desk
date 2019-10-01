@@ -20,6 +20,7 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import * as PdfJs from 'pdfjs-dist';
 import config from 'Constants/AppConfig';
 import { getGuid } from "Helpers/helpers";
+import { createWorkFlow } from "Actions";
 
 const useStyles = makeStyles({
     documentViewerContainer: {
@@ -196,6 +197,8 @@ class UserDocumentViewer extends Component {
     }
 
     duplicateSelectedSign = (sign) => {
+        sign.signId = getGuid();
+
         this.setState({
             signs: [...this.state.signs, sign]
         });
@@ -223,7 +226,10 @@ class UserDocumentViewer extends Component {
         if (recipientsCount === this.state.signs.length) {
             recipientsCount = null;
 
-            // TODO: send request object from here.
+            const workflowReqObj = this.createWorkFlowRequest();
+            console.log('workflowReqObj:', workflowReqObj);
+            this.props.createWorkFlow(workflowReqObj);
+            return;
         }
 
         this.setState({
@@ -243,94 +249,64 @@ class UserDocumentViewer extends Component {
         "timeout": "2019-08-03 14:00:00"
     })
 
-    getDesignersObj = (user) => {
+    getHobObj = (user) => {
+        const { selectedDocument } = this.props;
+        if (selectedDocument.documentFiles.length == 0) return null;
+        const documentId = selectedDocument.documentFiles[0].id;
 
-        return this.state.signs
-            .filter(s => s.recipient && s.recipient.id == user.id)
+        const collaboratorObj = this.getCollaboratorObj(user);
+        const userSigns = this.state.signs
+            .filter(s => s.recipient && s.recipient.id == user.id);
+
+        if (!userSigns || !userSigns.length) return null;
+
+        var designers = userSigns
             .map(sign => (
                 {
-                    "documentFilesID": "cbce6fe4-1693-4ca6-b1ed-49d827152895",
+                    "documentFilesID": documentId,
                     "type": 0,
                     "name": "Field Name",
                     "value": "Value if any.",
                     "pageNumber": sign.pageNum,
-                    "fieldWidth": 15,
-                    "fieldHeight": 15,
+                    "fieldWidth": sign.width,
+                    "fieldHeight": sign.height,
                     "fieldX": sign.pageX,
                     "fieldY": sign.pageY
                 }
             ));
+
+        return {
+            "Collaborators": collaboratorObj,
+            "Designers": designers
+        }
     }
 
-    getHopsInfo = () => {
-        var temp = [];
+    getAllHops = () => {
+        const hops = [];
+        this.state.selectedUsers.forEach(user => {
+            const hop = this.getHobObj(user);
+            if (hop) {
+                hops.push(hop);
+            }
+        });
 
+        return hops;
     }
 
     createWorkFlowRequest = () => {
         const { selectedDocument, user } = this.props;
 
-        return {
+        const workflowReqObj = {
             "name": selectedDocument.name,
             "timeout": "2019-12-30",
             "status": selectedDocument.status,
             "ccRecipients": user.profile.user.email,
             "type": 0,
-            "documentsID": selectedDocument.id,
-            "hops": [{
-                "Collaborators":
-                {
-                    "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                    "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                    "status": 0,
-                    "action": "SIGNER",
-                    "signatureType": "ADVANCED",
-                    "metadata": "Metadata if any",
-                    "notes": "Notes if any",
-                    "isReadCompulsory": false,
-                    "timeout": "2019-08-03 14:00:00"
-                },
-                "Designers": [
-                    {
-                        "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
-                        "type": 0,
-                        "name": "Field Name",
-                        "value": "Value if any.",
-                        "pageNumber": 1,
-                        "fieldWidth": 15,
-                        "fieldHeight": 15,
-                        "fieldX": 0,
-                        "fieldY": 0
-                    }
-                ]
-            },
-            {
-                "Collaborators":
-                {
-                    "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                    "userID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
-                    "status": 0,
-                    "action": "SIGNER",
-                    "signatureType": "ADVANCED",
-                    "notes": "Notes if any",
-                    "isReadCompulsory": false,
-                    "timeout": "2019-08-03 14:00:00"
-                },
-                "Designers": [
-                    {
-                        "documentFilesID": "5af8494e-edae-4783-9666-650d1dc070a5",
-                        "type": 0,
-                        "name": "Field Name",
-                        "value": "Value if any.",
-                        "pageNumber": 1,
-                        "fieldWidth": 15,
-                        "fieldHeight": 15,
-                        "fieldX": 0,
-                        "fieldY": 0
-                    }
-                ]
-            }]
+            "documentsID": selectedDocument.id
         }
+
+        workflowReqObj["hops"] = this.getAllHops();
+        return workflowReqObj;
     };
 
     onSelectRecipient = (user, sign) => {
@@ -379,7 +355,7 @@ class UserDocumentViewer extends Component {
         });
     }
 
-    assignAllSignature = () =>{
+    assignAllSignature = () => {
         var tempAllSigns = this.state.signs;
         for (var i = 0; i < tempAllSigns.length; i++) {
             if (tempAllSigns[i].recipient == null) {
@@ -417,11 +393,11 @@ class UserDocumentViewer extends Component {
         const { selectedDocument, loading } = this.props;
         console.log('viewingDocument:', selectedDocument);
 
-        // if (loading) {
-        //     return (
-        //         <RctSectionLoader />
-        //     )
-        // }
+        if (loading) {
+            return (
+                <RctSectionLoader />
+            )
+        }
 
         return (
             <React.Fragment>
@@ -455,10 +431,12 @@ class UserDocumentViewer extends Component {
 }
 
 const mapStateToProps = ({ documents, authUser }) => {
-    const { selectedDocument } = documents;
+    const { selectedDocument, loading } = documents;
     const { user } = authUser;
-    return { selectedDocument, user };
+    return { selectedDocument, loading, user };
 }
 
 export default withRouter(
-    connect(mapStateToProps)(UserDocumentViewer));
+    connect(mapStateToProps, {
+        createWorkFlow
+    })(UserDocumentViewer));

@@ -19,7 +19,8 @@ const INITIAL_STATE = {
     companies: null,
     companyUsers: null,
     contacts: null,
-    workflow: null
+    workflow: null,
+    loading: false
 };
 
 function makeDataCompatibleToOptionsCompanies(data) {

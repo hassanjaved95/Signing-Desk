@@ -92,7 +92,7 @@ const useStyles = makeStyles({
 });
 
 const Signature = (props) => {
-    const { sign, signKey, selectedSign } = props;
+    const { sign, signKey, selectedSign, pageBoundary } = props;
     const userName = sign.recipient ? (sign.recipient.firstName + ' ' + sign.recipient.lastName) : '';
     const userEmail = sign.recipient ? sign.recipient.email : '';
     const userNameColor = getRandomColor(userEmail);
@@ -108,10 +108,21 @@ const Signature = (props) => {
         setName(n);
     }
 
+    function onDragSignatureStop(e, d) {
+        const elementPos = e.target.getBoundingClientRect();
+        const pageX = Math.abs(pageBoundary.left - elementPos.left);
+        const pageY = Math.abs(pageBoundary.top - elementPos.top);
+
+        // sign.pageX = pageX;
+        // sign.pageY = pageY;
+    }
+
     return (
         <React.Fragment>
             <Draggable
                 bounds='parent'
+
+                onStop={onDragSignatureStop}
                 onMouseDown={(ev) => {
                     props.setSelectedSign(sign, ev);
                 }}
@@ -120,12 +131,13 @@ const Signature = (props) => {
                     <Resizable
                         size={{ width, height }}
                         onResizeStop={(e, direction, ref, d) => {
-                            let width = width + d.width;
-                            let height = height + d.height;
-
-                            props.setSignDimentions(sign, { width, height });
-                            // setWidth(width + d.width);
-                            // setHeight(height + d.height);
+                            let w = width + d.width;
+                            let h = height + d.height;
+                            sign.width = w;
+                            sign.height = h;
+                            // props.setSignDimentions(sign, { width, height });
+                            setWidth(w);
+                            setHeight(h);
                         }}
                         onResizeStart={(e) => {
                             e.stopPropagation();

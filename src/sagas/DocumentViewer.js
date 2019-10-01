@@ -32,7 +32,7 @@ const getCompaniesRequest = async () => {
 }
 
 const createWorkFlowRequest = async (requestObj) => {
-    var response = await API.post('workflows/create-composite', requestObj);
+    var response = await API.post('workflows/create-composite', requestObj.payload);
     return response;
 }
 
