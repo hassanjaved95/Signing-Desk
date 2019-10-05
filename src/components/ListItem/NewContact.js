@@ -25,6 +25,7 @@ function fwdRefContact(props, ref) {
     const [isAddressVisible, setAddressVisibility] = useState(false);
     const [isCertVisible, setCertVisibility] = useState(false);
     const certFileInput = useRef(null);
+    const [addContact, setAddContact] = React.useState(true);
 
     const initialState = {
         firstName: '',
@@ -65,6 +66,7 @@ function fwdRefContact(props, ref) {
             onSubmit={(values, actions) => {
                 console.log('values', values);
                 props.onSubmit(values, actions);
+                
             }}
 
             validate={(values) => { props.validateOnChange(values) }}
