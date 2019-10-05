@@ -131,9 +131,6 @@ class RecipientActions extends React.Component {
         this.setState({
             try: !this.state.try
         })
-        debugger;
-        console.log('painchod');
-
     }
 
 

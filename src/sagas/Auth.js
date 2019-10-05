@@ -44,7 +44,6 @@ const updateUserProfileRequest = async user => {
     //   headers: { Authorization: `Bearer ${user.token}` }
     // });
     var response = await API.post('users/update-profile', user);
-
     return response;
   } catch (error) {
     if (error.response) {
