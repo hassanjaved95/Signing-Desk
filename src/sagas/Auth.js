@@ -168,8 +168,8 @@ function* signInUserWithEmailPassword({ payload }) {
       email,
       password
     );
-    if (signInUser.message) {
-      yield put(signinUserFailure(signInUser.message));
+    if (signInUser.profile == undefined) {
+      yield put(signinUserFailure(signInUser.errorMessage));
     } else {
       localStorage.setItem("user", JSON.stringify(signInUser));
       yield put(signinUserSuccess(signInUser));
