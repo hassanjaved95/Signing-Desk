@@ -172,7 +172,12 @@ function* signInUserWithEmailPassword({ payload }) {
     } else {
       localStorage.setItem("user", JSON.stringify(signInUser));
       yield put(signinUserSuccess(signInUser));
-      history.push("/");
+      if (signInUser.profile.general.landingPage == 0) {
+        history.push("/");
+      }
+      else{
+        history.push("/app/documents");
+      }
     }
   } catch (error) {
     yield put(signinUserFailure(error));
