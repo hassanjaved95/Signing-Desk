@@ -54,12 +54,12 @@ const QuickLinks = ({ location }) => (
 								<IntlMessages id="sidebar.invoice" />
 							</Link>
 						</li>
-						<li>
+						{/* <li>
 							<Link to={`/${getAppLayout(location)}/mail/folder/inbox`}>
 								<i className="ti-email text-danger  mr-10"></i>
 								<IntlMessages id="sidebar.inbox" />
 							</Link>
-						</li>
+						</li> */}
 						<li>
 							<Link to={`/${getAppLayout(location)}/calendar/basic`}>
 								<i className="text-warning ti-calendar mr-10"></i>
