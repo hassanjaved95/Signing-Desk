@@ -102,6 +102,9 @@ const Signature = (props) => {
     const [name, setName] = React.useState(shortName);
     const [width, setWidth] = React.useState(sign.width || 120);
     const [height, setHeight] = React.useState(sign.height || 50);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    console.log('sign == selectedSign:', selectedSign);
 
     function setUserName(n) {
         console.log('setUserName:', n);
@@ -121,7 +124,7 @@ const Signature = (props) => {
         <React.Fragment>
             <Draggable
                 bounds='parent'
-
+                onDrag={() => { setAnchorEl(null) }}
                 onStop={onDragSignatureStop}
                 onMouseDown={(ev) => {
                     props.setSelectedSign(sign, ev);
@@ -179,7 +182,7 @@ const Signature = (props) => {
                             <div
                                 className={`${classes.moreHoriIcon}`}
                             >
-                                <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { props.setAnchorEl(e, e.currentTarget) }} />
+                                <MoreHorizIcon style={{ position: 'absolute' }} onMouseDown={(e) => { setAnchorEl(e.currentTarget) }} />
                             </div>
 
                         </div>
@@ -188,8 +191,8 @@ const Signature = (props) => {
             </Draggable>
 
             <div>
-                <ClickAwayListener onClickAway={(e) => { props.setAnchorEl(e, null) }}>
-                    <Menu className={classes.menuStyle} anchorEl={props.anchorEl} open={Boolean(props.anchorEl)}>
+                <ClickAwayListener onMouseDown={() => { setAnchorEl(null) }}>
+                    <Menu className={classes.menuStyle} anchorEl={anchorEl} open={Boolean(anchorEl) && sign == selectedSign}>
                         <MenuItem onClick={() => { props.duplicateSelectedSign({ ...sign, pageY: sign.pageY + 10, pageX: sign.pageX + 10 }) }}> Duplicate </MenuItem>
                         <MenuItem style={{ color: 'red' }} onClick={() => { props.deleteSelectedSign(sign) }}> Delete </MenuItem>
                     </Menu>

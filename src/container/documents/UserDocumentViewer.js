@@ -169,6 +169,7 @@ class UserDocumentViewer extends Component {
     }
 
     handleMouseDown = (e) => {
+        console.log('handle mouse down called');
         this.setState({
             selectedSign: null,
             anchorEl: null
@@ -229,7 +230,7 @@ class UserDocumentViewer extends Component {
             recipientsCount = null;
 
             const workflowReqObj = this.createWorkFlowRequest();
-            console.log('workflowReqObj:', workflowReqObj);
+            // console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
             this.props.createWorkFlow(workflowReqObj);
             return;
         }
