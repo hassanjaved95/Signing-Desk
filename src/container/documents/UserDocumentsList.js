@@ -392,6 +392,7 @@ class UserDocumentsList extends Component {
         this.props.setSelectedFolder({ folderId: null, levelUp: true });
     }
 
+    
     onClickMoreVert = (document, e) => {
         console.log('context menu clicked ' + document.id);
         this.setState({

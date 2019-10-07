@@ -150,7 +150,7 @@ class DocumentUpload extends React.Component {
                     this.onSubmit(values);
                 }
                 }
-            validate={(values) => { props.validateOnChange(values) }}
+            //validate={(values) => { props.validateOnChange(values) }}
             validationSchema={this.validationSchema}
             >
                 {(formikProps) => {
@@ -172,10 +172,10 @@ class DocumentUpload extends React.Component {
                                 </button>
                                 <div className="flex-row" onClick={this.handleClickOpen}> <FileUpload className="fileUploadIcon" /> Upload Document </div>
                                 {/* <Button variant="contained" className="btn-info text-white btn-block" onClick={this.handleClickOpen}>Open form dialog</Button> */}
-                                <Dialog maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                                    <DialogTitle id="form-dialog-title" style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
+                                <Dialog title="Document Upload" maxWidth={'lg'} width={'900px'} open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                                    <DialogTitle style={{ borderBottom: '0.5px solid #d5caca', paddingBottom: '2px' }}>Upload <span className="popupCloser" onClick={this.handleClose}> X </span> </DialogTitle>
 
-                                    <DialogContent width={'900px'} height={'550px'}>
+                                    <DialogContent title="Document Upload" width={'900px'} height={'550px'}>
                                         <div className="dropzoneForm">
                                     
                                             <div className="flex-row">
