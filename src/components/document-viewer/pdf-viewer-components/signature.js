@@ -111,6 +111,14 @@ const Signature = (props) => {
         setName(n);
     }
 
+    function getCurrentPosition(e) {
+        const elementPos = e.target.getBoundingClientRect();
+        const pageX = Math.abs(pageBoundary.left - elementPos.left);
+        const pageY = Math.abs(pageBoundary.top - elementPos.top);
+
+        return { pageX, pageY, width: elementPos.width, height: elementPos.height }
+    }
+
     function onDragSignatureStop(e, d) {
         const elementPos = e.target.getBoundingClientRect();
         const pageX = Math.abs(pageBoundary.left - elementPos.left);
@@ -193,7 +201,11 @@ const Signature = (props) => {
             <div>
                 <ClickAwayListener onMouseDown={() => { setAnchorEl(null) }}>
                     <Menu className={classes.menuStyle} anchorEl={anchorEl} open={Boolean(anchorEl) && sign == selectedSign}>
-                        <MenuItem onClick={() => { props.duplicateSelectedSign({ ...sign, pageY: sign.pageY + 10, pageX: sign.pageX + 10 }) }}> Duplicate </MenuItem>
+                        <MenuItem onClick={(e) => {
+                            var elementPos = getCurrentPosition(e);
+                            console.log('elementPos:', elementPos);
+                            props.duplicateSelectedSign({ ...sign, pageY: (elementPos.pageY - (height * 0.5)) + 10, pageX: (elementPos.pageX - width) + 10 })
+                        }}> Duplicate </MenuItem>
                         <MenuItem style={{ color: 'red' }} onClick={() => { props.deleteSelectedSign(sign) }}> Delete </MenuItem>
                     </Menu>
                 </ClickAwayListener>
