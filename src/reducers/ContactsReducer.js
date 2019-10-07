@@ -34,7 +34,7 @@ function makeDataCompatibleToOptionsCompanyUsers(data) {
         data.forEach(function (item) {
             item.value = item.companyUserBridgeID;
             item.label = item.username;
-            item.email = item.certEmail;
+            item.email = item.certEmail == null ? '' : item.certEmail;
             item.firstName = item.username;
             item.lastName = '';
             item.id = item.companyUserBridgeID;
@@ -44,7 +44,7 @@ function makeDataCompatibleToOptionsCompanyUsers(data) {
     else {
         data.value = data.companyUserBridgeID;
         data.label = data.username;
-        data.email = data.certEmail;
+        data.email = data.certEmail == null ? '' : data.certEmail;
         data.firstName = data.username;
         data.lastName = '';
         data.id = data.companyUserBridgeID;
