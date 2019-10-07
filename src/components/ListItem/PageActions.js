@@ -26,6 +26,7 @@ const ContactsActions = (props) => (
                         placeholder="Search"
                         margin="normal"
                         onChange={props.onChangeSearchValue}
+                        autoFocus
                     /></div>
                 </div>
             )}
@@ -67,7 +68,7 @@ const ContactsActions = (props) => (
     </React.Fragment>
 )
 
-const DocumentsActions = (props,ref) => (
+const DocumentsActions = (props) => (
     
     <React.Fragment>
        
@@ -82,7 +83,7 @@ const DocumentsActions = (props,ref) => (
                         placeholder="Search"
                         margin="normal"
                         onChange={props.onChangeSearchValue}
-                        ref={ref}
+                        autoFocus
                     /></div>
                 </div>
             )}
@@ -136,7 +137,7 @@ const DocumentsActions = (props,ref) => (
     </React.Fragment>
 )
 
-const PageActions = (props,ref) => (
+const PageActions = (props) => (
    
     <div className="page-actions-container">
    

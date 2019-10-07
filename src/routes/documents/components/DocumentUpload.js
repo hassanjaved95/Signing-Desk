@@ -150,21 +150,18 @@ class DocumentUpload extends React.Component {
                     this.onSubmit(values);
                 }
                 }
-            //validate={(values) => { props.validateOnChange(values) }}
-            //validationSchema={this.validationSchema}
+            validate={(values) => { props.validateOnChange(values) }}
+            validationSchema={this.validationSchema}
             >
                 {(formikProps) => {
                     const {
                         values,
                         touched,
                         errors,
-                        dirty,
-                        isSubmitting,
                         handleChange,
                         handleBlur,
                         handleSubmit,
-                        handleReset,
-                    } = formikProps;
+                        } = formikProps;
 
 
                     return (
@@ -186,6 +183,7 @@ class DocumentUpload extends React.Component {
                                                    
                                                     <TextField
                                                         label="Document Name"
+                                                        tabIndex="0"
                                                         name="FileName"
                                                         value={values.FileName}
                                                         className="dlg-txt-field dlg-txt-field-FileUpload"
@@ -198,6 +196,7 @@ class DocumentUpload extends React.Component {
                                                         InputLabelProps={{
                                                             shrink: true,
                                                         }}
+                                                        autoFocus
                                                     />
 
                                                 </div>
