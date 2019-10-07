@@ -28,9 +28,10 @@ class UserDocumentsList extends Component {
     searchTimerId = null;
     selectedFolder = null;
     updateFolderId = null;
-
+    
     constructor(props) {
         super(props);
+       
         this.state = {
             loading: true,
             search: false,
@@ -523,7 +524,9 @@ class UserDocumentsList extends Component {
                                     onDeleteDocuments={this.onDeleteDocuments}
                                     search={this.state.search}
                                     selectedDocuments={this.state.selectedDocuments.length}
-                                    onClickSearch={() => { this.setState({ search: true }) }}
+                                    onClickSearch={() => {
+                                        this.setState({ search: true })
+                                    }}
                                     onSearchClose={() => { this.setState({ search: false }) }}
                                 />
 
@@ -600,7 +603,7 @@ const mapStateToProps = ({ documents }) => {
 export default withRouter(
     connect(mapStateToProps,
         {
-            
+
             getDocuments,
             setSelectedFolder,
             updateDocument,

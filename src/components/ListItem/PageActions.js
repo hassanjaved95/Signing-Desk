@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 
 const ContactsActions = (props) => (
     <React.Fragment>
-
         <div className="page-text">
             {props.selectedContacts > 0 && (props.selectedContacts == 1 ? "1 item is selected" : `${props.selectedContacts} items are selected`)}
             {props.selectedContacts == 0 && !props.search && (props.page || "")}
@@ -42,7 +41,7 @@ const ContactsActions = (props) => (
                             </Button>
                         </div>
                         <div className="actn-search-container" >
-                            <Button variant="contained" style={{ color: "white" }} onClick={props.onClickSearch}>
+                            <Button variant="contained" style={{ color: "white" }} onClick={()=> {props.onClickSearch}}>
                                 <i className="zmdi zmdi-search"></i>
                             </Button>
                         </div>
@@ -68,8 +67,10 @@ const ContactsActions = (props) => (
     </React.Fragment>
 )
 
-const DocumentsActions = (props) => (
+const DocumentsActions = (props,ref) => (
+    
     <React.Fragment>
+       
         <div className="page-text">
             {props.selectedDocuments > 0 && (props.selectedDocuments == 1 ? "1 item is selected" : `${props.selectedDocuments} items are selected`)}
             {props.selectedDocuments == 0 && !props.search && (props.page || "")}
@@ -81,6 +82,7 @@ const DocumentsActions = (props) => (
                         placeholder="Search"
                         margin="normal"
                         onChange={props.onChangeSearchValue}
+                        ref={ref}
                     /></div>
                 </div>
             )}
@@ -134,8 +136,10 @@ const DocumentsActions = (props) => (
     </React.Fragment>
 )
 
-const PageActions = (props) => (
+const PageActions = (props,ref) => (
+   
     <div className="page-actions-container">
+   
         {props.page == 'Contacts' && <ContactsActions {...props} />}
         {props.page == 'Documents' && <DocumentsActions {...props} />}
     </div>
