@@ -56,12 +56,12 @@ const EditingRecipient = (props) => {
     const [addContact, setAddContact] = React.useState(true);
     return (
         <div className={container}>
-            {
-                props.editingContact && props.editingContact.id && addContact &&
-                <ContactSummary initialState={props.editingContact} onSubmitForm={props.onSubmitForm}  onCloseContact={() => {
-                    setAddContact(false);
-                }} />
-            }
+             {
+                // props.editingContact && props.editingContact.id && addContact &&
+                // <ContactSummary initialState={props.editingContact} onSubmitForm={props.onSubmitForm}  onCloseContact={() => {
+                //     setAddContact(false);
+                // }} />
+            } 
             <div className={header}>
                 <div className={icon}> <ArrowBack onClick={props.clearEditing} /></div>
                 <div className={text}>
@@ -70,7 +70,7 @@ const EditingRecipient = (props) => {
             </div>
             <div className={userDetail}>
                 <UserListItem user={props.editingContact} onClickRecipient={() => console.log('send edit user request from this point')}>
-                    <Edit  style={{ fontSize: "20px" }} />
+                    {/* <Edit  style={{ fontSize: "20px" }} /> */}
                 </UserListItem>
             </div>
             <div className={deleteBtn}>

@@ -222,14 +222,14 @@ export default {
       path: "/app/contacts",
       new_item: false,
       child_routes: null
-    },
-    {
-      menu_title: "sidebar.inbox",
-      menu_icon: "zmdi zmdi-email",
-      path: "/app/mail",
-      new_item: false,
-      child_routes: null
     }
+    // {
+    //   menu_title: "sidebar.inbox",
+    //   menu_icon: "zmdi zmdi-email",
+    //   path: "/app/mail",
+    //   new_item: false,
+    //   child_routes: null
+    // }
     // {
     //    "menu_title": "sidebar.chat",
     //    "menu_icon": "zmdi zmdi-comments",

@@ -91,6 +91,7 @@ const DocumentViewerLayout = function (props) {
                     handleMouseDown={props.handleMouseDown}
                     selectedUsers={props.selectedUsers}
                     onSelectUser={props.onSelectUser}
+                    onDeleteRecipient={props.onDeleteRecipient}
                     onDeSelectUser={props.onDeSelectUser}
                     signRecipientsCount={props.signRecipientsCount}
                     pdf={props.pdf}
@@ -112,6 +113,7 @@ const DocumentViewerLayout = function (props) {
                     deleteSignature={props.deleteSelectedSign}
                     removeRecipient={props.removeRecipient}
                     closeSignatureSettings={props.handleMouseDown}
+                    onDeleteRecipient={props.onDeleteRecipient}
                 />
             </div>
             <div className={classes.documentNavPanel}>
@@ -326,6 +328,15 @@ class UserDocumentViewer extends Component {
         });
     }
 
+    onDeleteRecipient = (id) => {
+        var result = window.confirm("Are you sure you want to delete the recipient?");
+        if (result) {
+            this.setState({
+                selectedUsers: this.state.selectedUsers.filter(x => x.id != id)
+            })
+        }
+    }
+
     setSignDimentions = (sign, dim) => {
         sign.width = dim.width;
         sign.height = dim.height;
@@ -419,6 +430,7 @@ class UserDocumentViewer extends Component {
                     onSelectUser={this.onSelectUser}
                     selectedUsers={this.state.selectedUsers}
                     onSelectRecipient={this.onSelectRecipient}
+                    onDeleteRecipient={this.onDeleteRecipient}
                     onDeSelectUser={this.onDeSelectUser}
                     pdf={this.state.pdf}
                     scale={this.state.scale}

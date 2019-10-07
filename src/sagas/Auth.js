@@ -44,7 +44,6 @@ const updateUserProfileRequest = async user => {
     //   headers: { Authorization: `Bearer ${user.token}` }
     // });
     var response = await API.post('users/update-profile', user);
-
     return response;
   } catch (error) {
     if (error.response) {
@@ -168,12 +167,17 @@ function* signInUserWithEmailPassword({ payload }) {
       email,
       password
     );
-    if (signInUser.message) {
-      yield put(signinUserFailure(signInUser.message));
+    if (signInUser.profile == undefined) {
+      yield put(signinUserFailure(signInUser.errorMessage));
     } else {
       localStorage.setItem("user", JSON.stringify(signInUser));
       yield put(signinUserSuccess(signInUser));
-      history.push("/");
+      if (signInUser.profile.general.landingPage == 0) {
+        history.push("/");
+      }
+      else{
+        history.push("/app/documents");
+      }
     }
   } catch (error) {
     yield put(signinUserFailure(error));

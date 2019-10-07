@@ -14,7 +14,7 @@ const customStyles = {
         ...provided,
         borderColor: "#E5E5E5",
     })
-    
+
 }
 
 // const switchStyle ={
@@ -22,7 +22,7 @@ const customStyles = {
 //         ...provided,
 //         backgroundColor:'#5D92F4'
 //     })
-    
+
 // }
 
 
@@ -34,18 +34,27 @@ function onChangeRecipient(val) {
 
 const Recipients = (props) => {
     const [addContact, setAddContact] = React.useState(false);
-
     return (
         <div style={{ padding: "20px 20px 0" }}>
-            
-            <div style={{fontSize:'12px'}} >
-            <Switch className="toggleUsers" onClick={props.onClickToggleUsers} on={props.isUsers} />
-                <span>Company / Personal Users</span></div> <br/>
+
+            {
+               !props.editingContact && !props.editingContact.id &&
+                <div style={{ fontSize: '16px', fontWeight: 'bold', display: 'flex' }} >
+                    <Switch className="toggleUsers" onClick={props.onClickToggleUsers} on={props.isUsers} />
+                    {!props.isUsers && <span style={{ paddingLeft: '5px' }}>  Company users</span>}
+                    {props.isUsers && <span style={{ paddingLeft: '5px' }}>  Personal users</span>} </div>
+            }
+
+
+            <br />
             {!props.editingContact &&
                 <React.Fragment>
                     {addContact &&
                         <React.Fragment>
-                            <ContactSummary editingContact={props.editingContact} onSubmitForm={props.onSubmitForm} onCloseContact={() => {
+                            <ContactSummary editingContact={props.editingContact} onSubmitForm={() => {
+                                setAddContact(false);
+                                props.onSubmitForm
+                            }} onCloseContact={() => {
                                 setAddContact(false);
                             }} />
                             <hr />
@@ -55,27 +64,27 @@ const Recipients = (props) => {
                         <React.Fragment>
                             <div style={{ fontSize: "12px" }}>COMPANY<span style={{ position: "absolute", fontSize: "10px", color: "red" }}>(*)</span></div>
                             <Select options={props.companies} value={props.selectedCompany} styles={customStyles} onChange={(obj) => { props.onSelectCompany(obj) }} />
-                       <br/>
+                            <br />
                         </React.Fragment>
                     }
 
-                        <React.Fragment>
-                            {props.selectedCompany &&
+                    <React.Fragment>
+                        {props.selectedCompany &&
 
-                                <DocumentViewerUsers users={props.users} isUsers={props.isUsers} onSelectUser={props.onSelectUser} addContact={addContact} setAddContact={() => {
-                                    setAddContact(true);
+                            <DocumentViewerUsers users={props.users} isUsers={props.isUsers} onSelectUser={props.onSelectUser} addContact={addContact} setAddContact={() => {
+                                setAddContact(true);
 
-                                }} />}
-                        </React.Fragment>
+                            }} />}
+                    </React.Fragment>
                     <br />
                     {props.selectedUsers && props.currentUser && <SelectedUsers selectedUsers={props.selectedUsers} onClickRecipient={props.onClickRecipient} />}
                 </React.Fragment>
             }
 
             {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} onSubmitForm={props.onSubmitForm} deleteContact={props.deleteContact} setAddContact={() => {
-                                    setAddContact(true);
+                setAddContact(true);
 
-                                }} />}
+            }} />}
         </div>
     );
 }

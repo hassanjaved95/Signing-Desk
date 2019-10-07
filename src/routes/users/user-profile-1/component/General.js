@@ -37,12 +37,32 @@ class General extends Component {
 
   onSave = async () => {
     this.setState({ saving: true });
-    let newUser = {
+    // let newUser = {
+    //   ...this.props.user.profile.general,
+    //   landingPage: +this.state.value
+    // };
+
+    const info = {
+      ...this.props.user.profile.info,
+    };
+    
+    var signature = {
+      ...this.props.user.profile.signature
+    }
+    var general = {
       ...this.props.user.profile.general,
       landingPage: +this.state.value
-    };
+    }
 
-    this.props.updateProfile(newUser);
+    const profile = {
+      profile: {
+        info,
+        signature,
+        general
+      }
+    }
+
+    this.props.updateProfile(profile);
     this.setState({ saving: false, dirty: false });
   };
 

@@ -38,10 +38,10 @@ class DashboardFilters extends Component {
                     <li className="list-inline-item" style={{ color: 'black' }}>
                         <div className="list-inline-item">
                             <div className="list-inline-item" style={{ marginRight: '10px' }}>
-                                <span className="DBFM0 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(0)}> 1 Week </span>
+                                {/* <span className="DBFM0 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(0)}> 1 Week </span>
                                 <span className="DBFM1 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(1)}>1 Month </span>
                                 <span className="DBFM2 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(2)}>3 Months </span>
-                                <span className="DBFM3 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(3)}>1 Year </span>
+                                <span className="DBFM3 dashBoardMainFilters" onClick={() => this.getDocumentStatsByMainFilter(3)}>1 Year </span> */}
                             </div>
                             <div className="list-inline-item" style={{marginRight: '10px', marginRight: '10px'}}>
                                

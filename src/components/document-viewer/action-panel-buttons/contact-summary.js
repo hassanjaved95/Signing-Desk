@@ -49,7 +49,6 @@ class ContactSummary extends Component {
     }
 
     onSubmitForm = (obj) => {
-
     }
 
     dlgButtons = {
@@ -92,7 +91,6 @@ class ContactSummary extends Component {
                                         showAddressFields={this.state.address}
                                         onSubmit={this.props.onSubmitForm}
                                         initialState={values}
-                                        
                                         ref={this.ref}
                                     />
                                 </DialogTemplate>)
