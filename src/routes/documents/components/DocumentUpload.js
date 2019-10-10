@@ -60,7 +60,9 @@ class DocumentUpload extends React.Component {
 
         this.dropzone = null;
     }
-
+    componentDidMount() {
+       document.addEventListener('keypress',this.logKey)
+    }
     initialState = {
         FileName: '',
         FileDescription: ''
@@ -89,6 +91,15 @@ class DocumentUpload extends React.Component {
 
     onSaveDocuments = () => {
         document.getElementById("btnSubmit").click();
+    }
+
+    logKey =(e)=>{
+        if(e.keyCode == 13){
+            document.getElementById("btnSubmit").click();
+        }
+        else{
+
+        }
     }
 
     onSubmit = (values) => {
@@ -166,7 +177,7 @@ class DocumentUpload extends React.Component {
 
                     return (
                         <Form onSubmit={handleSubmit}>
-                            <div>
+                            <div id="mainForm">
                                 <button id="btnSubmit" type="submit" style={{ opacity: 0, display: 'none' }} >
                                     Submit
                                 </button>
@@ -188,8 +199,8 @@ class DocumentUpload extends React.Component {
                                                         value={values.FileName}
                                                         className="dlg-txt-field dlg-txt-field-FileUpload"
                                                         style={{ width: '100%', fontSize: '3rem' }}
+                                                        
                                                         onChange={handleChange}
-                                                        onBlur={handleBlur}
                                                         helperText={(errors.FileName && touched.FileName) && errors.FileName}
                                                         placeholder="Enter document name"
                                                         margin="normal"
@@ -207,14 +218,17 @@ class DocumentUpload extends React.Component {
                                                         value={values.FileDescription}
                                                         className="dlg-txt-field dlg-txt-field-FileUpload"
                                                         style={{ width: '100%' }}
+                                                        
                                                         onChange={handleChange}
-                                                        onBlur={handleBlur}
+                                                       
                                                         helperText={(errors.FileDescription && touched.FileDescription) && errors.FileDescription}
                                                         placeholder="Enter document description"
                                                         margin="normal"
                                                         InputLabelProps={{
                                                             shrink: true,
                                                         }}
+                                                        tabIndex="1"
+
                                                     />
                                                 </div>
                                             </div>

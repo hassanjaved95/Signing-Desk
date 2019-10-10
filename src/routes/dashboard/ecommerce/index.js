@@ -74,12 +74,12 @@ export default class EcommerceDashboard extends Component {
 						<Link to="#">
 							<Card body
 							>
-								<CardText className='text-muted'>Draft</CardText>
+								<CardText className='text-muted'>All</CardText>
 								<CardText className='text-muted' style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
 									4
-									<span className='text-muted' style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
+									{/* <span className='text-muted' style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText className='text-muted'>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText className='text-muted'>documents<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
 					</div>
@@ -88,46 +88,76 @@ export default class EcommerceDashboard extends Component {
 							<Card body inverse
 								style={{ backgroundColor: '#ff9045', borderColor: '#ff9045' }}
 							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>For approval</CardText>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Draft</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
 									0
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
 					</div>
 					<div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
-								style={{ backgroundColor: '#216afc', borderColor: '#216afc' }}
+								style={{ backgroundColor: '#008643', borderColor: '#008643' }}
 							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Sent</CardText>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>In Progress</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									1
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>document</span>
+									85
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
 					</div>
+					
 				</div>
 				<div className="row">
 					<div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
-								style={{ backgroundColor: '#9a44a9', borderColor: '#9a44a9' }}
+								style={{ backgroundColor: '#216afc', borderColor: '#216afc' }}
 							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Viewed</CardText>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Completed</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									35
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
+									1
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>document</span> */}
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
 					</div>
 					<div className="col-sm-12 col-md-4 mb-30">
+						<Link to="#">
+							<Card body inverse
+								style={{ backgroundColor: '#e44e48', borderColor: '#e44e48' }}
+							>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Declined</CardText>
+								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
+									0
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
+								</CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
+							</Card>
+						</Link>
+					</div>
+					<div className="col-sm-12 col-md-4 mb-30">
+						<Link to="#">
+							<Card body inverse
+								style={{ backgroundColor: '#942925', borderColor: '#942925' }}
+							>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Expired</CardText>
+								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
+									13
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
+								</CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
+							</Card>
+						</Link>
+					</div>
+					
+					{/* <div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
 								style={{ backgroundColor: '#47b972', borderColor: '#47b972' }}
@@ -140,24 +170,25 @@ export default class EcommerceDashboard extends Component {
 								<CardText>$0.00<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
-					</div>
-					<div className="col-sm-12 col-md-4 mb-30">
+					</div> */}
+					
+				</div>
+				<div className="row">
+				<div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
-								style={{ backgroundColor: '#e44e48', borderColor: '#e44e48' }}
+								style={{ backgroundColor: '#9a44a9', borderColor: '#9a44a9' }}
 							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Expired</CardText>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Cancelled</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									0
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
+									35
+									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>documents<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
 					</div>
-				</div>
-				<div className="row">
-					<div className="col-sm-12 col-md-4 mb-30">
+					{/* <div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
 								style={{ backgroundColor: '#249c57', borderColor: '#249c57' }}
@@ -170,35 +201,9 @@ export default class EcommerceDashboard extends Component {
 								<CardText>$0.00<span className="float-right">0 today</span></CardText>
 							</Card>
 						</Link>
-					</div>
-					<div className="col-sm-12 col-md-4 mb-30">
-						<Link to="#">
-							<Card body inverse
-								style={{ backgroundColor: '#008643', borderColor: '#008643' }}
-							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Paid</CardText>
-								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									85
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
-								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
-							</Card>
-						</Link>
-					</div>
-					<div className="col-sm-12 col-md-4 mb-30">
-						<Link to="#">
-							<Card body inverse
-								style={{ backgroundColor: '#942925', borderColor: '#942925' }}
-							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Declined</CardText>
-								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									13
-									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
-								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
-							</Card>
-						</Link>
-					</div>
+					</div> */}
+					
+					
 				</div>
 				{/*<div className="row">
 					<RctCollapsibleCard

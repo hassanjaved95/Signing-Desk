@@ -130,7 +130,7 @@ export default function CustomizedMenus(props) {
                             <FileUpload />
                         </ListItemIcon> */}
                         {/* <ListItemText primary="Upload Document"  /> */}
-                        <DocumentUpload open={state.showDialog} />
+                        <DocumentUpload open={state.showDialog}  />
                     </StyledMenuItem>
                     {/*<StyledMenuItem>
               <ListItemIcon>
