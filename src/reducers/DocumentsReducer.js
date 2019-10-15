@@ -109,7 +109,6 @@ function renameInFoldersList(list, folderId, name) {
 }
 
 function getDocumentsNameUpdated(state, actionPayload){
-  debugger;
   var aPayload = JSON.parse(actionPayload.config.data);
   var docs = state.documents[0].documents;
   if(aPayload.name != undefined){
