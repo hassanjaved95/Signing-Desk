@@ -22,7 +22,7 @@ import SmallDialogTemplate from "Components/Dialogs/SmallDialogTemplate";
 import FolderMenu from 'Components/FolderMenu/FolderMenu';
 import RctSectionLoader from 'Components/RctSectionLoader/RctSectionLoader';
 import DeleteConfirmationDialog from 'Components/DeleteConfirmationDialog/DeleteConfirmationDialog';
-
+import EditDocument from 'Components/DocumentItem/EditDocument';
 
 class UserDocumentsList extends Component {
     searchTimerId = null;
@@ -54,7 +54,9 @@ class UserDocumentsList extends Component {
             showTagAddButton: false,
             writtenTags: "",
             newFolderIDToMoveDocuments: "",
-            selectedDocumentsToMove: []
+            selectedDocumentsToMove: [],
+            selectedDocumentToEdit:null,
+            documentToEdit:false
 
         }
     }
@@ -197,7 +199,8 @@ class UserDocumentsList extends Component {
 
     onCloseDlg = () => {
         this.setState({
-            folderCreationDialog: false
+            folderCreationDialog: false,
+            documentToEdit:false
         });
     }
 
@@ -250,6 +253,16 @@ class UserDocumentsList extends Component {
 
     }
 
+    onSubmitEditDocuent = (values) =>{
+        //console.log('onSubmitEditDocuent:', values);
+        const payload = {
+            "id": this.state.selectedDocumentToEdit.id,
+            "name": values.documentName.trim()
+        }
+        this.props.updateDocument(payload);
+        this.onCloseDlg();
+    }
+
     /* End All Methods related to folders */
 
     getScrollBarStyle() {
@@ -275,6 +288,14 @@ class UserDocumentsList extends Component {
         var temp = [];
         temp.push(doc);
         this.setState({ selectedDocumentsToMove: temp, moveDocumentsToFolder: true })
+    }
+
+    onEditDocument = (doc) => {
+        console.log("On Edit Document is Fired!!!");
+        this.setState({
+            selectedDocumentToEdit: doc,
+            documentToEdit: true
+        })
     }
 
 
@@ -460,6 +481,15 @@ class UserDocumentsList extends Component {
                     message="Are You Sure Want To Delete Permanently This document."
                     onConfirm={() => this.onDeleteDocuments(doc)}
                 /> */}
+                {
+                    this.state.documentToEdit &&
+                    <SmallDialogTemplate
+                        title="Edit Document Name"
+                            open={this.state.documentToEdit}
+                            onClose={this.onCloseDlg} >
+                                <EditDocument onSubmit={this.onSubmitEditDocuent} documentToEdit={this.state.selectedDocumentToEdit} />
+                    </SmallDialogTemplate>
+                }
                     {
                         this.state.folderCreationDialog &&
                         <SmallDialogTemplate
@@ -574,6 +604,7 @@ class UserDocumentsList extends Component {
                                                         arrTags={doc.tags && typeof (doc.tags) === 'string' && doc.tags.split(';')}
                                                         onDeleteDocument={this.onDeleteSingleDocument}
                                                         onSingleMoveDocument={this.onMoveSingleDocument}
+                                                        onEditDocument = {this.onEditDocument}
                                                     />
                                                 ))
                                             ) : (

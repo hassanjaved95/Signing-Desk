@@ -79,7 +79,7 @@ export default class EcommerceDashboard extends Component {
 									4
 									{/* <span className='text-muted' style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText className='text-muted'>documents<span className="float-right">0 today</span></CardText>
+								<CardText className='text-muted'>documents</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -93,7 +93,7 @@ export default class EcommerceDashboard extends Component {
 									0
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -107,7 +107,7 @@ export default class EcommerceDashboard extends Component {
 									85
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -124,7 +124,7 @@ export default class EcommerceDashboard extends Component {
 									1
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>document</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -138,7 +138,7 @@ export default class EcommerceDashboard extends Component {
 									0
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -152,7 +152,7 @@ export default class EcommerceDashboard extends Component {
 									13
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -167,7 +167,7 @@ export default class EcommerceDashboard extends Component {
 									3
 									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>$0.00</CardText>
 							</Card>
 						</Link>
 					</div> */}
@@ -184,7 +184,7 @@ export default class EcommerceDashboard extends Component {
 									35
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText>documents<span className="float-right">0 today</span></CardText>
+								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -198,7 +198,7 @@ export default class EcommerceDashboard extends Component {
 									7
 									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
 								</CardText>
-								<CardText>$0.00<span className="float-right">0 today</span></CardText>
+								<CardText>$0.00</CardText>
 							</Card>
 						</Link>
 					</div> */}

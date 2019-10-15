@@ -108,7 +108,22 @@ function renameInFoldersList(list, folderId, name) {
   });
 }
 
-
+function getDocumentsNameUpdated(state, actionPayload){
+  var aPayload = JSON.parse(actionPayload.config.data);
+  var docs = state.documents[0].documents;
+  if(aPayload.name != undefined){
+    for(var i=0; i<docs.length; i++){
+      if(docs[i].id == aPayload.id){
+        docs[i].name = aPayload.name;
+        break;
+      }
+    }
+  }else{
+    
+  }
+  
+return docs;
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -166,28 +181,14 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
-      // var result = state.documents
-      //   .map(item => ({
-      //     ...item,
-      //     children: item.children
-      //       .filter(child => child.id === action.payload.nextFolderID)
-      //   }))
-      //   .filter(item => item.children.length > 0)
-
-      // result.push(action.payload.movedDocument);
-
+      const docs = action.payload;
       return {
         ...state,
-        loading: false
-
+        loading: false,
+        documents: { ...state.documents, documents: [...state.documents, getDocumentsNameUpdated(state,action.payload)] }
       };
 
-      // documents: result,
-      //   selectedFolder: {
-      //     ...state.selectedFolder, documents: state.selectedFolder.documents.filter(doc => {
-      //       return action.payload.movedDocument.id != doc.id;
-      //     })
-      //   }
+      
     }
 
 

@@ -41,12 +41,12 @@ const loadTags = (props, document, tag) => (
 const loadContextMenu = (props) => (
     <div className="row-context-menu-content">
         <ul>
-            {/* <li>
+            <li onClick={props.onEditDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
-                    <div className="flex-row-left"> <i className="zmdi zmdi-copy icon-size"></i></div>
-                    <div style={{ marginLeft: '5px' }}>Duplicate</div>
+                    <div className="documents-inline-actions-icons"> <i className="zmdi zmdi-edit"></i></div>
+                    <div style={{ marginLeft: '5px' }}>Edit</div>
                 </div>
-            </li> */}
+            </li>
             <li onClick={props.onSingleMoveDocument.bind(null, props.document)}>
                 <div className="flex-row flex-vertical-center">
                     <div className="documents-inline-actions-icons"> <i className="zmdi zmdi-folder-star"></i></div>
