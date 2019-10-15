@@ -38,6 +38,18 @@ function makeDataCompatibleToOptionsCompanyUsers(data) {
             item.firstName = item.username;
             item.lastName = '';
             item.id = item.companyUserBridgeID;
+            if(item.certificateType === 1){
+                item.certTypeValue = "Qualified";
+            }
+            else if(item.certificateType === 2){
+                item.certTypeValue = "Advanced";
+            }
+            else if(item.certificateType === 4){
+                item.certTypeValue = "Biometric";
+            }
+            else{
+                item.certTypeValue = "";
+            }
         })
 
     }
@@ -48,6 +60,19 @@ function makeDataCompatibleToOptionsCompanyUsers(data) {
         data.firstName = data.username;
         data.lastName = '';
         data.id = data.companyUserBridgeID;
+        if(data.certificateType === 1){
+            data.certTypeValue = "Qualified";
+        }
+        else if(data.certificateType === 2){
+            data.certTypeValue = "Advanced";
+        }
+        else if(data.certificateType === 4){
+            data.certTypeValue = "Biometric";
+        }
+        else{
+            data.certTypeValue = "";
+        }
+        
     }
 
     return data;
