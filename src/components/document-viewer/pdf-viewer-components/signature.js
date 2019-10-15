@@ -52,7 +52,7 @@ const useStyles = makeStyles({
         width: 0,
         height: 0,
         borderTop: '9px solid transparent',
-        borderLeft: `18px solid ${props.userNameColor}`,
+        borderLeft: `10px solid ${props.userNameColor}`,
         borderBottom: '9px solid transparent'
     }),
     nameSection: props => ({
@@ -62,7 +62,8 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         background: props.userNameColor,
-        padding: '0 5px'
+        padding: '0 5px',
+        borderRadius: 2
     }),
     assigneeContainer: {
         display: 'flex',
@@ -127,6 +128,7 @@ const Signature = (props) => {
         // sign.pageX = pageX;
         // sign.pageY = pageY;
     }
+
 
     return (
         <React.Fragment>

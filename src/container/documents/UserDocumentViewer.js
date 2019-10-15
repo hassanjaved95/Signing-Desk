@@ -24,7 +24,7 @@ import { createWorkFlow } from "Actions";
 
 const useStyles = makeStyles({
     documentViewerContainer: {
-        height: "calc(100vh - 83px)",
+        height: "calc(100vh - 64px)",
         background: "white",
         display: "flex",
         flexDirection: 'row'
@@ -220,6 +220,10 @@ class UserDocumentViewer extends Component {
         });
     }
 
+    scrollIntoView = (id) => {
+        document.getElementById(id).scrollIntoView();
+    }
+
     onClickSend = () => {
         let recipientsCount = this.state.signs.reduce((count, sign) => {
             if (sign.recipient) count += 1;
@@ -361,6 +365,9 @@ class UserDocumentViewer extends Component {
                 break;
             }
         }
+
+        console.log('next sign:', tempSign);
+        this.scrollIntoView(tempSign.uiId);
 
         this.setState({
             selectedSign: tempSign

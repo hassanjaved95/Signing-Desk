@@ -210,7 +210,7 @@ class Header extends Component {
                                           }`}
                                        src={this.props.user.profile.info.avatar}
                                        className="rounded-circle"
-                                       style={{display:'block'}}
+                                       style={{ display: 'block' }}
                                     />
                                  </div>
 

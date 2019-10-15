@@ -7,6 +7,11 @@ class DashboardCaption extends Component {
 
     render() {
         var currentPathName = this.props.location.pathname.split("/")[this.props.location.pathname.split("/").length - 1];
+        const { selectedDocument } = this.props;
+        if (currentPathName == 'document-viewer' && selectedDocument) {
+            currentPathName = selectedDocument.name;
+        }
+
         return (
             <React.Fragment>
                 <li className="list-inline-item" style={{ color: 'black' }}>
@@ -19,9 +24,10 @@ class DashboardCaption extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser, settings, sidebar }) => {
+const mapStateToProps = ({ authUser, settings, sidebar, documents }) => {
     const { user } = authUser;
-    return { user, settings, sidebar };
+    const { selectedDocument } = documents;
+    return { user, settings, sidebar, selectedDocument };
 };
 
 export default withRouter(connect(mapStateToProps, {

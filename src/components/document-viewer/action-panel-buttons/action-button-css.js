@@ -49,7 +49,13 @@ const useStyles = makeStyles({
     },
     actionPanelBtnDisabled: {
         cursor: 'default',
-        background: "#f4f4f4"
+        background: "#f4f4f4",
+        '-webkit-touch-callout': 'none',
+        '-webkit-user-select': 'none',
+        '-khtml-user-select': 'none',
+        '-moz-user-select': 'none',
+        '--ms-user-select': 'none',
+        'user-select': 'none',
     },
     btnContentContainer: {
         display: "flex",
