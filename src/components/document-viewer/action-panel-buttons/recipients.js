@@ -33,12 +33,11 @@ function onChangeRecipient(val) {
 
 
 const Recipients = (props) => {
-    const [addContact, setAddContact] = React.useState(false);
     return (
         <div style={{ padding: "20px 20px 0" }}>
 
             {
-               !props.editingContact && !props.editingContact.id &&
+                !props.editingContact && !props.editingContact.id &&
                 <div style={{ fontSize: '16px', fontWeight: 'bold', display: 'flex' }} >
                     <Switch className="toggleUsers" onClick={props.onClickToggleUsers} on={props.isUsers} />
                     {!props.isUsers && <span style={{ paddingLeft: '5px' }}>  Company users</span>}
@@ -49,13 +48,10 @@ const Recipients = (props) => {
             <br />
             {!props.editingContact &&
                 <React.Fragment>
-                    {addContact &&
+                    {props.addContact &&
                         <React.Fragment>
-                            <ContactSummary editingContact={props.editingContact} onSubmitForm={() => {
-                                setAddContact(false);
-                                props.onSubmitForm
-                            }} onCloseContact={() => {
-                                setAddContact(false);
+                            <ContactSummary editingContact={props.editingContact} setAddContact={props.setAddContact} onSubmitForm={props.onSubmitForm} onCloseContact={() => {
+                                props.setAddContact(false);
                             }} />
                             <hr />
                         </React.Fragment>
@@ -71,8 +67,8 @@ const Recipients = (props) => {
                     <React.Fragment>
                         {props.selectedCompany &&
 
-                            <DocumentViewerUsers users={props.users} isUsers={props.isUsers} onSelectUser={props.onSelectUser} addContact={addContact} setAddContact={() => {
-                                setAddContact(true);
+                            <DocumentViewerUsers users={props.users} isUsers={props.isUsers} onSelectUser={props.onSelectUser} addContact={props.addContact} setAddContact={() => {
+                                props.setAddContact(true);
 
                             }} />}
                     </React.Fragment>
@@ -82,7 +78,7 @@ const Recipients = (props) => {
             }
 
             {props.editingContact && <EditingRecipient editingContact={props.editingContact} clearEditing={props.clearEditing} onSubmitForm={props.onSubmitForm} deleteContact={props.deleteContact} setAddContact={() => {
-                setAddContact(true);
+                props.setAddContact(true);
 
             }} />}
         </div>
