@@ -245,7 +245,7 @@ class UserDocumentViewer extends Component {
     }
 
     getCollaboratorObj = (user) => ({
-        "companyID": "dff86140-04f7-4f60-91b5-b97b5b546b77",
+        "companyID": user.companyID || user.companyId || null,
         "userID": user.id,
         "status": 0,
         "action": "SIGNER",
