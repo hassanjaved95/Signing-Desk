@@ -16,8 +16,8 @@ import * as Yup from 'yup';
 
 const initialState = {
     firstName: '',
-    lastName: '' ,
-    email:  '' 
+    lastName: '',
+    email: ''
 };
 
 
@@ -68,7 +68,11 @@ class ContactSummary extends Component {
         return (
             <Formik
                 initialValues={mergedInitialState}
-                onSubmit={this.props.onSubmitForm}
+                onSubmit={(values) => {
+                    console.log('values:', values);
+                    this.props.onSubmitForm(values);
+                    this.props.setAddContact(false);
+                }}
                 validationSchema={validationSchema}
             >
                 {({ values,

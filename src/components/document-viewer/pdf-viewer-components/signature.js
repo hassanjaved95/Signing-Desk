@@ -52,7 +52,7 @@ const useStyles = makeStyles({
         width: 0,
         height: 0,
         borderTop: '9px solid transparent',
-        borderLeft: `18px solid ${props.userNameColor}`,
+        borderLeft: `10px solid ${props.userNameColor}`,
         borderBottom: '9px solid transparent'
     }),
     nameSection: props => ({
@@ -62,7 +62,8 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         background: props.userNameColor,
-        padding: '0 5px'
+        padding: '0 5px',
+        borderRadius: 2
     }),
     assigneeContainer: {
         display: 'flex',
@@ -104,6 +105,7 @@ const Signature = (props) => {
     const [height, setHeight] = React.useState(sign.height || 50);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+
     console.log('sign == selectedSign:', selectedSign);
 
     function setUserName(n) {
@@ -128,6 +130,7 @@ const Signature = (props) => {
         // sign.pageY = pageY;
     }
 
+
     return (
         <React.Fragment>
             <Draggable
@@ -142,26 +145,24 @@ const Signature = (props) => {
                     <Resizable
                         size={{ width, height }}
                         onResizeStop={(e, direction, ref, d) => {
-                            let w = width + d.width;
-                            let h = height + d.height;
-                            sign.width = w;
-                            sign.height = h;
-                            // props.setSignDimentions(sign, { width, height });
-                            setWidth(w);
-                            setHeight(h);
+                            const dim = ref.getBoundingClientRect();
+                            sign.width = dim.width;
+                            sign.height = dim.height;
+
+                            setHeight(dim.height);
+                            setWidth(dim.width);
                         }}
                         onResizeStart={(e) => {
+                            // console.log('width at start', width);
+                            // console.log('height at start', height);
                             e.stopPropagation();
                         }}
-                        onResize={(e, direction, ref, d) => {
-                            // setWidth(width + d.width);
-                            // setHeight(height + d.height);
-                        }}
+                        enable={{ top: false, right: false, bottom: false, left: false, topRight: false, bottomRight: true, bottomLeft: false, topLeft: false }}
                     >
                         <div
                             id={signKey}
                             className={`${classes.signature} signaturediv`}
-                            style={{ width, height }}
+                            style={{ width: '100%', height: '100%' }}
                             onMouseOver={() => {
                                 setUserName(fullName)
                             }}

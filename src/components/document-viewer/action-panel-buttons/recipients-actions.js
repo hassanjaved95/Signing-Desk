@@ -45,7 +45,8 @@ class RecipientActions extends React.Component {
             isUsers: true,
             companies: [],
             listUser: [],
-            try: true
+            try: true,
+            addContact: false,
         };
     }
 
@@ -63,6 +64,10 @@ class RecipientActions extends React.Component {
                 editingContact: ''
             })
         }
+    }
+
+    setAddContact = (addContact) => {
+        this.setState({ addContact });
     }
 
     onSelectCompany = (company) => {
@@ -125,12 +130,8 @@ class RecipientActions extends React.Component {
         }
     }
     createContact = (reqObj) => {
-        // console.log('CreateContact with Params:', reqObj);
-        // this.props.createContact(reqObj);
-
-        this.setState({
-            try: !this.state.try
-        })
+        console.log('CreateContact with Params:', reqObj);
+        this.props.createContact(reqObj);
     }
 
 
@@ -228,6 +229,8 @@ class RecipientActions extends React.Component {
                                         onSubmitForm={this.onSubmitForm}
                                         deleteContact={this.deleteContact}
                                         currentUser={this.state.listUser}
+                                        addContact={this.state.addContact}
+                                        setAddContact={this.setAddContact}
                                     />
                                 }
 

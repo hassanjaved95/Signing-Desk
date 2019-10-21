@@ -73,7 +73,7 @@ class Page extends Component {
         ev.dataTransfer.dropEffect = "copy";
     }
 
-    onDrop = (pageNum, ev) => {
+    onDrop = (pageNum, pageSigns = [], ev) => {
         const pagePos = this.getPageBoundary();
         const dropPos = {
             pageId: this.props.pageId,
@@ -82,7 +82,8 @@ class Page extends Component {
             width: 120,
             height: 50,
             pageNum,
-            recipient: null
+            recipient: null,
+            uiId: this.props.pageId + '-' + (pageSigns.length)
         }
 
         this.props.onDropSign(dropPos);
@@ -94,10 +95,10 @@ class Page extends Component {
 
     render() {
         const { width, height, status } = this.state;
-        const { classes, docSigns, pageId, pageNum } = this.props;
+        const { classes, docSigns, pageId, pageNum, marginTop } = this.props;
 
         return (
-            <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop.bind(this, pageNum)} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height }}>
+            <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop.bind(this, pageNum, (docSigns || []).filter(doc => doc.pageId === pageId))} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height, marginTop }}>
                 <canvas ref={this.setCanvasRef} />
                 {
                     docSigns &&

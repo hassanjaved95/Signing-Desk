@@ -7,16 +7,14 @@ import Page from './page';
 
 const useStyles = makeStyles({
     pdfPage: {
-        margin: "0 auto",
+        margin: "15px auto",
         maxWidth: "800px",
-        position: "relative",
-        marginTop: 10
+        position: "relative"
     },
     pdfContainer: {
-        height: "calc(100vh - 65px)",
+        height: "calc(100vh - 64px)",
         overflowX: "hidden",
         overflowY: "auto",
-        padding: "40px 0",
     }
 });
 
@@ -47,6 +45,7 @@ const Viewer = (props) => {
                             deleteSelectedSign={props.deleteSelectedSign}
                             duplicateSelectedSign={props.duplicateSelectedSign}
                             setSignDimentions={props.setSignDimentions}
+                            marginTop={(i * 35) || 10}
                         />
                     )
                 )}

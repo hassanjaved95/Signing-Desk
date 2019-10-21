@@ -110,7 +110,7 @@ class PDFViewer extends Component {
 
 var styles = {
     pdfDoc: {
-        marginTop: 10
+        marginTop: 2
     },
     btn: {
         color: 'white',
