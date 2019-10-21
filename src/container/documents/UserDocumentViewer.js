@@ -5,6 +5,7 @@ import { getViewingDocument } from "Actions";
 import { makeStyles } from '@material-ui/styles';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 import PeopleIcon from '@material-ui/icons/People';
+import SettingsIcon from '@material-ui/icons/Settings';
 import BrushIcon from '@material-ui/icons/Brush';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -53,6 +54,11 @@ const navPanelItems = [
         Id: 2,
         Icon: <PeopleIcon />,
         Text: "Recipients"
+    },
+    {
+        Id: 3,
+        Icon: <SettingsIcon />,
+        Text: "Settings"
     }
 ];
 

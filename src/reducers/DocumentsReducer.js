@@ -122,7 +122,7 @@ function getDocumentsNameUpdated(state, actionPayload){
     
   }
   
-return docs;
+return state;
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -182,11 +182,12 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
       const docs = action.payload;
-      return {
-        ...state,
-        loading: false,
-        documents: { ...state.documents, documents: [...state.documents, getDocumentsNameUpdated(state,action.payload)] }
-      };
+      return getDocumentsNameUpdated(state,action.payload);
+      // return {
+      //   ...state,
+      //   loading: false,
+      //   documents: { ...state.documents,  }
+      // };
 
       
     }
