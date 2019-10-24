@@ -21,6 +21,7 @@ import * as PdfJs from 'pdfjs-dist';
 import config from 'Constants/AppConfig';
 import { getGuid } from "Helpers/helpers";
 import { createWorkFlow } from "Actions";
+import API from 'Api';
 
 const useStyles = makeStyles({
     documentViewerContainer: {
@@ -235,7 +236,16 @@ class UserDocumentViewer extends Component {
 
             const workflowReqObj = this.createWorkFlowRequest();
             // console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
-            this.props.createWorkFlow(workflowReqObj);
+            this.props.createWorkFlow(workflowReqObj, (workflowId) => {
+                // start workflow
+                API.post('workflows/start/' + workflowId).then(response => {
+                    if (response && response.status == 200) {
+                        console.log('workflow started.');
+                    } else {
+                        console.log('workflow failed to start with error:', response);
+                    }
+                });
+            });
             return;
         }
 

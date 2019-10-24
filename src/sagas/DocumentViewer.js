@@ -69,6 +69,7 @@ function* createCompositeWorkflowOnServer(data) {
         const response = yield call(createWorkFlowRequest, data);
         if (response && response.status == 200) {
             const responseData = { ...data, ...response };
+            data.callback(response.id); // response should have workflow id so that we can start workflow
             yield put(createWorkFlowSuccess(responseData));
         } else {
             yield put(createWorkFlowFailure(response));

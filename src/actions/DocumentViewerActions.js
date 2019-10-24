@@ -38,9 +38,10 @@ export const getCompaniesFailure = error => ({
     payload: error
 });
 
-export const createWorkFlow = (payload) => ({
+export const createWorkFlow = (payload, callback) => ({
     type: CREATE_COMPOSITE_WORKFLOW,
-    payload
+    payload,
+    callback
 });
 
 export const createWorkFlowSuccess = (data) => ({
