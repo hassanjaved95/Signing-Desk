@@ -16,7 +16,9 @@ import {
   addNewFolderFailure,
   deleteDocumentsFailure,
   duplicateDocumentsFailure,
-  editFolderNameFailure
+  editFolderNameFailure,
+  getDashboardSuccess,
+  getDashboardFailure,
 } from "Actions";
 import {
   CREATE_DOCUMENT,
@@ -27,7 +29,8 @@ import {
   UPDATE_DOCUMENT,
   EDIT_FOLDER_NAME,
   DELETE_FOLDER,
-  ADD_NEW_FOLDER
+  ADD_NEW_FOLDER,
+  GET_All_DASHBOARD
 } from "Actions/types";
 import API from 'Api';
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
@@ -36,11 +39,6 @@ import UserDocumentsList from "../container/documents/UserDocumentsList";
 
 
 const getDocumentsRequest = async () => {
-  //return documents; 
-  //return response;
-  // return await Promise.resolve(response.data);
-  // console.log('Documents response:', response);
-
   var response = await API.get('documents/all', { id: 1 });
   return response;
 };
@@ -82,6 +80,10 @@ const editFolderNameRequest = async (payload) => {
 const deleteFolderRequest = async (payload) => {
   return await API.delete(`folders/${payload.folderId}`)
 };
+
+const getDashboardRequest = async(payload) => {
+  return await API.get('workflows/dashboards/basic-information', { id: 1 });
+}
 
 function* addNewFolderOnServer({ payload }) {
   try {
@@ -234,6 +236,21 @@ function* deleteFolderOnServer({ payload }) {
   }
 }
 
+function* getDashboardFromServer() {
+  try {
+    const response = yield call(getDashboardRequest);
+    if (response && response.status == 200) {
+      yield put(getDashboardSuccess(response));
+
+    }
+    else {
+      yield put(getDashboardFailure(response));
+    }
+  } catch (error) {
+    yield put(getDashboardFailure(error));
+  }
+}
+
 // watcher
 export function* createDocument() {
   yield takeEvery(CREATE_DOCUMENT, createDocumentOnServer);
@@ -262,6 +279,10 @@ export function* deleteFolder() {
 export function* addNewFolder() {
   yield takeEvery(ADD_NEW_FOLDER, addNewFolderOnServer);
 }
+export function* getDashboard(){
+  yield takeEvery(GET_All_DASHBOARD, getDashboardFromServer);
+
+}
 
 export default function* rootSaga() {
   yield all([
@@ -273,6 +294,7 @@ export default function* rootSaga() {
     fork(duplicateDocuments),
     fork(editFolderName),
     fork(deleteFolder),
-    fork(addNewFolder)
+    fork(addNewFolder),
+    fork(getDashboard)
   ]);
 }

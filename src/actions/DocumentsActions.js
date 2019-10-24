@@ -28,7 +28,10 @@ import {
   ADD_NEW_FOLDER_SUCCESS,
   SET_SELECTED_DOCUMENT,
   ADD_NEW_FOLDER_FAILURE,
-  EDIT_FOLDER_NAME_FAILURE
+  EDIT_FOLDER_NAME_FAILURE,
+  GET_All_DASHBOARD,
+  GET_All_DASHBOARD_SUCCESS,
+  GET_All_DASHBOARD_FAILURE
 } from "./types";
 
 export const getDocuments = () => ({
@@ -172,5 +175,20 @@ export const setSelectedDocument = (document, callback) => ({
     document,
     callback
   }
+});
+
+export const getDashboard = () => ({
+  type: GET_All_DASHBOARD
+});
+
+
+export const getDashboardSuccess = response => ({
+  type: GET_All_DASHBOARD_SUCCESS,
+  payload: response.data
+});
+
+export const getDashboardFailure = error => ({
+  type: GET_All_DASHBOARD_FAILURE,
+  payload: error
 });
 

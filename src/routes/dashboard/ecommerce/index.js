@@ -4,6 +4,9 @@
 
 import React, { Component } from 'react'
 import { Helmet } from "react-helmet";
+import { getDashboard } from "Actions";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import IntlMessages from 'Util/IntlMessages';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
@@ -45,12 +48,16 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-export default class EcommerceDashboard extends Component {
+class EcommerceDashboard extends Component {
 
 	state = {
 		className: 'text-muted',
 		mouseOver: true
 	};
+
+	componentDidMount() {
+		this.props.getDashboard();
+	}
 
 	mouseOut = () => {
 		this.setState({ mouseOver: false });
@@ -61,8 +68,9 @@ export default class EcommerceDashboard extends Component {
 	}
 
 	render() {
-		const { match } = this.props;
+		const { match, dashboard } = this.props;
 		return (
+
 			<div className="ecom-dashboard-wrapper">
 				<Helmet>
 					<title>SigningDesk Dashboard</title>
@@ -76,10 +84,12 @@ export default class EcommerceDashboard extends Component {
 							>
 								<CardText className='text-muted'>All</CardText>
 								<CardText className='text-muted' style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									4
+									{
+										dashboard &&
+										dashboard.all}
 									{/* <span className='text-muted' style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
-								<CardText className='text-muted'>documents</CardText>
+								<CardText className='text-muted'>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
@@ -88,9 +98,11 @@ export default class EcommerceDashboard extends Component {
 							<Card body inverse
 								style={{ backgroundColor: '#ff9045', borderColor: '#ff9045' }}
 							>
-								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Draft</CardText>
+								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>ToDo</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									0
+								{
+										dashboard &&
+										dashboard.toDo}
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
 								<CardText>Workflows</CardText>
@@ -104,14 +116,16 @@ export default class EcommerceDashboard extends Component {
 							>
 								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>In Progress</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									85
+									{dashboard &&
+										dashboard.inProgress
+									}
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
 								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
-					
+
 				</div>
 				<div className="row">
 					<div className="col-sm-12 col-md-4 mb-30">
@@ -121,7 +135,10 @@ export default class EcommerceDashboard extends Component {
 							>
 								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Completed</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									1
+									{
+										dashboard &&
+										dashboard.completed
+									}
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>document</span> */}
 								</CardText>
 								<CardText>Workflows</CardText>
@@ -135,7 +152,9 @@ export default class EcommerceDashboard extends Component {
 							>
 								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Declined</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									0
+									{dashboard &&
+										dashboard.declined
+									}
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
 								<CardText>Workflows</CardText>
@@ -149,14 +168,17 @@ export default class EcommerceDashboard extends Component {
 							>
 								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Expired</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
-									13
+									{
+										dashboard &&
+										dashboard.expired
+									}
 									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
 								</CardText>
 								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
 					</div>
-					
+
 					{/* <div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
@@ -171,10 +193,10 @@ export default class EcommerceDashboard extends Component {
 							</Card>
 						</Link>
 					</div> */}
-					
+
 				</div>
 				<div className="row">
-				<div className="col-sm-12 col-md-4 mb-30">
+					{/* <div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
 								style={{ backgroundColor: '#9a44a9', borderColor: '#9a44a9' }}
@@ -182,12 +204,12 @@ export default class EcommerceDashboard extends Component {
 								<CardText className={this.state.mouseOver ? '' : 'text-muted'}>Cancelled</CardText>
 								<CardText style={{ fontWeight: '700', fontSize: '52px', lineHeight: '1' }}>
 									35
-									{/* <span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span> */}
+									<span style={{ fontWeight: '400', fontSize: '14px', lineHeight: '1.5', display: 'block' }}>documents</span>
 								</CardText>
 								<CardText>Workflows</CardText>
 							</Card>
 						</Link>
-					</div>
+					</div> */}
 					{/* <div className="col-sm-12 col-md-4 mb-30">
 						<Link to="#">
 							<Card body inverse
@@ -202,8 +224,8 @@ export default class EcommerceDashboard extends Component {
 							</Card>
 						</Link>
 					</div> */}
-					
-					
+
+
 				</div>
 				{/*<div className="row">
 					<RctCollapsibleCard
@@ -294,3 +316,16 @@ export default class EcommerceDashboard extends Component {
 		)
 	}
 }
+
+const mapStateToProps = ({ documents }) => {
+	return documents;
+};
+
+export default withRouter(
+	connect(mapStateToProps,
+		{
+
+			getDashboard
+		}
+	)(EcommerceDashboard)
+);

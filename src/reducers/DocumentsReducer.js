@@ -27,7 +27,10 @@ import {
   DELETE_DOCUMENTS,
   DELETE_DOCUMENTS_SUCCESS,
   DELETE_DOCUMENTS_FAILURE,
-  SET_SELECTED_DOCUMENT
+  SET_SELECTED_DOCUMENT,
+  GET_All_DASHBOARD,
+  GET_All_DASHBOARD_SUCCESS,
+  GET_All_DASHBOARD_FAILURE
 } from "Actions/types";
 
 
@@ -322,6 +325,25 @@ export default (state = INITIAL_STATE, action) => {
         selectedDocument: action.payload.document
       }
     }
+
+    case GET_All_DASHBOARD:{
+      return{...state, dashboard:null, loading:true}
+    }
+
+    case GET_All_DASHBOARD_SUCCESS:{
+      return{
+        ...state, dashboard:action.payload, loading:false
+      }
+    }
+
+    case GET_All_DASHBOARD_FAILURE:{
+      NotificationManager.error(action.payload);
+      return {
+        ...state,
+        loading:false
+      }
+    }
+
     default:
       return { ...state };
   }
