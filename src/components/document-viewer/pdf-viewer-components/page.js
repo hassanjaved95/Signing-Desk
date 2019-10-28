@@ -98,29 +98,35 @@ class Page extends Component {
         const { classes, docSigns, pageId, pageNum, marginTop } = this.props;
 
         return (
-            <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop.bind(this, pageNum, (docSigns || []).filter(doc => doc.pageId === pageId))} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height, marginTop }}>
-                <canvas ref={this.setCanvasRef} />
-                {
-                    docSigns &&
-                    docSigns
-                        .filter(doc => doc.pageId === pageId)
-                        .map((sign, index) =>
-                            <Signature
-                                key={`${pageId}-${index}`}
-                                sign={sign}
-                                signKey={`${pageId}-${index}`}
-                                setSelectedSign={this.props.setSelectedSign}
-                                selectedSign={this.props.selectedSign}
-                                pageBoundary={this.getPageBoundary()}
-                                anchorEl={this.props.anchorEl}
-                                setAnchorEl={this.props.setAnchorEl}
-                                deleteSelectedSign={this.props.deleteSelectedSign}
-                                duplicateSelectedSign={this.props.duplicateSelectedSign}
-                                setSignDimentions={this.props.setSignDimentions}
-                            />
-                        )
-                }
-            </div>
+            <React.Fragment>
+                <div id={pageId} onDragOver={this.dragOver} onDrop={this.onDrop.bind(this, pageNum, (docSigns || []).filter(doc => doc.pageId === pageId))} className={`pdf-page ${status} ${classes.pdfPage}`} style={{ width, height, marginTop }}>
+                    <canvas ref={this.setCanvasRef} />
+                    {
+                        docSigns &&
+                        docSigns
+                            .filter(doc => doc.pageId === pageId)
+                            .map((sign, index) =>
+                                <Signature
+                                    key={`${pageId}-${index}`}
+                                    sign={sign}
+                                    signKey={`${pageId}-${index}`}
+                                    setSelectedSign={this.props.setSelectedSign}
+                                    selectedSign={this.props.selectedSign}
+                                    pageBoundary={this.getPageBoundary()}
+                                    anchorEl={this.props.anchorEl}
+                                    setAnchorEl={this.props.setAnchorEl}
+                                    deleteSelectedSign={this.props.deleteSelectedSign}
+                                    duplicateSelectedSign={this.props.duplicateSelectedSign}
+                                    setSignDimentions={this.props.setSignDimentions}
+                                />
+                            )
+                    }
+                </div>
+                <div style={{ width, marginTop, margin: '0 auto' }}>
+                    <span style={{ float: 'left', marginLeft: 5 }}>{pageNum}</span>
+                    <span style={{ float: 'right', marginRight: 5 }}>{pageNum}</span>
+                </div>
+            </React.Fragment>
         );
     }
 }

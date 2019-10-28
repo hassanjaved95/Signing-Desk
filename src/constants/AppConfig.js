@@ -6,7 +6,8 @@ const AppConfig = {
   //apiBaseUrl: 'http://03da0bbe.ngrok.io/api/v1',
   // apiBaseUrl: "http://cc3ec143.ngrok.io/api/v1",
   apiBaseUrl: "http://core-dev.signingdesk.com/api/v1", //Server
- // apiDataBaseUrl: "http://core-dev.signingdesk.com/",
+  // apiBaseUrl: "http://bd6e4651.ngrok.io/api/v1", //Server
+  // apiDataBaseUrl: "http://core-dev.signingdesk.com/",
   // apiBaseUrl: "http://core-dev.signingdesk.com/api/v1/data/85e39610-6532-4fd6-b245-ec8d22f6374e/f1f57b06-73ea-4e7b-9973-719c6063b7ac/c93e2c3a-927e-4b98-a0ae-f09bf2e4f64d/sample.pdf", //Server
   //apiBaseUrl: "http://28e45926.ngrok.io/api/v1", //Saqlain System
   appLogo: require("Assets/img/site-logo.png"), // App Logo

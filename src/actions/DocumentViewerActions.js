@@ -7,7 +7,10 @@ import {
     GET_COMPANIES_FAILURE,
     CREATE_COMPOSITE_WORKFLOW,
     CREATE_COMPOSITE_WORKFLOW_FAILURE,
-    CREATE_COMPOSITE_WORKFLOW_SUCCESS
+    CREATE_COMPOSITE_WORKFLOW_SUCCESS,
+    RESTORE_COMPOSITE_WORKFLOW,
+    RESTORE_COMPOSITE_WORKFLOW_FAILURE,
+    RESTORE_COMPOSITE_WORKFLOW_SUCCESS
 } from "./types";
 
 export const getViewingDocument = () => ({
@@ -51,6 +54,21 @@ export const createWorkFlowSuccess = (data) => ({
 
 export const createWorkFlowFailure = (error) => ({
     type: CREATE_COMPOSITE_WORKFLOW_FAILURE,
+    data: error
+});
+
+export const restoreWorkFlow = (payload) => ({
+    type: RESTORE_COMPOSITE_WORKFLOW,
+    payload
+});
+
+export const restoreWorkFlowSuccess = (data) => ({
+    type: RESTORE_COMPOSITE_WORKFLOW_SUCCESS,
+    data
+});
+
+export const restoreWorkFlowFailure = (error) => ({
+    type: RESTORE_COMPOSITE_WORKFLOW_FAILURE,
     data: error
 });
 

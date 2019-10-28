@@ -235,7 +235,7 @@ class UserDocumentViewer extends Component {
             recipientsCount = null;
 
             const workflowReqObj = this.createWorkFlowRequest();
-            // console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
+            console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
             this.props.createWorkFlow(workflowReqObj, (workflowId) => {
                 // start workflow
                 API.post('workflows/start/' + workflowId).then(response => {
@@ -244,7 +244,7 @@ class UserDocumentViewer extends Component {
                     } else {
                         console.log('workflow failed to start with error:', response);
                     }
-                });
+                }).catch(error => console.log('workflow failed to start with error:', error));
             });
             return;
         }
