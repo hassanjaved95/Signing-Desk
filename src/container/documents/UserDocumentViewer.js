@@ -5,7 +5,6 @@ import { getViewingDocument } from "Actions";
 import { makeStyles } from '@material-ui/styles';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 import PeopleIcon from '@material-ui/icons/People';
-import SettingsIcon from '@material-ui/icons/Settings';
 import BrushIcon from '@material-ui/icons/Brush';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -21,7 +20,11 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import * as PdfJs from 'pdfjs-dist';
 import config from 'Constants/AppConfig';
 import { getGuid } from "Helpers/helpers";
-import { createWorkFlow } from "Actions";
+import { createWorkFlow, updateWorkFlow } from "Actions";
+import API from 'Api';
+import IntlMessages from "Util/IntlMessages";
+import SettingsIcon from '@material-ui/icons/Settings';
+import { NotificationManager } from "react-notifications";
 
 const useStyles = makeStyles({
     documentViewerContainer: {
@@ -47,13 +50,14 @@ const useStyles = makeStyles({
 const navPanelItems = [
     {
         Id: 1,
-        Icon: <WidgetsIcon />,
-        Text: "Fields"
+        Icon: <PeopleIcon />,
+        Text: "Recipients"
+
     },
     {
         Id: 2,
-        Icon: <PeopleIcon />,
-        Text: "Recipients"
+        Icon: <WidgetsIcon />,
+        Text: "Fields"
     },
     {
         Id: 3,
@@ -105,6 +109,8 @@ const DocumentViewerLayout = function (props) {
                     selectNextUnassignedSignature={props.selectNextUnassignedSignature}
                     assignAllSignature={props.assignAllSignature}
                     setSignDimentions={props.setSignDimentions}
+                    onSavingSettings={props.onSavingSettings}
+                    defaultDate={new Date()}
                 />
             </div>
             <div className={classes.documentActionPanel}>
@@ -120,6 +126,8 @@ const DocumentViewerLayout = function (props) {
                     removeRecipient={props.removeRecipient}
                     closeSignatureSettings={props.handleMouseDown}
                     onDeleteRecipient={props.onDeleteRecipient}
+                    onSavingSettings={props.onSavingSettings}
+                    defaultDate={new Date()}
                 />
             </div>
             <div className={classes.documentNavPanel}>
@@ -137,7 +145,7 @@ class UserDocumentViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedNavPanelItem: 'Fields',
+            selectedNavPanelItem: 'Recipients',
             signs: [],
             signRecipientsCount: null,
             selectedSign: null,
@@ -240,8 +248,18 @@ class UserDocumentViewer extends Component {
             recipientsCount = null;
 
             const workflowReqObj = this.createWorkFlowRequest();
-            // console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
-            this.props.createWorkFlow(workflowReqObj);
+            //console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
+            this.props.createWorkFlow(workflowReqObj, (workflowId) => {
+                // start workflow
+                API.post('workflows/start/' + workflowId).then(response => {
+                    if (response && response.status == 200) {
+                        console.log('workflow started.');
+                        this.props.history.push("/app/documents");
+                    } else {
+                        console.log('workflow failed to start with error:', response);
+                    }
+                }).catch(error => console.log('workflow failed to start with error:', error));
+            });
             return;
         }
 
@@ -250,9 +268,46 @@ class UserDocumentViewer extends Component {
         });
     }
 
+    onSavingSettings = (obj) => {
+        if (obj == "") {
+            NotificationManager.error("Please select Date");
+        }
+        else {
+            let recipientsCount = this.state.signs.reduce((count, sign) => {
+                if (sign.recipient) count += 1;
+                return count;
+            }, 0);
+
+            if (recipientsCount === this.state.signs.length) {
+                recipientsCount = null;
+
+                const workflowReqObj = this.updateWorkFlowRequest(obj);
+                //console.log('workflowReqObj:', JSON.stringify(workflowReqObj));
+                this.props.updateWorkFlow(workflowReqObj, (workflowId) => {
+                    //debugger;
+                    // start workflow
+                    // API.post('workflows/start/' + workflowId).then(response => {
+                    //     if (response && response.status == 200) {
+                    //         console.log('workflow started.');
+                    //         this.props.history.push("/app/documents");
+                    //     } else {
+                    //         console.log('workflow failed to start with error:', response);
+                    //     }
+                    // }).catch(error => console.log('workflow failed to start with error:', error));
+                });
+                return;
+            }
+
+            this.setState({
+                signRecipientsCount: recipientsCount
+            });
+            //NotificationManager.success("WorkFlow updated By Date Deadline " + obj);
+        }
+    }
+
     getCollaboratorObj = (user) => ({
         "companyID": user.companyID || user.companyId || null,
-        "userID": user.id,
+        "userID": user.companyID == null ? user.id : user.usersID,
         "status": 0,
         "action": "SIGNER",
         "signatureType": "ADVANCED",
@@ -308,10 +363,11 @@ class UserDocumentViewer extends Component {
 
     createWorkFlowRequest = () => {
         const { selectedDocument, user } = this.props;
-
+        let curr = new Date();
+        curr.setDate(curr.getDate() + 10);
         const workflowReqObj = {
             "name": selectedDocument.name,
-            "timeout": "2019-12-30",
+            "timeout": curr.toString(),
             "status": selectedDocument.status,
             "ccRecipients": user.profile.user.email,
             "type": 0,
@@ -319,6 +375,15 @@ class UserDocumentViewer extends Component {
         }
 
         workflowReqObj["hops"] = this.getAllHops();
+        return workflowReqObj;
+    };
+
+    updateWorkFlowRequest = (timeout) => {
+        const { selectedDocument, user } = this.props;
+        const workflowReqObj = {
+            "id": selectedDocument.workflow.id,
+            "timeout": timeout
+        }
         return workflowReqObj;
     };
 
@@ -346,6 +411,8 @@ class UserDocumentViewer extends Component {
             })
         }
     }
+
+    
 
     setSignDimentions = (sign, dim) => {
         sign.width = dim.width;
@@ -450,6 +517,8 @@ class UserDocumentViewer extends Component {
                     selectNextUnassignedSignature={this.selectNextUnassignedSignature}
                     assignAllSignature={this.assignAllSignature}
                     setSignDimentions={this.setSignDimentions}
+                    onSavingSettings={this.onSavingSettings}
+                    defaultDate={new Date()}
                 />
             </React.Fragment>
         )
@@ -464,5 +533,6 @@ const mapStateToProps = ({ documents, authUser }) => {
 
 export default withRouter(
     connect(mapStateToProps, {
-        createWorkFlow
+        createWorkFlow,
+        updateWorkFlow
     })(UserDocumentViewer));

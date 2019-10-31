@@ -8,13 +8,20 @@ import {
     getContactsAsUsersSuccess,
     getContactsAsUsersFailure,
     createWorkFlowSuccess,
-    createWorkFlowFailure
+    createWorkFlowFailure,
+    updateWorkFlowSuccess,
+    updateWorkFlowFailure,
+    restoreWorkFlowSuccess,
+    restoreWorkFlowFailure,
+
 } from "Actions";
 
 import {
     GET_VIEWING_DOCUMENT,
     GET_COMPANIES,
-    CREATE_COMPOSITE_WORKFLOW
+    CREATE_COMPOSITE_WORKFLOW,
+    UPDATE_COMPOSITE_WORKFLOW,
+    RESTORE_COMPOSITE_WORKFLOW
 } from "Actions/types";
 
 
@@ -33,6 +40,16 @@ const getCompaniesRequest = async () => {
 
 const createWorkFlowRequest = async (requestObj) => {
     var response = await API.post('workflows/create-composite', requestObj.payload);
+    return response;
+}
+
+const updateWorkFlowRequest = async (requestObj) => {
+    var response = await API.put('workflows/update', requestObj.payload);
+    return response;
+}
+
+const restoreWorkFlowRequest = async (requestObj) => {
+    var response = await API.get('workflows/by-document/', requestObj.payload.documentId);
     return response;
 }
 
@@ -68,13 +85,44 @@ function* createCompositeWorkflowOnServer(data) {
     try {
         const response = yield call(createWorkFlowRequest, data);
         if (response && response.status == 200) {
-            const responseData = { ...data, ...response };
-            yield put(createWorkFlowSuccess(responseData));
+            const workflowID = response.data.workflowID;
+            data.payload.workflowID = workflowID;
+            data.callback(workflowID); // response should have workflow id so that we can start workflow
+            yield put(createWorkFlowSuccess(data));
         } else {
             yield put(createWorkFlowFailure(response));
         }
     } catch (error) {
         yield put(createWorkFlowFailure(error));
+    }
+}
+
+function* updateCompositeWorkflowOnServer(data) {
+    try {
+        const response = yield call(updateWorkFlowRequest, data);
+        if (response && response.status == 200) {
+            const workflowID = response.data.workflowID;
+            data.payload.workflowID = workflowID;
+            data.callback(workflowID); // response should have workflow id so that we can start workflow
+            yield put(updateWorkFlowSuccess(data));
+        } else {
+            yield put(updateWorkFlowFailure(response));
+        }
+    } catch (error) {
+        yield put(updateWorkFlowFailure(error));
+    }
+}
+
+function* restoreCompositeWorkflowOnServer(data) {
+    try {
+        const response = yield call(restoreWorkFlowRequest, data);
+        if (response && response.status == 200) {
+            yield put(restoreWorkFlowSuccess(response));
+        } else {
+            yield put(restoreWorkFlowFailure(response));
+        }
+    } catch (error) {
+        yield put(restoreWorkFlowFailure(error));
     }
 }
 
@@ -86,6 +134,14 @@ export function* createWorkFlow() {
     yield takeEvery(CREATE_COMPOSITE_WORKFLOW, createCompositeWorkflowOnServer);
 }
 
+export function* updateWorkFlow() {
+    yield takeEvery(UPDATE_COMPOSITE_WORKFLOW, updateCompositeWorkflowOnServer);
+}
+
+export function* restoreWorkFlow() {
+    yield takeEvery(RESTORE_COMPOSITE_WORKFLOW, restoreCompositeWorkflowOnServer);
+}
+
 export function* getCompanies() {
     yield takeEvery(GET_COMPANIES, getCompaniesFromServer);
 }
@@ -94,7 +150,8 @@ export default function* rootSaga() {
     yield all([
         fork(getViewingDocument),
         fork(getCompanies),
-        fork(createWorkFlow)
-
+        fork(createWorkFlow),
+        fork(updateWorkFlow),
+        fork(restoreWorkFlow)
     ]);
 }

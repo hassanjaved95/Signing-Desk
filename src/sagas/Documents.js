@@ -39,6 +39,11 @@ import UserDocumentsList from "../container/documents/UserDocumentsList";
 
 
 const getDocumentsRequest = async () => {
+  //return documents; 
+  //return response;
+  // return await Promise.resolve(response.data);
+  // console.log('Documents response:', response);
+
   var response = await API.get('documents/all', { id: 1 });
   return response;
 };

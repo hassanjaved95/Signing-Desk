@@ -9,8 +9,13 @@ import {
     GET_COMPANIES_FAILURE,
     CREATE_COMPOSITE_WORKFLOW,
     CREATE_COMPOSITE_WORKFLOW_SUCCESS,
-    CREATE_COMPOSITE_WORKFLOW_FAILURE
-
+    CREATE_COMPOSITE_WORKFLOW_FAILURE,
+    UPDATE_COMPOSITE_WORKFLOW,
+    UPDATE_COMPOSITE_WORKFLOW_SUCCESS,
+    UPDATE_COMPOSITE_WORKFLOW_FAILURE,
+    RESTORE_COMPOSITE_WORKFLOW,
+    RESTORE_COMPOSITE_WORKFLOW_FAILURE,
+    RESTORE_COMPOSITE_WORKFLOW_SUCCESS
 
 } from "Actions/types";
 
@@ -76,9 +81,31 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: true };
         }
         case CREATE_COMPOSITE_WORKFLOW_SUCCESS: {
+            NotificationManager.success("Workflow created successfully")
             return { ...state, workflow: action.payload, loading: false };
         }
         case CREATE_COMPOSITE_WORKFLOW_FAILURE: {
+            NotificationManager.error(action.payload);
+            return { ...state, workflow: null, loading: false };
+        }
+        case UPDATE_COMPOSITE_WORKFLOW: {
+            return { ...state, loading: true };
+        }
+        case UPDATE_COMPOSITE_WORKFLOW_SUCCESS: {
+            NotificationManager.success("Workflow updated successfully")
+            return { ...state, workflow: action.payload, loading: false };
+        }
+        case UPDATE_COMPOSITE_WORKFLOW_FAILURE: {
+            NotificationManager.error(action.payload);
+            return { ...state, workflow: null, loading: false };
+        }
+        case RESTORE_COMPOSITE_WORKFLOW: {
+            return { ...state, loading: true };
+        }
+        case RESTORE_COMPOSITE_WORKFLOW_SUCCESS: {
+            return { ...state, workflow: action.payload, loading: false };
+        }
+        case RESTORE_COMPOSITE_WORKFLOW_FAILURE: {
             return { ...state, workflow: null, loading: false };
         }
         default:

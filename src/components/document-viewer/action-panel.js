@@ -7,8 +7,8 @@ const ActionPanel = (props) => {
     console.log('action panel props:', props);
     return (
         <React.Fragment>
-            {props.actionType === "Fields" && <FieldActions {...props} />}
             {props.actionType === "Recipients" && <RecipientActions {...props} />}
+            {props.actionType === "Fields" && <FieldActions {...props} />}
             {props.actionType === "Settings" && <WorkflowSettings {...props} />}
         </React.Fragment>
     );

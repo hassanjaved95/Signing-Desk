@@ -116,9 +116,13 @@ const UserListItem = (props) => {
                     {getNameInitials(user.firstName + ' ' + user.lastName)}
                 </div>
                 <div className={colContainer}>
-                    <div>{user.firstName + ' ' + user.lastName}</div>
+                    <div>
+                        {user.firstName + ' ' + user.lastName}
+                        {props.showCertType && <span style={{ color: '#e34e48', display: 'inline-block', fontSize: 10, fontWeight: 400 }}> {user.certificateTypeDetails || ''}</span>}
+                    </div>
                     <div style={{ color: "#8d8d8d" }}>{user.email}</div>
                 </div>
+
                 <div className={rightArrowIcon}>
                     {props.children}
                 </div>

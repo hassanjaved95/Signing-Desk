@@ -38,6 +38,7 @@ function makeDataCompatibleToOptionsCompanyUsers(data) {
             item.firstName = item.username;
             item.lastName = '';
             item.id = item.companyUserBridgeID;
+            
             if(item.certificateType === 1){
                 item.certTypeValue = "Qualified";
             }

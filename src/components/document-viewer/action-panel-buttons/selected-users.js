@@ -9,7 +9,7 @@ const SelectedUsers = (props) => {
         <ul>
             {
                 props.selectedUsers.map(user => (
-                    <UserListItem key={user.id} user={user} onClickRecipient={props.onClickRecipient}>
+                    <UserListItem key={user.id} user={user} showCertType={true} onClickRecipient={props.onClickRecipient}>
                         <ChevronRight />
                     </UserListItem>
                 ))

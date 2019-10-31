@@ -125,7 +125,7 @@ function getDocumentsNameUpdated(state, actionPayload){
     
   }
   
-return state;
+return docs;
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -185,12 +185,11 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_DOCUMENT_SUCCESS: {
       NotificationManager.success("Document updated successfully");
       const docs = action.payload;
-      return getDocumentsNameUpdated(state,action.payload);
-      // return {
-      //   ...state,
-      //   loading: false,
-      //   documents: { ...state.documents,  }
-      // };
+      return {
+        ...state,
+        loading: false,
+        documents: { ...state.documents, documents: [...state.documents, getDocumentsNameUpdated(state,action.payload)] }
+      };
 
       
     }
@@ -325,7 +324,6 @@ export default (state = INITIAL_STATE, action) => {
         selectedDocument: action.payload.document
       }
     }
-
     case GET_All_DASHBOARD:{
       return{...state, dashboard:null, loading:true}
     }
@@ -343,7 +341,6 @@ export default (state = INITIAL_STATE, action) => {
         loading:false
       }
     }
-
     default:
       return { ...state };
   }
